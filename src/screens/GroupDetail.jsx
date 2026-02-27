@@ -43,6 +43,29 @@ export default function GroupDetail() {
         </div>
       </div>
 
+      {/* Idle state: next nudge banner */}
+      <div
+        style={{
+          marginTop: 24,
+          background: 'rgba(139,134,128,0.1)',
+          border: '1px solid rgba(139,134,128,0.25)',
+          borderRadius: 'var(--radius)',
+          padding: '14px 16px',
+          display: 'flex',
+          gap: 12,
+          alignItems: 'flex-start',
+        }}
+      >
+        <span style={{ fontSize: 20 }}>📅</span>
+        <div>
+          <p className="text-sm bold" style={{ color: 'var(--taupe)' }}>Next nudge in 12 days</p>
+          <p className="text-sm text-muted mt-8">
+            Nudge will send a reminder on March 11 to plan your next hangout.{' '}
+            No action needed until then!
+          </p>
+        </div>
+      </div>
+
       <div className="divider" />
 
       <div>

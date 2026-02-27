@@ -1,7 +1,9 @@
+import { useState } from 'react'
 import { useNavigate } from 'react-router-dom'
 import Screen from '../components/Screen'
 import Button from '../components/Button'
 
+// Toggle to false to preview the empty state (new user with no groups)
 const MOCK_GROUPS = [
   {
     id: 1,
@@ -37,6 +39,10 @@ const statusBadge = {
 
 export default function Home() {
   const navigate = useNavigate()
+  // Flip this to simulate a new user with no groups
+  const [groups] = useState(MOCK_GROUPS)
+
+  const hasGroups = groups.length > 0
 
   return (
     <Screen style={{ paddingBottom: 40 }}>
@@ -56,8 +62,60 @@ export default function Home() {
         <p className="text-muted mt-8">Staying in touch, automatically.</p>
       </div>
 
-      <div style={{ marginTop: 24, display: 'flex', flexDirection: 'column', gap: 12 }}>
-        {MOCK_GROUPS.map(g => {
+      {/* Empty state */}
+      {!hasGroups && (
+        <div
+          style={{
+            flex: 1,
+            display: 'flex',
+            flexDirection: 'column',
+            alignItems: 'center',
+            justifyContent: 'center',
+            textAlign: 'center',
+            gap: 16,
+            paddingTop: 40,
+            paddingBottom: 40,
+          }}
+        >
+          <div
+            style={{
+              width: 88,
+              height: 88,
+              borderRadius: '50%',
+              border: '2px dashed #333',
+              display: 'flex',
+              alignItems: 'center',
+              justifyContent: 'center',
+              fontSize: 36,
+              color: '#333',
+            }}
+          >
+            👥
+          </div>
+          <div>
+            <h2>No groups yet</h2>
+            <p className="text-muted mt-8" style={{ maxWidth: 260, margin: '8px auto 0' }}>
+              Create a group and invite your friends to start planning hangouts together.
+            </p>
+          </div>
+          <p className="text-xs text-muted" style={{ maxWidth: 240, lineHeight: 1.6 }}>
+            Nudge sends automatic reminders every 6 weeks — so you actually hang out. No more "when are we free?" texts.
+          </p>
+          <div style={{ width: '100%', display: 'flex', flexDirection: 'column', gap: 12, marginTop: 8 }}>
+            <Button onClick={() => navigate('/create-group')}>
+              + Create new group
+            </Button>
+            <Button variant="ghost" onClick={() => navigate('/invite-landing')}>
+              Join with an invite link
+            </Button>
+          </div>
+        </div>
+      )}
+
+      {/* Groups list */}
+      {hasGroups && (
+        <div style={{ marginTop: 24, display: 'flex', flexDirection: 'column', gap: 12 }}>
+          {groups.map(g => {
           const badge = statusBadge[g.status]
           return (
             <div
@@ -98,14 +156,17 @@ export default function Home() {
               </div>
             </div>
           )
-        })}
-      </div>
+          })}
+        </div>
+      )}
 
-      <div style={{ marginTop: 24 }}>
-        <Button variant="ghost" onClick={() => navigate('/create-group')}>
-          + Create new group
-        </Button>
-      </div>
+      {hasGroups && (
+        <div style={{ marginTop: 24 }}>
+          <Button variant="ghost" onClick={() => navigate('/create-group')}>
+            + Create new group
+          </Button>
+        </div>
+      )}
     </Screen>
   )
 }

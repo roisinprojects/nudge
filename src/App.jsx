@@ -19,6 +19,7 @@ import BookingConfirm  from './screens/BookingConfirm'
 import CalendarInvite  from './screens/CalendarInvite'
 import ErrorNoOverlap  from './screens/ErrorNoOverlap'
 import ErrorNoVenues   from './screens/ErrorNoVenues'
+import GenericError    from './screens/GenericError'
 
 // ── Screen map used by the nav overlay ──────────────────────────────────────
 export const SCREENS = [
@@ -46,6 +47,7 @@ export const SCREENS = [
   // Errors
   { path: '/error-no-overlap',     label: 'Error: no overlap',     group: 'Errors' },
   { path: '/error-no-venues',      label: 'Error: no venues',      group: 'Errors' },
+  { path: '/error',                label: 'Error: generic',        group: 'Errors' },
 ]
 
 function NavOverlay() {
@@ -124,6 +126,7 @@ export default function App() {
           <Route path="/calendar-invite"     element={<CalendarInvite />} />
           <Route path="/error-no-overlap"    element={<ErrorNoOverlap />} />
           <Route path="/error-no-venues"     element={<ErrorNoVenues />} />
+          <Route path="/error"               element={<GenericError />} />
         </Routes>
       </div>
     </div>

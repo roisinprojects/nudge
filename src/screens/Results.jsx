@@ -1,6 +1,13 @@
 import { useNavigate } from 'react-router-dom'
 import Screen from '../components/Screen'
-import Button from '../components/Button'
+
+const MATCH = {
+  date: 'Saturday, 1 March',
+  time: 'Evening · 7pm onwards',
+  activity: 'Food & Drinks',
+  activityMeta: 'Chosen by 4 of 5 members',
+  booker: 'Tom',
+}
 
 const VENUES = [
   {
@@ -12,7 +19,6 @@ const VENUES = [
     distance: '0.3 miles',
     price: '££',
     img: '🌿',
-    available: true,
   },
   {
     id: 2,
@@ -23,7 +29,6 @@ const VENUES = [
     distance: '0.7 miles',
     price: '££',
     img: '🍛',
-    available: true,
   },
   {
     id: 3,
@@ -34,12 +39,16 @@ const VENUES = [
     distance: '1.1 miles',
     price: '£££',
     img: '🎷',
-    available: true,
   },
 ]
 
 export default function Results() {
   const navigate = useNavigate()
+
+  const handleVenueClick = (venue) => {
+    sessionStorage.setItem('selectedVenue', JSON.stringify(venue))
+    navigate('/booking-confirm')
+  }
 
   return (
     <Screen style={{ paddingBottom: 40 }}>
@@ -54,30 +63,27 @@ export default function Results() {
       </div>
 
       {/* Matched details */}
-      <div
-        className="card"
-        style={{ marginTop: 16, border: '1.5px solid #2a2a2a' }}
-      >
+      <div className="card" style={{ marginTop: 16, border: '1.5px solid #2a2a2a' }}>
         <p className="text-sm text-muted mb-12">Your hangout</p>
         <div style={{ display: 'flex', flexDirection: 'column', gap: 10 }}>
           <div style={{ display: 'flex', gap: 12, alignItems: 'center' }}>
             <span style={{ fontSize: 20 }}>📅</span>
             <div>
-              <p className="bold">Saturday 1 March</p>
-              <p className="text-sm text-muted">Evening · 7:00pm onwards</p>
+              <p className="bold">{MATCH.date}</p>
+              <p className="text-sm text-muted">{MATCH.time}</p>
             </div>
           </div>
           <div style={{ display: 'flex', gap: 12, alignItems: 'center' }}>
             <span style={{ fontSize: 20 }}>🍹</span>
             <div>
-              <p className="bold">Food & Drinks</p>
-              <p className="text-sm text-muted">Chosen by 4 of 5 members</p>
+              <p className="bold">{MATCH.activity}</p>
+              <p className="text-sm text-muted">{MATCH.activityMeta}</p>
             </div>
           </div>
           <div style={{ display: 'flex', gap: 12, alignItems: 'center' }}>
             <span style={{ fontSize: 20 }}>👤</span>
             <div>
-              <p className="bold">Tom is booking</p>
+              <p className="bold">{MATCH.booker} is booking</p>
               <p className="text-sm text-muted">Randomly assigned — next time it's someone else</p>
             </div>
           </div>
@@ -87,23 +93,29 @@ export default function Results() {
       {/* Venue options */}
       <div style={{ marginTop: 24 }}>
         <p className="bold mb-12">Pick a venue</p>
-        <p className="text-sm text-muted mb-16">Tom: click a venue to open OpenTable and book.</p>
+        <p className="text-sm text-muted mb-16">
+          {MATCH.booker}: tap a venue to open OpenTable and book.
+        </p>
 
         <div style={{ display: 'flex', flexDirection: 'column', gap: 12 }}>
           {VENUES.map(v => (
             <div
               key={v.id}
               className="venue-card"
-              onClick={() => navigate('/booking-confirm')}
+              onClick={() => handleVenueClick(v)}
             >
               <div style={{ display: 'flex', gap: 14, alignItems: 'flex-start' }}>
                 <div
                   style={{
-                    width: 52, height: 52,
+                    width: 52,
+                    height: 52,
                     background: 'var(--surface2)',
                     borderRadius: 8,
-                    display: 'flex', alignItems: 'center', justifyContent: 'center',
-                    fontSize: 26, flexShrink: 0,
+                    display: 'flex',
+                    alignItems: 'center',
+                    justifyContent: 'center',
+                    fontSize: 26,
+                    flexShrink: 0,
                   }}
                 >
                   {v.img}
@@ -122,10 +134,7 @@ export default function Results() {
                 </div>
               </div>
               <div style={{ marginTop: 12, display: 'flex', justifyContent: 'flex-end' }}>
-                <span
-                  className="text-sm bold"
-                  style={{ color: 'var(--coral)' }}
-                >
+                <span className="text-sm bold" style={{ color: 'var(--coral)' }}>
                   Book on OpenTable →
                 </span>
               </div>
