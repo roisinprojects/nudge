@@ -3,28 +3,37 @@ import { useNavigate, useLocation } from 'react-router-dom'
 import Screen from '../components/Screen'
 import Button from '../components/Button'
 import BackButton from '../components/BackButton'
-import Input from '../components/Input'
 
-const MATCH = {
-  date: 'Saturday, 1 March',
-  time: 'Evening (7pm onwards)',
+const MOCK_MATCH = {
+  date:     'Saturday, 1 March',
+  time:     'Evening · 7pm onwards',
   activity: 'Food & Drinks',
-  people: 5,
+  group:    'Uni Friends',
 }
+
+const NEXT_BOOKER = 'Sarah'
 
 export default function BookingConfirm() {
   const navigate  = useNavigate()
   const { state } = useLocation()
-  const venue     = state?.venue ?? null
+  const venue     = state?.venue ?? { name: 'The Botanist' }
 
-  const [venueName,      setVenueName]      = useState(venue?.name ?? '')
-  const [confirmationNum, setConfirmationNum] = useState('')
-  const [submitError,    setSubmitError]    = useState(false)
+  const [toast, setToast] = useState(false)
 
   const handleConfirm = () => {
-    setSubmitError(false)
-    navigate('/calendar-invite', { state: { venueName: venueName.trim() } })
+    // Stub: schedule a follow-up notification in 30 mins to capture venue name async
+    setTimeout(() => {
+      console.log('[Nudge] +30 min notification: "Hey! Quick one — where did you end up booking? Drop the venue name so the group knows where to go."')
+    }, 30 * 60 * 1000)
+    navigate('/calendar-invite', { state: { venueName: venue.name } })
   }
+
+  const handleCantBook = () => {
+    setToast(true)
+    setTimeout(() => setToast(false), 3500)
+  }
+
+  const openTableUrl = `https://www.opentable.com/s/?term=${encodeURIComponent(venue.name || '')}`
 
   return (
     <Screen style={{ paddingBottom: 40 }}>
@@ -32,113 +41,88 @@ export default function BookingConfirm() {
         <BackButton to="/results" />
       </div>
 
-      <div style={{ marginTop: 24 }}>
-        <h1>Confirm the booking</h1>
-        <p className="text-muted mt-8">
-          Did you complete the reservation on OpenTable? Fill in the details below.
-        </p>
-      </div>
-
-      {/* Selected venue preview */}
-      {venue && (
-        <div className="card" style={{ marginTop: 24, border: '1px solid rgba(255, 255, 255, 0.06)' }}>
-          <div style={{ display: 'flex', gap: 14, alignItems: 'flex-start' }}>
-            <div
-              style={{
-                width: 44,
-                height: 44,
-                background: 'var(--surface2)',
-                borderRadius: 8,
-                display: 'flex',
-                alignItems: 'center',
-                justifyContent: 'center',
-                fontSize: 22,
-                flexShrink: 0,
-              }}
-            >
-              {venue.img}
-            </div>
-            <div>
-              <p className="bold">{venue.name}</p>
-              <p className="text-sm text-muted">{venue.type}</p>
-              <p className="text-xs mt-8">⭐ {venue.rating} · {venue.price} · {venue.distance}</p>
-            </div>
-          </div>
-
-          <div className="divider" />
-
-          <div style={{ display: 'flex', flexDirection: 'column', gap: 8 }}>
-            <div style={{ display: 'flex', gap: 10 }}>
-              <span style={{ fontSize: 14 }}>📅</span>
-              <span className="text-sm">{MATCH.date} · {MATCH.time}</span>
-            </div>
-            <div style={{ display: 'flex', gap: 10 }}>
-              <span style={{ fontSize: 14 }}>🍽️</span>
-              <span className="text-sm">{MATCH.activity}</span>
-            </div>
-            <div style={{ display: 'flex', gap: 10 }}>
-              <span style={{ fontSize: 14 }}>👥</span>
-              <span className="text-sm">{MATCH.people} people</span>
-            </div>
-          </div>
+      {/* Auto-dismiss toast */}
+      {toast && (
+        <div style={{
+          position: 'absolute', top: 16, left: 16, right: 16,
+          background: 'var(--color-bg-elevated)',
+          border: '1px solid var(--color-border-strong)',
+          borderRadius: 'var(--radius-lg)',
+          padding: '12px 16px',
+          display: 'flex', gap: 10, alignItems: 'center',
+          zIndex: 50,
+          boxShadow: 'var(--shadow-md)',
+        }}>
+          <span style={{ color: 'var(--color-success-icon)', fontSize: 16 }}>✓</span>
+          <p style={{ fontSize: 13, color: 'var(--color-text-primary)' }}>
+            We've asked {NEXT_BOOKER} to book instead.
+          </p>
         </div>
       )}
 
-      {/* Open OpenTable prompt */}
-      <div style={{ marginTop: 24 }}>
-        <div className="alert alert-warning">
-          <span>🔗</span>
-          <div>
-            <p className="text-sm bold" style={{ color: 'var(--warning)' }}>
-              Haven't booked yet?
-            </p>
-            <p className="text-sm" style={{ color: 'var(--warning)' }}>
-              Head to OpenTable first, then come back here to confirm.
-            </p>
+      {/* Header */}
+      <div style={{ marginTop: 24, textAlign: 'center' }}>
+        <div style={{ fontSize: 56, lineHeight: 1 }}>🎯</div>
+        <h1 style={{ marginTop: 16 }}>You're the booker this round!</h1>
+        <p className="text-muted mt-8">
+          Randomly assigned — next time it's someone else's turn.
+        </p>
+      </div>
+
+      {/* Hangout summary card */}
+      <div className="card" style={{ marginTop: 24, border: '1px solid rgba(255, 255, 255, 0.06)' }}>
+        <p className="text-sm text-muted mb-12">Your hangout</p>
+        <div style={{ display: 'flex', flexDirection: 'column', gap: 10 }}>
+          <div style={{ display: 'flex', gap: 12, alignItems: 'center' }}>
+            <span style={{ fontSize: 20 }}>📅</span>
+            <div>
+              <p className="bold">{MOCK_MATCH.date}</p>
+              <p className="text-sm text-muted">{MOCK_MATCH.time}</p>
+            </div>
+          </div>
+          <div style={{ display: 'flex', gap: 12, alignItems: 'center' }}>
+            <span style={{ fontSize: 20 }}>🍹</span>
+            <p className="bold">{MOCK_MATCH.activity}</p>
+          </div>
+          <div style={{ display: 'flex', gap: 12, alignItems: 'center' }}>
+            <span style={{ fontSize: 20 }}>👥</span>
+            <p className="bold">{MOCK_MATCH.group}</p>
           </div>
         </div>
-        <div style={{ marginTop: 12 }}>
-          <Button
-            variant="secondary"
-            onClick={() => window.open('https://www.opentable.com', '_blank', 'noopener,noreferrer')}
-          >
-            Open OpenTable →
-          </Button>
-        </div>
       </div>
 
-      {/* Confirmation inputs */}
-      <div style={{ marginTop: 24, display: 'flex', flexDirection: 'column', gap: 16 }}>
-        <div className="divider" style={{ margin: 0 }} />
-        <p className="text-sm text-muted">Once you've completed the reservation:</p>
-
-        <Input
-          label="What venue did you book?"
-          placeholder="e.g. The Botanist"
-          value={venueName}
-          onChange={e => setVenueName(e.target.value)}
-        />
-
-        <Input
-          label="OpenTable confirmation # (optional)"
-          placeholder="e.g. 12345"
-          value={confirmationNum}
-          onChange={e => setConfirmationNum(e.target.value)}
-        />
+      {/* Info callout */}
+      <div className="alert alert-warning" style={{ marginTop: 16 }}>
+        <span>💡</span>
+        <p style={{ fontSize: 13 }}>
+          The group is waiting on you. Once you've booked, tap confirm below — no details needed right now.
+        </p>
       </div>
 
-      <div style={{ marginTop: 24, display: 'flex', flexDirection: 'column', gap: 12 }}>
-        <Button disabled={!venueName.trim()} onClick={handleConfirm}>
-          Yes, I've booked ✓
+      {/* CTAs */}
+      <div style={{ marginTop: 'auto', paddingTop: 24, display: 'flex', flexDirection: 'column', gap: 12 }}>
+        <Button
+          variant="secondary"
+          onClick={() => window.open(openTableUrl, '_blank', 'noopener,noreferrer')}
+        >
+          Open OpenTable →
         </Button>
-        {submitError && (
-          <div style={{ display: 'flex', alignItems: 'center', gap: 6 }}>
-            <span style={{ color: 'var(--color-error-icon)', fontSize: 14 }}>⚠</span>
-            <p style={{ fontSize: 13, color: 'var(--color-error-text)' }}>
-              Something went wrong — try again
-            </p>
-          </div>
-        )}
+
+        <Button onClick={handleConfirm}>
+          ✓ I've booked it
+        </Button>
+
+        <button
+          onClick={handleCantBook}
+          style={{
+            background: 'none', border: 'none',
+            color: 'var(--color-text-secondary)', fontSize: 13,
+            cursor: 'pointer', textAlign: 'center',
+            padding: '4px 0',
+          }}
+        >
+          I can't book right now
+        </button>
       </div>
     </Screen>
   )
