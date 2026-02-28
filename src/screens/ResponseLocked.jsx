@@ -44,7 +44,10 @@ export default function ResponseLocked() {
           className="card"
           style={{ marginTop: 32, width: '100%', textAlign: 'left', border: '1px solid rgba(255, 255, 255, 0.06)' }}
         >
-          <p className="text-sm text-muted mb-12">Your response summary</p>
+          {/* Dates section */}
+          <p style={{ fontSize: 11, fontWeight: 700, color: 'var(--color-text-tertiary)', textTransform: 'uppercase', letterSpacing: '0.08em', marginBottom: 10 }}>
+            Your dates
+          </p>
           <div style={{ display: 'flex', flexDirection: 'column', gap: 8 }}>
             {slots.map((slot, i) => (
               <div key={i} style={{ display: 'flex', alignItems: 'center', gap: 10 }}>
@@ -52,11 +55,18 @@ export default function ResponseLocked() {
                 <span className="text-sm">{slot}</span>
               </div>
             ))}
-            <div className="divider" />
-            <div style={{ display: 'flex', alignItems: 'center', gap: 10 }}>
-              <span>🍸</span>
-              <span className="text-sm">{activityDisplay}</span>
-            </div>
+          </div>
+
+          {/* Divider */}
+          <div style={{ height: 1, background: 'var(--color-border-default)', margin: '14px 0' }} />
+
+          {/* Vibe section */}
+          <p style={{ fontSize: 11, fontWeight: 700, color: 'var(--color-text-tertiary)', textTransform: 'uppercase', letterSpacing: '0.08em', marginBottom: 10 }}>
+            Your vibe
+          </p>
+          <div style={{ display: 'flex', alignItems: 'center', gap: 10 }}>
+            <span>🍸</span>
+            <span className="text-sm">{activityDisplay}</span>
           </div>
         </div>
 

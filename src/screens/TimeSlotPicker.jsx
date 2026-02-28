@@ -3,6 +3,7 @@ import { useNavigate, useLocation } from 'react-router-dom'
 import Screen from '../components/Screen'
 import Button from '../components/Button'
 import BackButton from '../components/BackButton'
+import SegmentedBar from '../components/SegmentedBar'
 
 const TIME_OPTIONS = [
   { id: 'lunch',   label: 'Lunch',   hours: '11am – 3pm' },
@@ -24,12 +25,30 @@ export default function TimeSlotPicker() {
 
   // { [isoDate]: 'lunch' | 'evening' | 'late' }
   const [times, setTimes] = useState({})
+  // Which accordion row is currently open (0-indexed), or null if all closed
+  const [openIdx, setOpenIdx] = useState(0)
 
   const allSelected = dates.every(d => times[d.date])
   const selectedCount = Object.keys(times).length
 
   const pick = (iso, timeId) => {
-    setTimes(prev => ({ ...prev, [iso]: timeId }))
+    const nextTimes = { ...times, [iso]: timeId }
+    setTimes(nextTimes)
+
+    // Auto-advance: find the next date without a time
+    const currentIdx = dates.findIndex(d => d.date === iso)
+    const nextIdx = dates.findIndex((d, i) => i > currentIdx && !nextTimes[d.date])
+    if (nextIdx !== -1) {
+      setOpenIdx(nextIdx)
+    } else {
+      // All done or only earlier rows uncompleted — close current
+      const anyUncompleted = dates.findIndex((d, i) => i !== currentIdx && !nextTimes[d.date])
+      setOpenIdx(anyUncompleted !== -1 ? anyUncompleted : null)
+    }
+  }
+
+  const toggleAccordion = (idx) => {
+    setOpenIdx(prev => prev === idx ? null : idx)
   }
 
   return (
@@ -43,120 +62,144 @@ export default function TimeSlotPicker() {
         <p className="text-muted mt-8">Your picks stay private until we find a match.</p>
       </div>
 
-      {/* Step progress */}
-      <div style={{ marginTop: 16, display: 'flex', alignItems: 'center', gap: 12 }}>
-        <div style={{ flex: 1, height: 4, background: 'rgba(255, 255, 255, 0.06)', borderRadius: 2, overflow: 'hidden' }}>
-          <div
-            style={{
-              width: `${(selectedCount / 3) * 100}%`,
-              height: '100%',
-              background: allSelected ? 'var(--success)' : 'var(--coral)',
-              borderRadius: 2,
-              transition: 'width 0.2s, background 0.2s',
-            }}
-          />
+      <div style={{ marginTop: 16 }}>
+        <SegmentedBar total={3} current={2} counterText={`${selectedCount}/3 done`} />
+      </div>
+
+      {/* Accordion rows */}
+      <div style={{ marginTop: 24, flex: 1, display: 'flex', flexDirection: 'column' }}>
+        <div>
+          {dates.map((d, idx) => {
+            const pickedTime = times[d.date]
+            const isOpen = openIdx === idx
+            const isCompleted = !!pickedTime
+
+            return (
+              <div
+                key={d.date}
+                style={{ borderBottom: '1px solid var(--color-border-default)' }}
+              >
+                {/* Accordion header row */}
+                <div
+                  onClick={() => toggleAccordion(idx)}
+                  style={{
+                    height: 56,
+                    display: 'flex',
+                    alignItems: 'center',
+                    gap: 12,
+                    cursor: 'pointer',
+                    userSelect: 'none',
+                  }}
+                >
+                  {/* Number / checkmark circle */}
+                  <div style={{
+                    width: 24, height: 24, borderRadius: '50%',
+                    background: isCompleted
+                      ? 'var(--color-success-solid)'
+                      : isOpen
+                        ? 'var(--color-primary-500)'
+                        : 'var(--color-neutral-300)',
+                    display: 'flex', alignItems: 'center', justifyContent: 'center',
+                    fontSize: 11, fontWeight: 700, color: '#fff', flexShrink: 0,
+                    transition: 'background var(--duration-normal) var(--ease-out)',
+                  }}>
+                    {isCompleted ? '✓' : idx + 1}
+                  </div>
+
+                  {/* Date + subtitle */}
+                  <div style={{ flex: 1 }}>
+                    <p style={{ fontSize: 16, fontWeight: 600, color: 'var(--color-text-primary)' }}>
+                      {d.fmtDate}
+                    </p>
+                    {isCompleted ? (
+                      <p style={{ fontSize: 12, color: 'var(--color-text-secondary)', marginTop: 1 }}>
+                        {TIME_OPTIONS.find(t => t.id === pickedTime)?.label}
+                      </p>
+                    ) : (
+                      <p style={{ fontSize: 12, color: 'var(--color-text-tertiary)', marginTop: 1 }}>
+                        What time works for you?
+                      </p>
+                    )}
+                  </div>
+
+                  {/* Chevron */}
+                  <span style={{
+                    color: 'var(--color-text-tertiary)',
+                    fontSize: 18,
+                    lineHeight: 1,
+                    transform: isOpen ? 'rotate(180deg)' : 'none',
+                    transition: 'transform var(--duration-normal) var(--ease-out)',
+                  }}>
+                    ▾
+                  </span>
+                </div>
+
+                {/* Expanded: time options */}
+                {isOpen && (
+                  <div style={{ paddingBottom: 16, display: 'flex', flexDirection: 'column', gap: 8 }}>
+                    {TIME_OPTIONS.map(t => {
+                      const isSelected = pickedTime === t.id
+                      return (
+                        <div
+                          key={t.id}
+                          onClick={() => pick(d.date, t.id)}
+                          style={{
+                            display: 'flex',
+                            alignItems: 'center',
+                            gap: 14,
+                            height: 56,
+                            padding: '0 16px',
+                            borderRadius: 'var(--radius-lg)',
+                            border: `1px solid ${isSelected ? 'var(--color-primary-500)' : 'var(--color-border-strong)'}`,
+                            borderLeftWidth: isSelected ? '3px' : '1px',
+                            background: isSelected ? 'rgba(232, 93, 77, 0.08)' : 'var(--color-bg-card)',
+                            cursor: 'pointer',
+                            transition: 'all var(--duration-fast) var(--ease-out)',
+                          }}
+                        >
+                          <div style={{ flex: 1 }}>
+                            <p style={{
+                              fontSize: 15, fontWeight: 600,
+                              color: isSelected ? 'var(--color-text-primary)' : 'var(--color-text-secondary)',
+                            }}>
+                              {t.label}
+                            </p>
+                            <p style={{ fontSize: 12, color: 'var(--color-text-tertiary)', marginTop: 2 }}>
+                              {t.hours}
+                            </p>
+                          </div>
+                          {/* Radio */}
+                          <div style={{
+                            width: 20, height: 20, borderRadius: '50%',
+                            border: `2px solid ${isSelected ? 'var(--color-primary-500)' : 'var(--color-border-strong)'}`,
+                            background: isSelected ? 'var(--color-primary-500)' : 'transparent',
+                            display: 'flex', alignItems: 'center', justifyContent: 'center',
+                            flexShrink: 0,
+                            transition: 'all var(--duration-fast) var(--ease-out)',
+                          }}>
+                            {isSelected && (
+                              <div style={{ width: 6, height: 6, borderRadius: '50%', background: '#fff' }} />
+                            )}
+                          </div>
+                        </div>
+                      )
+                    })}
+                  </div>
+                )}
+              </div>
+            )
+          })}
         </div>
-        <span style={{
-          fontSize: 13,
-          fontWeight: 600,
-          color: allSelected ? 'var(--success)' : 'var(--text-muted)',
-          whiteSpace: 'nowrap',
-          minWidth: 68,
-          textAlign: 'right',
-          transition: 'color 0.2s',
-        }}>
-          {selectedCount}/3 done
-        </span>
-      </div>
 
-      {/* One section per date */}
-      <div style={{ marginTop: 24, display: 'flex', flexDirection: 'column', gap: 28 }}>
-        {dates.map((d, idx) => {
-          const pickedTime = times[d.date]
-          return (
-            <div key={d.date}>
-              {/* Date label */}
-              <div style={{
-                display: 'flex',
-                alignItems: 'center',
-                gap: 10,
-                marginBottom: 12,
-              }}>
-                <div style={{
-                  width: 24, height: 24,
-                  borderRadius: '50%',
-                  background: pickedTime ? 'var(--success)' : 'var(--surface2)',
-                  display: 'flex', alignItems: 'center', justifyContent: 'center',
-                  fontSize: 12, fontWeight: 700,
-                  color: pickedTime ? '#fff' : 'var(--taupe)',
-                  flexShrink: 0,
-                }}>
-                  {pickedTime ? '✓' : idx + 1}
-                </div>
-                <div>
-                  <p style={{ fontSize: 15, fontWeight: 600 }}>{d.fmtDate}</p>
-                  <p style={{ fontSize: 12, color: 'var(--taupe)', marginTop: 2 }}>
-                    What time works for you?
-                  </p>
-                </div>
-              </div>
-
-              {/* Time options */}
-              <div style={{ display: 'flex', flexDirection: 'column', gap: 8 }}>
-                {TIME_OPTIONS.map(t => {
-                  const isSelected = pickedTime === t.id
-                  return (
-                    <div
-                      key={t.id}
-                      onClick={() => pick(d.date, t.id)}
-                      style={{
-                        display: 'flex',
-                        alignItems: 'center',
-                        gap: 14,
-                        padding: '13px 16px',
-                        borderRadius: 'var(--radius)',
-                        border: `1px solid ${isSelected ? 'var(--coral)' : '#2a2a2a'}`,
-                        background: isSelected ? 'rgba(232,93,77,0.08)' : 'var(--surface)',
-                        cursor: 'pointer',
-                        transition: 'all 0.12s',
-                      }}
-                    >
-                      {/* Radio circle */}
-                      <div style={{
-                        width: 20, height: 20, borderRadius: '50%',
-                        border: `2px solid ${isSelected ? 'var(--coral)' : 'rgba(255, 255, 255, 0.10)'}`,
-                        background: isSelected ? 'var(--coral)' : 'transparent',
-                        display: 'flex', alignItems: 'center', justifyContent: 'center',
-                        flexShrink: 0,
-                        transition: 'all 0.12s',
-                      }}>
-                        {isSelected && (
-                          <div style={{ width: 6, height: 6, borderRadius: '50%', background: '#fff' }} />
-                        )}
-                      </div>
-                      <div style={{ flex: 1 }}>
-                        <p style={{ fontSize: 15, fontWeight: 600, color: isSelected ? 'var(--text)' : 'var(--text-muted)' }}>
-                          {t.label}
-                        </p>
-                        <p style={{ fontSize: 12, color: 'var(--taupe)', marginTop: 2 }}>{t.hours}</p>
-                      </div>
-                    </div>
-                  )
-                })}
-              </div>
-            </div>
-          )
-        })}
-      </div>
-
-      {/* Buttons */}
-      <div style={{ marginTop: 28, display: 'flex', gap: 12 }}>
-        <Button variant="ghost" half onClick={() => navigate('/calendar-picker')}>
-          ← Back
-        </Button>
-        <Button half disabled={!allSelected} onClick={() => navigate('/activity-preferences', { state: { dates, times } })}>
-          Pick activities →
-        </Button>
+        {/* CTA fixed to bottom of flex container */}
+        <div style={{ marginTop: 'auto', paddingTop: 24 }}>
+          <Button
+            disabled={!allSelected}
+            onClick={() => navigate('/activity-preferences', { state: { dates, times } })}
+          >
+            Pick activities →
+          </Button>
+        </div>
       </div>
     </Screen>
   )

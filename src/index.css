@@ -500,15 +500,16 @@ h3 {
   .venue-card:hover { border-color: var(--color-primary-500); }
 }
 
-/* ── Tag ── */
+/* ── Tag (cuisine / informational — outlined neutral) ── */
 .tag {
   display: inline-block;
   font-size: 11px;
-  font-weight: 600;
+  font-weight: 500;
   padding: 3px 10px;
   border-radius: var(--radius-full);
-  background: rgba(232, 93, 77, 0.15);
-  color: var(--color-primary-500);
+  background: transparent;
+  border: 1px solid var(--color-border-strong);
+  color: var(--color-text-secondary);
   letter-spacing: 0.02em;
 }
 

@@ -5,6 +5,7 @@ import Logo from '../components/Logo'
 import Button from '../components/Button'
 import Input from '../components/Input'
 import BackButton from '../components/BackButton'
+import SegmentedBar from '../components/SegmentedBar'
 
 export default function SetPassword() {
   const navigate = useNavigate()
@@ -20,12 +21,8 @@ export default function SetPassword() {
         <BackButton to="/signup" />
       </div>
 
-      <div style={{ marginTop: 24, display: 'flex', justifyContent: 'center' }}>
-        <div className="progress-dots">
-          {[0, 1, 2, 3].map(i => (
-            <div key={i} className={`dot ${i === 0 ? 'done' : i === 1 ? 'active' : ''}`} />
-          ))}
-        </div>
+      <div style={{ marginTop: 24 }}>
+        <SegmentedBar total={5} current={2} />
       </div>
 
       <div style={{ marginTop: 40, display: 'flex', flexDirection: 'column', gap: 24 }}>
@@ -68,7 +65,7 @@ export default function SetPassword() {
 
         <Button
           disabled={!(strong && matches)}
-          onClick={() => navigate('/create-group')}
+          onClick={() => navigate('/display-name')}
         >
           Continue
         </Button>

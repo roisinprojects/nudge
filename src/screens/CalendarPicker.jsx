@@ -3,6 +3,7 @@ import { useNavigate } from 'react-router-dom'
 import Screen from '../components/Screen'
 import Button from '../components/Button'
 import BackButton from '../components/BackButton'
+import SegmentedBar from '../components/SegmentedBar'
 
 const MONTH_NAMES = [
   'January','February','March','April','May','June',
@@ -72,36 +73,13 @@ export default function CalendarPicker() {
         <p style={{ fontSize: 12, fontWeight: 700, color: 'var(--taupe)', textTransform: 'uppercase', letterSpacing: 1 }}>
           Uni Friends
         </p>
-        <h1 style={{ marginTop: 6 }}>Pick your 3 best weekends</h1>
-        <p className="text-muted mt-8">Choose up to 3 — we'll find the one that works for everyone.</p>
+        <h1 style={{ marginTop: 6 }}>Pick your 3 best dates</h1>
+        <p className="text-muted mt-8">Choose up to 3 weekend dates (Fri–Sun) — we'll find one that works for everyone.</p>
       </div>
 
       {/* Progress */}
-      <div style={{ marginTop: 16, display: 'flex', alignItems: 'center', gap: 12 }}>
-        <div style={{ flex: 1, height: 4, background: 'rgba(255, 255, 255, 0.06)', borderRadius: 2, overflow: 'hidden' }}>
-          <div
-            style={{
-              width: `${(count / 3) * 100}%`,
-              height: '100%',
-              background: count === 3 ? 'var(--success)' : 'var(--coral)',
-              borderRadius: 2,
-              transition: 'width 0.2s, background 0.2s',
-            }}
-          />
-        </div>
-        <span
-          style={{
-            fontSize: 13,
-            fontWeight: 600,
-            color: count === 3 ? 'var(--success)' : 'var(--text-muted)',
-            whiteSpace: 'nowrap',
-            minWidth: 68,
-            textAlign: 'right',
-            transition: 'color 0.2s',
-          }}
-        >
-          {count}/3 selected
-        </span>
+      <div style={{ marginTop: 16 }}>
+        <SegmentedBar total={3} current={1} counterText={`${count}/3 selected`} />
       </div>
 
       {/* Calendar months */}

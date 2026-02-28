@@ -13,6 +13,64 @@ const INITIAL_MEMBERS = [
   { name: 'Róisín', initial: 'R', isCreator: false, isYou: true  },
 ]
 
+// ── Shared bottom-sheet overlay ───────────────────────────────────────────────
+function BottomSheet({ title, body, confirmLabel, onConfirm, onCancel }) {
+  return (
+    <>
+      {/* Backdrop */}
+      <div
+        onClick={onCancel}
+        style={{
+          position: 'absolute', inset: 0,
+          background: 'rgba(0, 0, 0, 0.65)',
+          zIndex: 100,
+        }}
+      />
+      {/* Sheet */}
+      <div
+        style={{
+          position: 'absolute', bottom: 0, left: 0, right: 0,
+          background: 'var(--color-bg-elevated)',
+          borderRadius: '12px 12px 0 0',
+          padding: '20px 24px 40px',
+          zIndex: 101,
+        }}
+      >
+        {/* Drag handle */}
+        <div style={{
+          width: 32, height: 4, borderRadius: 2,
+          background: 'rgba(255, 255, 255, 0.15)',
+          margin: '0 auto 20px',
+        }} />
+        <h2 style={{ fontSize: 19 }}>{title}</h2>
+        <p className="text-muted" style={{ fontSize: 14, marginTop: 8, lineHeight: 1.6 }}>{body}</p>
+        <div style={{ marginTop: 20, display: 'flex', flexDirection: 'column', gap: 10 }}>
+          <button
+            onClick={onConfirm}
+            style={{
+              height: 48, width: '100%', borderRadius: 8, border: 'none',
+              background: 'var(--color-error-solid)', color: '#fff',
+              fontSize: 16, fontWeight: 600, cursor: 'pointer',
+            }}
+          >
+            {confirmLabel}
+          </button>
+          <button
+            onClick={onCancel}
+            style={{
+              height: 48, width: '100%', borderRadius: 8, border: 'none',
+              background: 'transparent', color: 'var(--color-text-secondary)',
+              fontSize: 16, fontWeight: 600, cursor: 'pointer',
+            }}
+          >
+            Cancel
+          </button>
+        </div>
+      </div>
+    </>
+  )
+}
+
 export default function GroupSettings() {
   const navigate = useNavigate()
 
@@ -38,82 +96,6 @@ export default function GroupSettings() {
     setRemoveTarget(null)
   }
 
-  // ── Remove confirmation modal ──────────────────────────────────────────────
-  if (removeTarget) {
-    return (
-      <Screen style={{ paddingBottom: 40 }}>
-        <div style={{ paddingTop: 56 }}>
-          <BackButton onClick={() => setRemoveTarget(null)} />
-        </div>
-        <div style={{
-          flex: 1, display: 'flex', flexDirection: 'column',
-          alignItems: 'center', justifyContent: 'center', gap: 20, paddingBottom: 60,
-        }}>
-          <div style={{
-            width: 64, height: 64, borderRadius: '50%',
-            background: 'var(--surface2)', border: '2px solid #333',
-            display: 'flex', alignItems: 'center', justifyContent: 'center',
-            fontSize: 24, fontWeight: 700, color: 'var(--taupe)',
-          }}>
-            {removeTarget[0]}
-          </div>
-          <div style={{ textAlign: 'center' }}>
-            <h2>Remove {removeTarget}?</h2>
-            <p className="text-muted mt-8" style={{ maxWidth: 260, margin: '8px auto 0' }}>
-              They'll be removed from {groupName} and won't receive future nudges.
-            </p>
-          </div>
-          <div style={{ width: '100%', display: 'flex', flexDirection: 'column', gap: 12 }}>
-            <Button variant="primary" onClick={() => confirmRemove(removeTarget)}>
-              Remove {removeTarget}
-            </Button>
-            <Button variant="ghost" onClick={() => setRemoveTarget(null)}>
-              Cancel
-            </Button>
-          </div>
-        </div>
-      </Screen>
-    )
-  }
-
-  // ── Leave group confirmation ───────────────────────────────────────────────
-  if (leaveModal) {
-    return (
-      <Screen style={{ paddingBottom: 40 }}>
-        <div style={{ paddingTop: 56 }}>
-          <BackButton onClick={() => setLeaveModal(false)} />
-        </div>
-        <div style={{
-          flex: 1, display: 'flex', flexDirection: 'column',
-          alignItems: 'center', justifyContent: 'center', gap: 20, paddingBottom: 60,
-        }}>
-          <div style={{ fontSize: 48 }}>👋</div>
-          <div style={{ textAlign: 'center' }}>
-            <h2>Leave {groupName}?</h2>
-            <p className="text-muted mt-8" style={{ maxWidth: 280, margin: '8px auto 0', lineHeight: 1.6 }}>
-              You're the creator. If you leave, the group continues but nobody can edit settings or remove members.
-            </p>
-          </div>
-          <div className="alert alert-warning" style={{ width: '100%', textAlign: 'left' }}>
-            <span>ℹ️</span>
-            <p style={{ fontSize: 13 }}>
-              You won't be nudged anymore, but the group will still hang out without you.
-            </p>
-          </div>
-          <div style={{ width: '100%', display: 'flex', flexDirection: 'column', gap: 12 }}>
-            <Button variant="primary" onClick={() => navigate('/home')}>
-              Leave group
-            </Button>
-            <Button variant="ghost" onClick={() => setLeaveModal(false)}>
-              Cancel
-            </Button>
-          </div>
-        </div>
-      </Screen>
-    )
-  }
-
-  // ── Main settings screen ───────────────────────────────────────────────────
   return (
     <Screen style={{ paddingBottom: 40 }}>
       <div style={{ paddingTop: 56 }}>
@@ -255,9 +237,11 @@ export default function GroupSettings() {
                 <button
                   onClick={() => setRemoveTarget(m.name)}
                   style={{
-                    background: 'var(--color-error-bg)', border: '1px solid var(--color-error-border)',
+                    background: 'transparent',
+                    border: '1px solid var(--color-error-border)',
                     borderRadius: 6, padding: '5px 12px',
-                    color: 'var(--error)', fontSize: 13, fontWeight: 600, cursor: 'pointer',
+                    color: 'var(--color-error-text)', fontSize: 13, fontWeight: 600, cursor: 'pointer',
+                    minHeight: 32,
                   }}
                 >
                   Remove
@@ -288,13 +272,36 @@ export default function GroupSettings() {
           onClick={() => setLeaveModal(true)}
           style={{
             width: '100%', height: 48, borderRadius: 'var(--radius)',
-            background: 'var(--color-error-bg)', border: '1px solid var(--color-error-border)',
-            color: 'var(--error)', fontSize: 16, fontWeight: 600, cursor: 'pointer',
+            background: 'transparent',
+            border: '1px solid var(--color-error-border)',
+            color: 'var(--color-error-text)', fontSize: 16, fontWeight: 600, cursor: 'pointer',
           }}
         >
           Leave group
         </button>
       </div>
+
+      {/* Remove confirmation sheet */}
+      {removeTarget && (
+        <BottomSheet
+          title={`Remove ${removeTarget} from group?`}
+          body="They'll lose access to this group and its history."
+          confirmLabel={`Yes, remove`}
+          onConfirm={() => confirmRemove(removeTarget)}
+          onCancel={() => setRemoveTarget(null)}
+        />
+      )}
+
+      {/* Leave group confirmation sheet */}
+      {leaveModal && (
+        <BottomSheet
+          title={`Leave ${groupName}?`}
+          body="You won't receive future nudges for this group. The group continues without you."
+          confirmLabel="Yes, leave"
+          onConfirm={() => navigate('/home')}
+          onCancel={() => setLeaveModal(false)}
+        />
+      )}
     </Screen>
   )
 }

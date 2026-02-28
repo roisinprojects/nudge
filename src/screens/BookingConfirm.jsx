@@ -19,8 +19,10 @@ export default function BookingConfirm() {
 
   const [venueName,      setVenueName]      = useState(venue?.name ?? '')
   const [confirmationNum, setConfirmationNum] = useState('')
+  const [submitError,    setSubmitError]    = useState(false)
 
   const handleConfirm = () => {
+    setSubmitError(false)
     navigate('/calendar-invite', { state: { venueName: venueName.trim() } })
   }
 
@@ -129,9 +131,14 @@ export default function BookingConfirm() {
         <Button disabled={!venueName.trim()} onClick={handleConfirm}>
           Yes, I've booked ✓
         </Button>
-        <Button variant="ghost" onClick={() => navigate('/results')}>
-          Something went wrong — try again
-        </Button>
+        {submitError && (
+          <div style={{ display: 'flex', alignItems: 'center', gap: 6 }}>
+            <span style={{ color: 'var(--color-error-icon)', fontSize: 14 }}>⚠</span>
+            <p style={{ fontSize: 13, color: 'var(--color-error-text)' }}>
+              Something went wrong — try again
+            </p>
+          </div>
+        )}
       </div>
     </Screen>
   )

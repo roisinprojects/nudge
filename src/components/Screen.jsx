@@ -14,6 +14,7 @@ export default function Screen({ children, style }) {
           flex: 1,
           display: 'flex',
           flexDirection: 'column',
+          position: 'relative',
           ...style,
         }}
       >

@@ -95,9 +95,9 @@ export default function GroupDetail() {
               <button
                 onClick={() => navigate('/cant-make-it')}
                 style={{
-                  flex: 1, height: 36, borderRadius: 6,
-                  background: 'transparent', border: '1px solid rgba(255, 255, 255, 0.10)',
-                  color: 'var(--text-muted)', fontSize: 13, fontWeight: 600, cursor: 'pointer',
+                  flex: 1, height: 44, borderRadius: 6,
+                  background: 'transparent', border: 'none',
+                  color: 'var(--color-text-secondary)', fontSize: 13, fontWeight: 600, cursor: 'pointer',
                 }}
               >
                 Can't make it
@@ -105,9 +105,9 @@ export default function GroupDetail() {
               <button
                 onClick={() => navigate('/calendar-invite')}
                 style={{
-                  flex: 1, height: 36, borderRadius: 6,
-                  background: 'transparent', border: '1px solid var(--coral)',
-                  color: 'var(--coral)', fontSize: 13, fontWeight: 600, cursor: 'pointer',
+                  flex: 1, height: 44, borderRadius: 6,
+                  background: 'transparent', border: '1px solid var(--color-primary-500)',
+                  color: 'var(--color-primary-500)', fontSize: 13, fontWeight: 600, cursor: 'pointer',
                 }}
               >
                 Add to calendar

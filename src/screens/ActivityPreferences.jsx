@@ -3,6 +3,7 @@ import { useNavigate, useLocation } from 'react-router-dom'
 import Screen from '../components/Screen'
 import Button from '../components/Button'
 import BackButton from '../components/BackButton'
+import SegmentedBar from '../components/SegmentedBar'
 
 const ACTIVITIES = [
   { id: 'food',        label: 'Food',          icon: '🍽️',    desc: 'Restaurant, no drinks'          },
@@ -38,21 +39,9 @@ export default function ActivityPreferences() {
       </div>
 
       {/* Step indicator */}
-      <div style={{ marginTop: 16, display: 'flex', gap: 6 }}>
-        {[1, 2, 3].map(step => (
-          <div
-            key={step}
-            style={{
-              flex: 1, height: 4, borderRadius: 2,
-              background: step <= 3 ? (step === 3 ? (count > 0 ? 'var(--success)' : 'var(--coral)') : 'var(--success)') : '#2a2a2a',
-              transition: 'background 0.2s',
-            }}
-          />
-        ))}
+      <div style={{ marginTop: 16 }}>
+        <SegmentedBar total={3} current={3} counterText={`${count}/2 selected`} />
       </div>
-      <p style={{ fontSize: 12, color: 'var(--taupe)', marginTop: 6 }}>
-        Step 3 of 3 · {count}/2 selected
-      </p>
 
       <div style={{ marginTop: 24, display: 'flex', flexDirection: 'column', gap: 12 }}>
         {ACTIVITIES.map(a => {

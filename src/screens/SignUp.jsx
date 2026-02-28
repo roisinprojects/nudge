@@ -4,6 +4,7 @@ import Screen from '../components/Screen'
 import Logo from '../components/Logo'
 import Button from '../components/Button'
 import Input from '../components/Input'
+import SegmentedBar from '../components/SegmentedBar'
 
 export default function SignUp() {
   const navigate = useNavigate()
@@ -15,7 +16,11 @@ export default function SignUp() {
         <Logo tagline="Making hangouts happen" />
       </div>
 
-      <div style={{ marginTop: 64, display: 'flex', flexDirection: 'column', gap: 24 }}>
+      <div style={{ marginTop: 40 }}>
+        <SegmentedBar total={5} current={1} />
+      </div>
+
+      <div style={{ marginTop: 32, display: 'flex', flexDirection: 'column', gap: 24 }}>
         <div>
           <h1>Create your account</h1>
           <p className="text-muted mt-8">Start hanging out with your people.</p>

@@ -5,6 +5,7 @@ import { ViewModeContext } from './context/viewMode'
 import SignUp                from './screens/SignUp'
 import Login                 from './screens/Login'
 import SetPassword           from './screens/SetPassword'
+import DisplayName           from './screens/DisplayName'
 import CreateGroup           from './screens/CreateGroup'
 import InviteFriends         from './screens/InviteFriends'
 import Home                  from './screens/Home'
@@ -35,6 +36,7 @@ export const SCREENS = [
   { path: '/signup',               label: 'Sign up',               group: 'Onboarding' },
   { path: '/login',                label: 'Log in',                group: 'Onboarding' },
   { path: '/set-password',         label: 'Set password',          group: 'Onboarding' },
+  { path: '/display-name',         label: 'Display name',          group: 'Onboarding' },
   { path: '/create-group',         label: 'Create group',          group: 'Onboarding' },
   { path: '/invite-friends',       label: 'Invite friends',        group: 'Onboarding' },
   // Home & Groups
@@ -229,6 +231,7 @@ export default function App() {
             <Route path="/signup"              element={<SignUp />} />
             <Route path="/login"               element={<Login />} />
             <Route path="/set-password"        element={<SetPassword />} />
+            <Route path="/display-name"        element={<DisplayName />} />
             <Route path="/create-group"        element={<CreateGroup />} />
             <Route path="/invite-friends"      element={<InviteFriends />} />
             <Route path="/home"                       element={<Home />} />
