@@ -1,4 +1,6 @@
+import { useState } from 'react'
 import { Routes, Route, Navigate } from 'react-router-dom'
+import { ViewModeContext } from './context/viewMode'
 
 import SignUp                from './screens/SignUp'
 import Login                 from './screens/Login'
@@ -63,7 +65,84 @@ export const SCREENS = [
   { path: '/error',                  label: 'Error: generic',           group: 'Errors'         },
 ]
 
-function NavOverlay() {
+// ── View mode toggle (inside prototype nav) ──────────────────────────────────
+function ViewToggle({ viewMode, setViewMode }) {
+  return (
+    <div style={{ display: 'flex', background: '#1a1a1a', borderRadius: 8, padding: 3, gap: 2 }}>
+      {['mobile', 'web'].map(m => (
+        <button
+          key={m}
+          onClick={() => setViewMode(m)}
+          style={{
+            flex: 1,
+            height: 28,
+            borderRadius: 6,
+            border: 'none',
+            background: viewMode === m ? '#2d2d2d' : 'transparent',
+            color: viewMode === m ? 'var(--coral)' : '#555',
+            fontSize: 11,
+            fontWeight: 600,
+            cursor: 'pointer',
+            transition: 'color 0.15s, background 0.15s',
+          }}
+        >
+          {m === 'mobile' ? '📱 Mobile' : '🖥 Web'}
+        </button>
+      ))}
+    </div>
+  )
+}
+
+// ── Web app top navigation bar ───────────────────────────────────────────────
+function WebTopNav() {
+  const path = window.location.pathname
+  const links = [
+    { href: '/home',         label: 'Home'    },
+    { href: '/group-detail', label: 'Groups'  },
+    { href: '/profile',      label: 'Profile' },
+  ]
+  return (
+    <div
+      style={{
+        height: 60,
+        background: 'var(--surface)',
+        borderBottom: '1px solid #2a2a2a',
+        display: 'flex',
+        alignItems: 'center',
+        padding: '0 40px',
+        justifyContent: 'space-between',
+        position: 'sticky',
+        top: 0,
+        zIndex: 100,
+        flexShrink: 0,
+      }}
+    >
+      <span className="logo" style={{ fontSize: 22 }}>nudge</span>
+      <nav style={{ display: 'flex', gap: 32 }}>
+        {links.map(l => (
+          <a
+            key={l.href}
+            href={l.href}
+            style={{
+              color: path === l.href ? 'var(--coral)' : 'var(--text-muted)',
+              textDecoration: 'none',
+              fontSize: 14,
+              fontWeight: 600,
+            }}
+          >
+            {l.label}
+          </a>
+        ))}
+      </nav>
+      <a href="/profile" style={{ textDecoration: 'none' }}>
+        <div className="avatar" style={{ fontSize: 16, cursor: 'pointer' }}>Y</div>
+      </a>
+    </div>
+  )
+}
+
+// ── Prototype nav sidebar ────────────────────────────────────────────────────
+function NavOverlay({ viewMode, setViewMode }) {
   const groups = [...new Set(SCREENS.map(s => s.group))]
 
   return (
@@ -83,9 +162,10 @@ function NavOverlay() {
         gap: 0,
       }}
     >
-      <div style={{ padding: '0 16px 16px', borderBottom: '1px solid #222' }}>
+      <div style={{ padding: '0 16px 12px', borderBottom: '1px solid #222' }}>
         <p style={{ color: 'var(--coral)', fontWeight: 700, fontSize: 16, fontFamily: 'Poppins, sans-serif' }}>nudge</p>
-        <p style={{ color: '#555', fontSize: 11, marginTop: 2 }}>prototype · all screens</p>
+        <p style={{ color: '#555', fontSize: 11, marginTop: 2, marginBottom: 10 }}>prototype · all screens</p>
+        <ViewToggle viewMode={viewMode} setViewMode={setViewMode} />
       </div>
       {groups.map(g => (
         <div key={g} style={{ marginTop: 16 }}>
@@ -113,41 +193,68 @@ function NavOverlay() {
   )
 }
 
+// ── App root ─────────────────────────────────────────────────────────────────
 export default function App() {
+  const [viewMode, setViewMode] = useState(
+    () => localStorage.getItem('nudge-view-mode') || 'mobile'
+  )
+
+  const handleSetViewMode = (mode) => {
+    setViewMode(mode)
+    localStorage.setItem('nudge-view-mode', mode)
+  }
+
+  const isMobile = viewMode === 'mobile'
+
   return (
-    <div style={{ display: 'flex' }}>
-      <NavOverlay />
-      <div style={{ marginLeft: 220, flex: 1, minHeight: '100dvh', display: 'flex', alignItems: 'flex-start', justifyContent: 'center', padding: '24px 0', background: '#080808' }}>
-        <Routes>
-          <Route path="/"                    element={<Navigate to="/signup" replace />} />
-          <Route path="/signup"              element={<SignUp />} />
-          <Route path="/login"               element={<Login />} />
-          <Route path="/set-password"        element={<SetPassword />} />
-          <Route path="/create-group"        element={<CreateGroup />} />
-          <Route path="/invite-friends"      element={<InviteFriends />} />
-          <Route path="/home"                       element={<Home />} />
-          <Route path="/group-detail"               element={<GroupDetail />} />
-          <Route path="/group-settings"             element={<GroupSettings />} />
-          <Route path="/invite-landing"             element={<InviteLanding />} />
-          <Route path="/profile"                    element={<Profile />} />
-          <Route path="/respond"                    element={<RespondNow />} />
-          <Route path="/calendar-picker"            element={<CalendarPicker />} />
-          <Route path="/time-picker"                element={<TimeSlotPicker />} />
-          <Route path="/activity-preferences"       element={<ActivityPreferences />} />
-          <Route path="/response-locked"            element={<ResponseLocked />} />
-          <Route path="/waiting"                    element={<WaitingForOthers />} />
-          <Route path="/matching"                   element={<Matching />} />
-          <Route path="/results"                    element={<Results />} />
-          <Route path="/booking-confirm"            element={<BookingConfirm />} />
-          <Route path="/calendar-invite"            element={<CalendarInvite />} />
-          <Route path="/cant-make-it"               element={<CantMakeIt />} />
-          <Route path="/booker-cancellation"        element={<BookerCancellation />} />
-          <Route path="/multiple-cancellations"     element={<MultipleCancellations />} />
-          <Route path="/error-no-overlap"           element={<ErrorNoOverlap />} />
-          <Route path="/error-no-venues"            element={<ErrorNoVenues />} />
-          <Route path="/error"                      element={<GenericError />} />
-        </Routes>
+    <ViewModeContext.Provider value={viewMode}>
+      <div style={{ display: 'flex' }}>
+        <NavOverlay viewMode={viewMode} setViewMode={handleSetViewMode} />
+        <div
+          style={{
+            marginLeft: 220,
+            flex: 1,
+            minHeight: '100dvh',
+            background: '#080808',
+            display: 'flex',
+            ...(isMobile
+              ? { alignItems: 'flex-start', justifyContent: 'center', padding: '24px 0' }
+              : { flexDirection: 'column' }
+            ),
+          }}
+        >
+          {!isMobile && <WebTopNav />}
+          <Routes>
+            <Route path="/"                    element={<Navigate to="/signup" replace />} />
+            <Route path="/signup"              element={<SignUp />} />
+            <Route path="/login"               element={<Login />} />
+            <Route path="/set-password"        element={<SetPassword />} />
+            <Route path="/create-group"        element={<CreateGroup />} />
+            <Route path="/invite-friends"      element={<InviteFriends />} />
+            <Route path="/home"                       element={<Home />} />
+            <Route path="/group-detail"               element={<GroupDetail />} />
+            <Route path="/group-settings"             element={<GroupSettings />} />
+            <Route path="/invite-landing"             element={<InviteLanding />} />
+            <Route path="/profile"                    element={<Profile />} />
+            <Route path="/respond"                    element={<RespondNow />} />
+            <Route path="/calendar-picker"            element={<CalendarPicker />} />
+            <Route path="/time-picker"                element={<TimeSlotPicker />} />
+            <Route path="/activity-preferences"       element={<ActivityPreferences />} />
+            <Route path="/response-locked"            element={<ResponseLocked />} />
+            <Route path="/waiting"                    element={<WaitingForOthers />} />
+            <Route path="/matching"                   element={<Matching />} />
+            <Route path="/results"                    element={<Results />} />
+            <Route path="/booking-confirm"            element={<BookingConfirm />} />
+            <Route path="/calendar-invite"            element={<CalendarInvite />} />
+            <Route path="/cant-make-it"               element={<CantMakeIt />} />
+            <Route path="/booker-cancellation"        element={<BookerCancellation />} />
+            <Route path="/multiple-cancellations"     element={<MultipleCancellations />} />
+            <Route path="/error-no-overlap"           element={<ErrorNoOverlap />} />
+            <Route path="/error-no-venues"            element={<ErrorNoVenues />} />
+            <Route path="/error"                      element={<GenericError />} />
+          </Routes>
+        </div>
       </div>
-    </div>
+    </ViewModeContext.Provider>
   )
 }
