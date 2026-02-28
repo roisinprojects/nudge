@@ -97,9 +97,8 @@ function ViewToggle({ viewMode, setViewMode }) {
 function WebTopNav() {
   const path = window.location.pathname
   const links = [
-    { href: '/home',         label: 'Home'    },
-    { href: '/group-detail', label: 'Groups'  },
-    { href: '/profile',      label: 'Profile' },
+    { href: '/home',         label: 'Home'   },
+    { href: '/group-detail', label: 'Groups' },
   ]
   return (
     <div
