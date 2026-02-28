@@ -2,6 +2,7 @@ import { useState } from 'react'
 import { useNavigate } from 'react-router-dom'
 import Screen from '../components/Screen'
 import Button from '../components/Button'
+import { useViewMode } from '../context/viewMode'
 
 // Toggle to false to preview the empty state (new user with no groups)
 const MOCK_GROUPS = [
@@ -39,6 +40,7 @@ const statusBadge = {
 
 export default function Home() {
   const navigate = useNavigate()
+  const mode = useViewMode()
   // Flip this to simulate a new user with no groups
   const [groups] = useState(MOCK_GROUPS)
 
@@ -46,16 +48,18 @@ export default function Home() {
 
   return (
     <Screen style={{ paddingBottom: 40 }}>
-      <div style={{ paddingTop: 56, display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
-        <span className="logo" style={{ fontSize: 28 }}>nudge</span>
-        <div
-          className="avatar"
-          style={{ cursor: 'pointer', fontSize: 16 }}
-          onClick={() => navigate('/profile')}
-        >
-          Y
+      {mode === 'mobile' && (
+        <div style={{ paddingTop: 56, display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
+          <span className="logo" style={{ fontSize: 28 }}>nudge</span>
+          <div
+            className="avatar"
+            style={{ cursor: 'pointer', fontSize: 16 }}
+            onClick={() => navigate('/profile')}
+          >
+            Y
+          </div>
         </div>
-      </div>
+      )}
 
       <div style={{ marginTop: 32 }}>
         <h1>Your groups</h1>
