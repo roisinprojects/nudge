@@ -1,25 +1,31 @@
 import { Routes, Route, Navigate } from 'react-router-dom'
 
-import SignUp          from './screens/SignUp'
-import Login           from './screens/Login'
-import SetPassword     from './screens/SetPassword'
-import CreateGroup     from './screens/CreateGroup'
-import InviteFriends   from './screens/InviteFriends'
-import Home            from './screens/Home'
-import GroupDetail     from './screens/GroupDetail'
-import InviteLanding   from './screens/InviteLanding'
-import RespondNow      from './screens/RespondNow'
-import CalendarPicker  from './screens/CalendarPicker'
-import ActivityPreferences from './screens/ActivityPreferences'
-import ResponseLocked  from './screens/ResponseLocked'
-import WaitingForOthers from './screens/WaitingForOthers'
-import Matching        from './screens/Matching'
-import Results         from './screens/Results'
-import BookingConfirm  from './screens/BookingConfirm'
-import CalendarInvite  from './screens/CalendarInvite'
-import ErrorNoOverlap  from './screens/ErrorNoOverlap'
-import ErrorNoVenues   from './screens/ErrorNoVenues'
-import GenericError    from './screens/GenericError'
+import SignUp                from './screens/SignUp'
+import Login                 from './screens/Login'
+import SetPassword           from './screens/SetPassword'
+import CreateGroup           from './screens/CreateGroup'
+import InviteFriends         from './screens/InviteFriends'
+import Home                  from './screens/Home'
+import GroupDetail           from './screens/GroupDetail'
+import GroupSettings         from './screens/GroupSettings'
+import InviteLanding         from './screens/InviteLanding'
+import Profile               from './screens/Profile'
+import RespondNow            from './screens/RespondNow'
+import CalendarPicker        from './screens/CalendarPicker'
+import TimeSlotPicker        from './screens/TimeSlotPicker'
+import ActivityPreferences   from './screens/ActivityPreferences'
+import ResponseLocked        from './screens/ResponseLocked'
+import WaitingForOthers      from './screens/WaitingForOthers'
+import Matching              from './screens/Matching'
+import Results               from './screens/Results'
+import BookingConfirm        from './screens/BookingConfirm'
+import CalendarInvite        from './screens/CalendarInvite'
+import CantMakeIt            from './screens/CantMakeIt'
+import BookerCancellation    from './screens/BookerCancellation'
+import MultipleCancellations from './screens/MultipleCancellations'
+import ErrorNoOverlap        from './screens/ErrorNoOverlap'
+import ErrorNoVenues         from './screens/ErrorNoVenues'
+import GenericError          from './screens/GenericError'
 
 // ── Screen map used by the nav overlay ──────────────────────────────────────
 export const SCREENS = [
@@ -29,25 +35,32 @@ export const SCREENS = [
   { path: '/set-password',         label: 'Set password',          group: 'Onboarding' },
   { path: '/create-group',         label: 'Create group',          group: 'Onboarding' },
   { path: '/invite-friends',       label: 'Invite friends',        group: 'Onboarding' },
-  // Home
-  { path: '/home',                 label: 'Home (your groups)',     group: 'Home' },
-  { path: '/group-detail',         label: 'Group detail',          group: 'Home' },
-  { path: '/invite-landing',       label: 'Invite landing',        group: 'Home' },
+  // Home & Groups
+  { path: '/home',                   label: 'Home (your groups)',        group: 'Home & Groups'  },
+  { path: '/group-detail',           label: 'Group detail',             group: 'Home & Groups'  },
+  { path: '/group-settings',         label: 'Group settings',           group: 'Home & Groups'  },
+  { path: '/invite-landing',         label: 'Invite landing',           group: 'Home & Groups'  },
+  { path: '/profile',                label: 'Profile & settings',       group: 'Home & Groups'  },
   // Response flow
-  { path: '/respond',              label: 'Respond now',           group: 'Response flow' },
-  { path: '/calendar-picker',      label: 'Calendar picker',       group: 'Response flow' },
-  { path: '/activity-preferences', label: 'Activity preferences',  group: 'Response flow' },
-  { path: '/response-locked',      label: 'Response locked',       group: 'Response flow' },
-  { path: '/waiting',              label: 'Waiting for others',    group: 'Response flow' },
+  { path: '/respond',                label: 'Respond now',              group: 'Response flow'  },
+  { path: '/calendar-picker',        label: 'Pick 3 dates',             group: 'Response flow'  },
+  { path: '/time-picker',            label: 'Pick times',               group: 'Response flow'  },
+  { path: '/activity-preferences',   label: 'Pick activity',            group: 'Response flow'  },
+  { path: '/response-locked',        label: 'Response locked',          group: 'Response flow'  },
+  { path: '/waiting',                label: 'Waiting for others',       group: 'Response flow'  },
   // Matching & results
-  { path: '/matching',             label: 'Matching (loading)',     group: 'Results' },
-  { path: '/results',              label: 'Results',               group: 'Results' },
-  { path: '/booking-confirm',      label: 'Booking confirm',       group: 'Results' },
-  { path: '/calendar-invite',      label: 'Calendar invite',       group: 'Results' },
+  { path: '/matching',               label: 'Matching (loading)',        group: 'Results'        },
+  { path: '/results',                label: 'Results',                  group: 'Results'        },
+  { path: '/booking-confirm',        label: 'Booking confirm',          group: 'Results'        },
+  { path: '/calendar-invite',        label: 'Calendar invite',          group: 'Results'        },
+  // Cancellation
+  { path: '/cant-make-it',           label: "Can't make it",            group: 'Cancellation'   },
+  { path: '/booker-cancellation',    label: 'Booker: 1 cancellation',   group: 'Cancellation'   },
+  { path: '/multiple-cancellations', label: 'Booker: 2+ cancellations', group: 'Cancellation'   },
   // Errors
-  { path: '/error-no-overlap',     label: 'Error: no overlap',     group: 'Errors' },
-  { path: '/error-no-venues',      label: 'Error: no venues',      group: 'Errors' },
-  { path: '/error',                label: 'Error: generic',        group: 'Errors' },
+  { path: '/error-no-overlap',       label: 'Error: no overlap',        group: 'Errors'         },
+  { path: '/error-no-venues',        label: 'Error: no venues',         group: 'Errors'         },
+  { path: '/error',                  label: 'Error: generic',           group: 'Errors'         },
 ]
 
 function NavOverlay() {
@@ -112,21 +125,27 @@ export default function App() {
           <Route path="/set-password"        element={<SetPassword />} />
           <Route path="/create-group"        element={<CreateGroup />} />
           <Route path="/invite-friends"      element={<InviteFriends />} />
-          <Route path="/home"                element={<Home />} />
-          <Route path="/group-detail"        element={<GroupDetail />} />
-          <Route path="/invite-landing"      element={<InviteLanding />} />
-          <Route path="/respond"             element={<RespondNow />} />
-          <Route path="/calendar-picker"     element={<CalendarPicker />} />
-          <Route path="/activity-preferences" element={<ActivityPreferences />} />
-          <Route path="/response-locked"     element={<ResponseLocked />} />
-          <Route path="/waiting"             element={<WaitingForOthers />} />
-          <Route path="/matching"            element={<Matching />} />
-          <Route path="/results"             element={<Results />} />
-          <Route path="/booking-confirm"     element={<BookingConfirm />} />
-          <Route path="/calendar-invite"     element={<CalendarInvite />} />
-          <Route path="/error-no-overlap"    element={<ErrorNoOverlap />} />
-          <Route path="/error-no-venues"     element={<ErrorNoVenues />} />
-          <Route path="/error"               element={<GenericError />} />
+          <Route path="/home"                       element={<Home />} />
+          <Route path="/group-detail"               element={<GroupDetail />} />
+          <Route path="/group-settings"             element={<GroupSettings />} />
+          <Route path="/invite-landing"             element={<InviteLanding />} />
+          <Route path="/profile"                    element={<Profile />} />
+          <Route path="/respond"                    element={<RespondNow />} />
+          <Route path="/calendar-picker"            element={<CalendarPicker />} />
+          <Route path="/time-picker"                element={<TimeSlotPicker />} />
+          <Route path="/activity-preferences"       element={<ActivityPreferences />} />
+          <Route path="/response-locked"            element={<ResponseLocked />} />
+          <Route path="/waiting"                    element={<WaitingForOthers />} />
+          <Route path="/matching"                   element={<Matching />} />
+          <Route path="/results"                    element={<Results />} />
+          <Route path="/booking-confirm"            element={<BookingConfirm />} />
+          <Route path="/calendar-invite"            element={<CalendarInvite />} />
+          <Route path="/cant-make-it"               element={<CantMakeIt />} />
+          <Route path="/booker-cancellation"        element={<BookerCancellation />} />
+          <Route path="/multiple-cancellations"     element={<MultipleCancellations />} />
+          <Route path="/error-no-overlap"           element={<ErrorNoOverlap />} />
+          <Route path="/error-no-venues"            element={<ErrorNoVenues />} />
+          <Route path="/error"                      element={<GenericError />} />
         </Routes>
       </div>
     </div>

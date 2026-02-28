@@ -4,59 +4,63 @@ import Screen from '../components/Screen'
 import Button from '../components/Button'
 import BackButton from '../components/BackButton'
 
-const TIMES = [
-  { timeSlot: 'afternoon', displayTime: '3pm' },
-  { timeSlot: 'evening',   displayTime: '7pm' },
-  { timeSlot: 'night',     displayTime: '10pm' },
+const MONTH_NAMES = [
+  'January','February','March','April','May','June',
+  'July','August','September','October','November','December',
 ]
+const DAY_LABELS = ['Su','Mo','Tu','We','Th','Fr','Sa']
 
-function getWeekendSlots() {
-  const slots = []
-  const d = new Date()
-  d.setHours(0, 0, 0, 0)
-  d.setDate(d.getDate() + 1)
+function buildMonthGrid(year, month) {
+  const firstDow = new Date(year, month, 1).getDay()
+  const daysInMonth = new Date(year, month + 1, 0).getDate()
+  const cells = []
+  for (let i = 0; i < firstDow; i++) cells.push(null)
+  for (let d = 1; d <= daysInMonth; d++) cells.push(d)
+  return cells
+}
 
-  let weekendDays = 0
-  while (weekendDays < 18) {
-    const dow = d.getDay()
-    if (dow === 5 || dow === 6 || dow === 0) {
-      const iso = d.toISOString().split('T')[0]
-      const dayName = dow === 5 ? 'Fri' : dow === 6 ? 'Sat' : 'Sun'
-      const fmtDate = d.toLocaleDateString('en-GB', { day: 'numeric', month: 'short' })
-      TIMES.forEach(t => {
-        slots.push({
-          id: `${iso}-${t.timeSlot}`,
-          date: iso,
-          dayName,
-          fmtDate,
-          displayTime: t.displayTime,
-        })
-      })
-      weekendDays++
-    }
-    d.setDate(d.getDate() + 1)
-  }
-  return slots
+function isWeekend(dow) { return dow === 0 || dow === 5 || dow === 6 }
+
+function toISO(year, month, day) {
+  return `${year}-${String(month + 1).padStart(2, '0')}-${String(day).padStart(2, '0')}`
 }
 
 export default function CalendarPicker() {
   const navigate = useNavigate()
-  const slots = getWeekendSlots()
-  const [selected, setSelected] = useState(new Set())
+  const today = new Date()
+  today.setHours(0, 0, 0, 0)
 
-  const toggle = (id) => {
+  const [selected, setSelected] = useState([]) // ISO strings
+
+  // 3 months from current
+  const months = []
+  for (let i = 0; i < 3; i++) {
+    const d = new Date(today.getFullYear(), today.getMonth() + i, 1)
+    months.push({ year: d.getFullYear(), month: d.getMonth() })
+  }
+
+  const toggle = (iso) => {
     setSelected(prev => {
-      const next = new Set(prev)
-      if (next.has(id)) {
-        next.delete(id)
-      } else if (next.size < 3) {
-        next.add(id)
-      }
-      return next
+      if (prev.includes(iso)) return prev.filter(d => d !== iso)
+      if (prev.length >= 3) return prev
+      return [...prev, iso]
     })
   }
 
-  const count = selected.size
+  const count = selected.length
+
+  const handleContinue = () => {
+    const dates = selected.map(iso => {
+      const [y, m, d] = iso.split('-').map(Number)
+      const date = new Date(y, m - 1, d)
+      return {
+        date: iso,
+        dayName: date.toLocaleDateString('en-GB', { weekday: 'long' }),
+        fmtDate: date.toLocaleDateString('en-GB', { weekday: 'long', day: 'numeric', month: 'long' }),
+      }
+    })
+    navigate('/time-picker', { state: { dates } })
+  }
 
   return (
     <Screen style={{ paddingBottom: 40 }}>
@@ -65,11 +69,14 @@ export default function CalendarPicker() {
       </div>
 
       <div style={{ marginTop: 24 }}>
-        <h1>Pick 3 time slots</h1>
+        <p style={{ fontSize: 12, fontWeight: 700, color: 'var(--taupe)', textTransform: 'uppercase', letterSpacing: 1 }}>
+          Uni Friends
+        </p>
+        <h1 style={{ marginTop: 6 }}>Pick 3 dates</h1>
         <p className="text-muted mt-8">Weekends only. Select up to 3.</p>
       </div>
 
-      {/* Progress bar */}
+      {/* Progress */}
       <div style={{ marginTop: 16, display: 'flex', alignItems: 'center', gap: 12 }}>
         <div style={{ flex: 1, height: 4, background: '#2a2a2a', borderRadius: 2, overflow: 'hidden' }}>
           <div
@@ -97,97 +104,93 @@ export default function CalendarPicker() {
         </span>
       </div>
 
-      {/* Slot list */}
-      <div style={{ marginTop: 12, flex: 1, overflowY: 'auto', display: 'flex', flexDirection: 'column', gap: 6 }}>
-        {slots.map(s => {
-          const isSelected = selected.has(s.id)
-          const disabled = !isSelected && count >= 3
-
+      {/* Calendar months */}
+      <div style={{ marginTop: 24, display: 'flex', flexDirection: 'column', gap: 28, overflowY: 'auto' }}>
+        {months.map(({ year, month }) => {
+          const cells = buildMonthGrid(year, month)
           return (
-            <div
-              key={s.id}
-              onClick={() => !disabled && toggle(s.id)}
-              style={{
-                display: 'flex',
-                alignItems: 'center',
-                gap: 12,
-                padding: '12px 14px',
-                borderRadius: 'var(--radius)',
-                border: `1.5px solid ${isSelected ? 'var(--coral)' : '#242424'}`,
-                background: isSelected ? 'rgba(232,93,77,0.08)' : 'var(--surface)',
-                cursor: disabled ? 'not-allowed' : 'pointer',
-                opacity: disabled ? 0.35 : 1,
-                transition: 'border-color 0.12s, background 0.12s, opacity 0.12s',
-              }}
-            >
-              {/* Checkbox */}
-              <div
-                style={{
-                  width: 22,
-                  height: 22,
-                  borderRadius: 6,
-                  border: `2px solid ${isSelected ? 'var(--coral)' : '#444'}`,
-                  background: isSelected ? 'var(--coral)' : 'transparent',
-                  display: 'flex',
-                  alignItems: 'center',
-                  justifyContent: 'center',
-                  flexShrink: 0,
-                  transition: 'all 0.12s',
-                }}
-              >
-                {isSelected && (
-                  <span style={{ color: '#fff', fontSize: 12, lineHeight: 1, fontWeight: 700 }}>✓</span>
-                )}
+            <div key={`${year}-${month}`}>
+              <p style={{
+                fontSize: 12,
+                fontWeight: 700,
+                color: 'var(--text-muted)',
+                textTransform: 'uppercase',
+                letterSpacing: 0.8,
+                marginBottom: 10,
+              }}>
+                {MONTH_NAMES[month]} {year}
+              </p>
+
+              {/* Day-of-week headers */}
+              <div style={{ display: 'grid', gridTemplateColumns: 'repeat(7, 1fr)', gap: 2, marginBottom: 4 }}>
+                {DAY_LABELS.map(d => (
+                  <div
+                    key={d}
+                    style={{
+                      textAlign: 'center',
+                      fontSize: 11,
+                      fontWeight: 700,
+                      color: (d === 'Fr' || d === 'Sa' || d === 'Su') ? 'var(--taupe)' : '#444',
+                      padding: '2px 0',
+                    }}
+                  >
+                    {d}
+                  </div>
+                ))}
               </div>
 
-              {/* Day badge */}
-              <span
-                style={{
-                  background: isSelected ? 'rgba(232,93,77,0.18)' : 'var(--surface2)',
-                  color: isSelected ? 'var(--coral)' : 'var(--taupe)',
-                  borderRadius: 6,
-                  padding: '3px 8px',
-                  fontSize: 12,
-                  fontWeight: 700,
-                  minWidth: 32,
-                  textAlign: 'center',
-                  flexShrink: 0,
-                  transition: 'all 0.12s',
-                }}
-              >
-                {s.dayName}
-              </span>
+              {/* Day cells */}
+              <div style={{ display: 'grid', gridTemplateColumns: 'repeat(7, 1fr)', gap: 3 }}>
+                {cells.map((day, i) => {
+                  if (!day) return <div key={i} style={{ height: 38 }} />
 
-              {/* Date + time label */}
-              <span
-                style={{
-                  fontSize: 14,
-                  color: isSelected ? 'var(--text)' : 'var(--text-muted)',
-                  flex: 1,
-                  transition: 'color 0.12s',
-                }}
-              >
-                {s.fmtDate}
-              </span>
+                  const dow = new Date(year, month, day).getDay()
+                  const isWknd = isWeekend(dow)
+                  const date = new Date(year, month, day)
+                  const isPast = date < today
+                  const iso = toISO(year, month, day)
+                  const isSelected = selected.includes(iso)
+                  const isMaxed = !isSelected && count >= 3
+                  const disabled = isPast || !isWknd || isMaxed
 
-              {/* Time */}
-              <span
-                style={{
-                  fontSize: 14,
-                  fontWeight: 600,
-                  color: isSelected ? 'var(--coral)' : 'var(--taupe)',
-                  transition: 'color 0.12s',
-                }}
-              >
-                {s.displayTime}
-              </span>
+                  let bg = 'transparent'
+                  let color = '#333'
+                  if (isSelected) { bg = 'var(--coral)'; color = '#fff' }
+                  else if (!isPast && isWknd && !isMaxed) { color = 'var(--text)' }
+                  else if (!isPast && isWknd && isMaxed) { color = '#555' }
+
+                  return (
+                    <div
+                      key={i}
+                      onClick={() => !disabled && toggle(iso)}
+                      style={{
+                        height: 38,
+                        borderRadius: 6,
+                        display: 'flex',
+                        alignItems: 'center',
+                        justifyContent: 'center',
+                        fontSize: isSelected ? 13 : 14,
+                        fontWeight: isWknd && !isPast ? 600 : 400,
+                        cursor: disabled ? 'default' : 'pointer',
+                        background: bg,
+                        color,
+                        transition: 'all 0.12s',
+                        userSelect: 'none',
+                        border: isSelected ? 'none' : 'none',
+                      }}
+                    >
+                      {isSelected ? '✓' : day}
+                    </div>
+                  )
+                })}
+              </div>
             </div>
           )
         })}
       </div>
 
-      <div style={{ paddingTop: 16 }}>
-        <Button disabled={count < 3} onClick={() => navigate('/activity-preferences')}>
+      <div style={{ paddingTop: 20 }}>
+        <Button disabled={count < 3} onClick={handleContinue}>
           Continue →
         </Button>
       </div>
