@@ -1,6 +1,4 @@
-import { useNavigate } from 'react-router-dom'
 import Screen from '../components/Screen'
-import Button from '../components/Button'
 import BackButton from '../components/BackButton'
 
 const MEMBERS = [
@@ -15,8 +13,6 @@ const responded = MEMBERS.filter(m => m.responded).length
 const total = MEMBERS.length
 
 export default function WaitingForOthers() {
-  const navigate = useNavigate()
-
   return (
     <Screen>
       <div style={{ paddingTop: 56 }}>
@@ -84,12 +80,7 @@ export default function WaitingForOthers() {
         </div>
       </div>
 
-      {/* Dev shortcut to see results */}
-      <div style={{ marginTop: 24, paddingBottom: 40 }}>
-        <Button variant="ghost" onClick={() => navigate('/matching')}>
-          [Demo] Skip to results →
-        </Button>
-      </div>
+      <div style={{ paddingBottom: 40 }} />
     </Screen>
   )
 }

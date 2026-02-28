@@ -200,8 +200,9 @@ Build in this order (core loop first):
 |---|---|
 | `Nudge_Project_Brief.md` | Full product spec, wireframe descriptions, feature rationale |
 | `Nudge_UI_Design_System.md` | **Source of truth for all UI decisions** — tokens, typography, spacing, components, accessibility |
+| `Nudge_UX_Design_System.md` | **Source of truth for all UX decisions** — user psychology, emotional mapping, microcopy, edge cases, feedback loops |
 
-Read both before making product or UX decisions. `Nudge_UI_Design_System.md` overrides any design values in this file.
+Read all three before making product, UX, or UI decisions. The design system files override any values in this file.
 
 ### Design System Quick Reference
 

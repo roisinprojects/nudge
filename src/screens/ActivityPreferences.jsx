@@ -33,8 +33,8 @@ export default function ActivityPreferences() {
       </div>
 
       <div style={{ marginTop: 24 }}>
-        <h1>Pick your activities</h1>
-        <p className="text-muted mt-8">Choose up to 2 — we'll find the best match.</p>
+        <h1>What's the vibe?</h1>
+        <p className="text-muted mt-8">Pick up to 2 — helps us find the right spot.</p>
       </div>
 
       {/* Step indicator */}

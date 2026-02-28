@@ -37,7 +37,7 @@ export default function ResponseLocked() {
 
         <h1 style={{ color: 'var(--success)' }}>You're locked in!</h1>
         <p className="text-muted mt-16">
-          Your availability and preferences have been saved. Now we wait for the rest of the crew.
+          All saved. We'll match everyone up as responses come in and send you results within 48 hours.
         </p>
 
         <div
@@ -62,7 +62,7 @@ export default function ResponseLocked() {
 
         <div className="alert alert-success" style={{ marginTop: 24, width: '100%' }}>
           <span>🔒</span>
-          <p className="text-sm">Locked in. You can't change your response now — keeps it fair for everyone.</p>
+          <p className="text-sm">Responses are locked to keep it fair — no one can backtrack based on seeing others' picks.</p>
         </div>
       </div>
 

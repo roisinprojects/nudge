@@ -72,8 +72,8 @@ export default function CalendarPicker() {
         <p style={{ fontSize: 12, fontWeight: 700, color: 'var(--taupe)', textTransform: 'uppercase', letterSpacing: 1 }}>
           Uni Friends
         </p>
-        <h1 style={{ marginTop: 6 }}>Pick 3 dates</h1>
-        <p className="text-muted mt-8">Weekends only. Select up to 3.</p>
+        <h1 style={{ marginTop: 6 }}>Pick your 3 best weekends</h1>
+        <p className="text-muted mt-8">Choose up to 3 — we'll find the one that works for everyone.</p>
       </div>
 
       {/* Progress */}
@@ -191,7 +191,7 @@ export default function CalendarPicker() {
 
       <div style={{ paddingTop: 20 }}>
         <Button disabled={count < 3} onClick={handleContinue}>
-          Continue →
+          Pick times →
         </Button>
       </div>
     </Screen>

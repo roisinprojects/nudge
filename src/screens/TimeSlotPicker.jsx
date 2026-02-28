@@ -39,8 +39,8 @@ export default function TimeSlotPicker() {
       </div>
 
       <div style={{ marginTop: 24 }}>
-        <h1>Pick a time</h1>
-        <p className="text-muted mt-8">Choose a time range for each date.</p>
+        <h1>When does each day suit you?</h1>
+        <p className="text-muted mt-8">Your picks stay private until we find a match.</p>
       </div>
 
       {/* Step progress */}
@@ -155,7 +155,7 @@ export default function TimeSlotPicker() {
           ← Back
         </Button>
         <Button half disabled={!allSelected} onClick={() => navigate('/activity-preferences', { state: { dates, times } })}>
-          Continue →
+          Pick activities →
         </Button>
       </div>
     </Screen>
