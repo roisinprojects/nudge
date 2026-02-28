@@ -1,5 +1,5 @@
 import { useState } from 'react'
-import { Routes, Route, Navigate } from 'react-router-dom'
+import { Routes, Route, Navigate, Link, useLocation } from 'react-router-dom'
 import { ViewModeContext } from './context/viewMode'
 
 import SignUp                from './screens/SignUp'
@@ -143,6 +143,7 @@ function WebTopNav() {
 // ── Prototype nav sidebar ────────────────────────────────────────────────────
 function NavOverlay({ viewMode, setViewMode }) {
   const groups = [...new Set(SCREENS.map(s => s.group))]
+  const { pathname } = useLocation()
 
   return (
     <div
@@ -170,21 +171,21 @@ function NavOverlay({ viewMode, setViewMode }) {
         <div key={g} style={{ marginTop: 16 }}>
           <p style={{ color: '#555', fontSize: 10, fontWeight: 700, textTransform: 'uppercase', letterSpacing: 1, padding: '0 16px 6px' }}>{g}</p>
           {SCREENS.filter(s => s.group === g).map(s => (
-            <a
+            <Link
               key={s.path}
-              href={s.path}
+              to={s.path}
               style={{
                 display: 'block',
                 padding: '7px 16px',
-                color: window.location.pathname === s.path ? 'var(--coral)' : '#aaa',
+                color: pathname === s.path ? 'var(--coral)' : '#aaa',
                 fontSize: 13,
                 textDecoration: 'none',
-                background: window.location.pathname === s.path ? 'rgba(232,93,77,0.08)' : 'transparent',
-                borderLeft: window.location.pathname === s.path ? '2px solid var(--coral)' : '2px solid transparent',
+                background: pathname === s.path ? 'rgba(232,93,77,0.08)' : 'transparent',
+                borderLeft: pathname === s.path ? '2px solid var(--coral)' : '2px solid transparent',
               }}
             >
               {s.label}
-            </a>
+            </Link>
           ))}
         </div>
       ))}
