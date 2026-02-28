@@ -3,12 +3,15 @@ import { useNavigate, useLocation } from 'react-router-dom'
 import Screen from '../components/Screen'
 import Button from '../components/Button'
 import BackButton from '../components/BackButton'
+import Input from '../components/Input'
 
 const MOCK_MATCH = {
-  date:     'Saturday, 1 March',
-  time:     'Evening · 7pm onwards',
-  activity: 'Food & Drinks',
-  group:    'Uni Friends',
+  date:        'Saturday, 1 March',
+  time:        'Evening · 7pm onwards',
+  matchedTime: '19:00',
+  timePeriod:  'Evening (5pm–9pm)',
+  activity:    'Food & Drinks',
+  group:       'Uni Friends',
 }
 
 const NEXT_BOOKER = 'Sarah'
@@ -16,16 +19,36 @@ const NEXT_BOOKER = 'Sarah'
 export default function BookingConfirm() {
   const navigate  = useNavigate()
   const { state } = useLocation()
-  const venue     = state?.venue ?? { name: 'The Botanist' }
 
-  const [toast, setToast] = useState(false)
+  const provisionalVenue = state?.provisionalVenue ?? null
+  const match            = state?.match            ?? MOCK_MATCH
 
-  const handleConfirm = () => {
-    // Stub: schedule a follow-up notification in 30 mins to capture venue name async
-    setTimeout(() => {
-      console.log('[Nudge] +30 min notification: "Hey! Quick one — where did you end up booking? Drop the venue name so the group knows where to go."')
-    }, 30 * 60 * 1000)
-    navigate('/calendar-invite', { state: { venueName: venue.name } })
+  // true when provisional exists but booker tapped "did you book somewhere else?"
+  const [overrideVenue,   setOverrideVenue]   = useState(false)
+  const [manualVenueName, setManualVenueName] = useState('')
+  const [toast,           setToast]           = useState(false)
+
+  // Which venue is currently "active" for the flow
+  const usingProvisional = !!(provisionalVenue && !overrideVenue)
+  const currentVenueName = usingProvisional ? provisionalVenue.name : manualVenueName.trim()
+  const canProceed       = !!currentVenueName
+
+  const openTableUrl = usingProvisional
+    ? provisionalVenue.url
+    : manualVenueName.trim()
+      ? `https://www.opentable.com/s/?term=${encodeURIComponent(manualVenueName.trim())}`
+      : 'https://www.opentable.com'
+
+  const handleBooked = () => {
+    navigate('/time-confirm', {
+      state: {
+        venue: {
+          name:    currentVenueName,
+          address: usingProvisional ? provisionalVenue.address : '',
+        },
+        match,
+      },
+    })
   }
 
   const handleCantBook = () => {
@@ -33,15 +56,13 @@ export default function BookingConfirm() {
     setTimeout(() => setToast(false), 3500)
   }
 
-  const openTableUrl = `https://www.opentable.com/s/?term=${encodeURIComponent(venue.name || '')}`
-
   return (
     <Screen style={{ paddingBottom: 40 }}>
       <div style={{ paddingTop: 56 }}>
         <BackButton to="/results" />
       </div>
 
-      {/* Auto-dismiss toast */}
+      {/* Auto-dismiss reassignment toast */}
       {toast && (
         <div style={{
           position: 'absolute', top: 16, left: 16, right: 16,
@@ -76,26 +97,60 @@ export default function BookingConfirm() {
           <div style={{ display: 'flex', gap: 12, alignItems: 'center' }}>
             <span style={{ fontSize: 20 }}>📅</span>
             <div>
-              <p className="bold">{MOCK_MATCH.date}</p>
-              <p className="text-sm text-muted">{MOCK_MATCH.time}</p>
+              <p className="bold">{match.date}</p>
+              <p className="text-sm text-muted">{match.time}</p>
             </div>
           </div>
           <div style={{ display: 'flex', gap: 12, alignItems: 'center' }}>
             <span style={{ fontSize: 20 }}>🍹</span>
-            <p className="bold">{MOCK_MATCH.activity}</p>
+            <p className="bold">{match.activity}</p>
           </div>
           <div style={{ display: 'flex', gap: 12, alignItems: 'center' }}>
             <span style={{ fontSize: 20 }}>👥</span>
-            <p className="bold">{MOCK_MATCH.group}</p>
+            <p className="bold">{match.group}</p>
+          </div>
+          {/* Venue line */}
+          <div style={{ display: 'flex', gap: 12, alignItems: 'center' }}>
+            <span style={{ fontSize: 20 }}>📍</span>
+            {usingProvisional ? (
+              <p className="bold">{provisionalVenue.name}</p>
+            ) : (
+              <p className="text-muted" style={{ fontStyle: 'italic' }}>Venue TBC</p>
+            )}
           </div>
         </div>
       </div>
+
+      {/* Venue context — shown when provisional venue is set and not overriding */}
+      {usingProvisional && (
+        <p style={{ marginTop: 10, fontSize: 13, color: 'var(--color-text-secondary)' }}>
+          We'll use {provisionalVenue.name} for the calendar invite —{' '}
+          <span
+            style={{ color: 'var(--color-primary-500)', cursor: 'pointer', textDecoration: 'underline' }}
+            onClick={() => { setOverrideVenue(true); setManualVenueName('') }}
+          >
+            did you book somewhere else?
+          </span>
+        </p>
+      )}
+
+      {/* Manual venue input — shown when no provisional, or after override */}
+      {(!provisionalVenue || overrideVenue) && (
+        <div style={{ marginTop: 16 }}>
+          <Input
+            label="Where did you book?"
+            placeholder="e.g. The Ivy"
+            value={manualVenueName}
+            onChange={e => setManualVenueName(e.target.value)}
+          />
+        </div>
+      )}
 
       {/* Info callout */}
       <div className="alert alert-warning" style={{ marginTop: 16 }}>
         <span>💡</span>
         <p style={{ fontSize: 13 }}>
-          The group is waiting on you. Once you've booked, tap confirm below — no details needed right now.
+          The group is waiting on you. Once you've booked, tap confirm below.
         </p>
       </div>
 
@@ -108,7 +163,7 @@ export default function BookingConfirm() {
           Open OpenTable →
         </Button>
 
-        <Button onClick={handleConfirm}>
+        <Button disabled={!canProceed} onClick={handleBooked}>
           ✓ I've booked it
         </Button>
 

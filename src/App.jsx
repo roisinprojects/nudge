@@ -22,6 +22,7 @@ import WaitingForOthers      from './screens/WaitingForOthers'
 import Matching              from './screens/Matching'
 import Results               from './screens/Results'
 import BookingConfirm        from './screens/BookingConfirm'
+import TimeConfirm           from './screens/TimeConfirm'
 import CalendarInvite        from './screens/CalendarInvite'
 import CantMakeIt            from './screens/CantMakeIt'
 import BookerCancellation    from './screens/BookerCancellation'
@@ -56,6 +57,7 @@ export const SCREENS = [
   { path: '/matching',               label: 'Matching (loading)',        group: 'Results'        },
   { path: '/results',                label: 'Results',                  group: 'Results'        },
   { path: '/booking-confirm',        label: 'Booking confirm',          group: 'Results'        },
+  { path: '/time-confirm',           label: 'Confirm the time',         group: 'Results'        },
   { path: '/calendar-invite',        label: 'Calendar invite',          group: 'Results'        },
   // Cancellation
   { path: '/cant-make-it',           label: "Can't make it",            group: 'Cancellation'   },
@@ -248,6 +250,7 @@ export default function App() {
             <Route path="/matching"                   element={<Matching />} />
             <Route path="/results"                    element={<Results />} />
             <Route path="/booking-confirm"            element={<BookingConfirm />} />
+            <Route path="/time-confirm"              element={<TimeConfirm />} />
             <Route path="/calendar-invite"            element={<CalendarInvite />} />
             <Route path="/cant-make-it"               element={<CantMakeIt />} />
             <Route path="/booker-cancellation"        element={<BookerCancellation />} />

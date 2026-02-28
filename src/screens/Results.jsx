@@ -2,17 +2,21 @@ import { useNavigate } from 'react-router-dom'
 import Screen from '../components/Screen'
 
 const MATCH = {
-  date: 'Saturday, 1 March',
-  time: 'Evening · 7pm onwards',
-  activity: 'Food & Drinks',
+  date:        'Saturday, 1 March',
+  time:        'Evening · 7pm onwards',
+  matchedTime: '19:00',               // 24h, used by the time-confirm picker
+  timePeriod:  'Evening (5pm–9pm)',   // context label on time-confirm screen
+  activity:    'Food & Drinks',
   activityMeta: 'Chosen by 4 of 5 members',
-  booker: 'Tom',
+  booker:      'Tom',
+  group:       'Uni Friends',
 }
 
 const VENUES = [
   {
     id: 1,
     name: 'The Botanist',
+    address: '98 Deansgate, Manchester M3 2GQ',
     type: 'Cocktail Bar & Restaurant',
     rating: 4.6,
     reviews: 1240,
@@ -23,6 +27,7 @@ const VENUES = [
   {
     id: 2,
     name: 'Dishoom',
+    address: '22 Kingly St, London W1B 5QP',
     type: 'Indian Restaurant & Bar',
     rating: 4.8,
     reviews: 3400,
@@ -33,6 +38,7 @@ const VENUES = [
   {
     id: 3,
     name: 'Nightjar',
+    address: '129 City Rd, London EC1V 1JB',
     type: 'Speakeasy Cocktail Bar',
     rating: 4.7,
     reviews: 890,
@@ -45,8 +51,24 @@ const VENUES = [
 export default function Results() {
   const navigate = useNavigate()
 
-  const handleVenueClick = (venue) => {
-    navigate('/booking-confirm', { state: { venue } })
+  const handleVenueClick = (v) => {
+    navigate('/booking-confirm', {
+      state: {
+        provisionalVenue: {
+          name:    v.name,
+          address: v.address,
+          url:     `https://www.opentable.com/s/?term=${encodeURIComponent(v.name)}`,
+        },
+        match: {
+          date:        MATCH.date,
+          time:        MATCH.time,
+          matchedTime: MATCH.matchedTime,
+          timePeriod:  MATCH.timePeriod,
+          activity:    MATCH.activity,
+          group:       MATCH.group,
+        },
+      },
+    })
   }
 
   return (
