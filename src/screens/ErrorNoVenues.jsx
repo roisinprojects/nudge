@@ -29,8 +29,8 @@ export default function ErrorNoVenues() {
         {/* Error box */}
         <div
           style={{
-            background: 'rgba(200,92,60,0.1)',
-            border: '1px solid rgba(200,92,60,0.3)',
+            background: 'var(--color-error-bg)',
+            border: '1px solid var(--color-error-border)',
             borderRadius: 'var(--radius)',
             padding: '14px 16px',
           }}
@@ -42,7 +42,7 @@ export default function ErrorNoVenues() {
         </div>
 
         {/* Options card */}
-        <div className="card" style={{ border: '1.5px solid #2a2a2a' }}>
+        <div className="card" style={{ border: '1px solid rgba(255, 255, 255, 0.06)' }}>
           <p className="text-sm text-muted mb-12">What you can do</p>
           <div style={{ display: 'flex', flexDirection: 'column', gap: 12 }}>
             <div style={{ display: 'flex', gap: 10 }}>
@@ -64,8 +64,8 @@ export default function ErrorNoVenues() {
         {showManual ? (
           <div
             style={{
-              background: 'rgba(107,182,160,0.08)',
-              border: '1px solid rgba(107,182,160,0.3)',
+              background: 'var(--color-success-bg)',
+              border: '1px solid var(--color-success-border)',
               borderRadius: 'var(--radius)',
               padding: '16px',
             }}

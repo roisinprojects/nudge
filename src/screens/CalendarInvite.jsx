@@ -24,7 +24,7 @@ export default function CalendarInvite() {
             width: 72,
             height: 72,
             borderRadius: '50%',
-            background: 'rgba(107,182,160,0.12)',
+            background: 'var(--color-success-bg)',
             border: '2px solid var(--success)',
             display: 'flex',
             alignItems: 'center',
@@ -49,7 +49,7 @@ export default function CalendarInvite() {
           background: 'var(--surface)',
           borderRadius: 'var(--radius)',
           overflow: 'hidden',
-          border: '1.5px solid #2a2a2a',
+          border: '1px solid rgba(255, 255, 255, 0.06)',
         }}
       >
         <div style={{ background: 'var(--coral)', padding: '16px' }}>

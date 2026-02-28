@@ -62,7 +62,7 @@ export default function Results() {
       </div>
 
       {/* Matched details */}
-      <div className="card" style={{ marginTop: 16, border: '1.5px solid #2a2a2a' }}>
+      <div className="card" style={{ marginTop: 16, border: '1px solid rgba(255, 255, 255, 0.06)' }}>
         <p className="text-sm text-muted mb-12">Your hangout</p>
         <div style={{ display: 'flex', flexDirection: 'column', gap: 10 }}>
           <div style={{ display: 'flex', gap: 12, alignItems: 'center' }}>

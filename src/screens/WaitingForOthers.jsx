@@ -33,7 +33,7 @@ export default function WaitingForOthers() {
 
       <div style={{ marginTop: 32 }}>
         {/* Progress bar */}
-        <div style={{ height: 6, background: '#2a2a2a', borderRadius: 3, overflow: 'hidden' }}>
+        <div style={{ height: 6, background: 'rgba(255, 255, 255, 0.06)', borderRadius: 3, overflow: 'hidden' }}>
           <div
             style={{
               height: '100%',

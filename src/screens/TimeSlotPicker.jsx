@@ -45,7 +45,7 @@ export default function TimeSlotPicker() {
 
       {/* Step progress */}
       <div style={{ marginTop: 16, display: 'flex', alignItems: 'center', gap: 12 }}>
-        <div style={{ flex: 1, height: 4, background: '#2a2a2a', borderRadius: 2, overflow: 'hidden' }}>
+        <div style={{ flex: 1, height: 4, background: 'rgba(255, 255, 255, 0.06)', borderRadius: 2, overflow: 'hidden' }}>
           <div
             style={{
               width: `${(selectedCount / 3) * 100}%`,
@@ -115,7 +115,7 @@ export default function TimeSlotPicker() {
                         gap: 14,
                         padding: '13px 16px',
                         borderRadius: 'var(--radius)',
-                        border: `1.5px solid ${isSelected ? 'var(--coral)' : '#2a2a2a'}`,
+                        border: `1px solid ${isSelected ? 'var(--coral)' : '#2a2a2a'}`,
                         background: isSelected ? 'rgba(232,93,77,0.08)' : 'var(--surface)',
                         cursor: 'pointer',
                         transition: 'all 0.12s',
@@ -124,7 +124,7 @@ export default function TimeSlotPicker() {
                       {/* Radio circle */}
                       <div style={{
                         width: 20, height: 20, borderRadius: '50%',
-                        border: `2px solid ${isSelected ? 'var(--coral)' : '#444'}`,
+                        border: `2px solid ${isSelected ? 'var(--coral)' : 'rgba(255, 255, 255, 0.10)'}`,
                         background: isSelected ? 'var(--coral)' : 'transparent',
                         display: 'flex', alignItems: 'center', justifyContent: 'center',
                         flexShrink: 0,

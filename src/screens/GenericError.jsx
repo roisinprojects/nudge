@@ -23,7 +23,7 @@ export default function GenericError() {
             width: 80,
             height: 80,
             borderRadius: '50%',
-            background: 'rgba(200,92,60,0.1)',
+            background: 'var(--color-error-bg)',
             border: '2px solid var(--error)',
             display: 'flex',
             alignItems: 'center',
@@ -43,8 +43,8 @@ export default function GenericError() {
 
         <div
           style={{
-            background: 'rgba(200,92,60,0.08)',
-            border: '1px solid rgba(200,92,60,0.25)',
+            background: 'var(--color-error-bg)',
+            border: '1px solid var(--color-error-border)',
             borderRadius: 'var(--radius)',
             padding: '12px 16px',
             width: '100%',

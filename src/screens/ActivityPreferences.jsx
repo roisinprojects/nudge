@@ -65,7 +65,7 @@ export default function ActivityPreferences() {
               onClick={() => !isMaxed && toggle(a.id)}
               style={{
                 background: isSelected ? 'rgba(232,93,77,0.10)' : 'var(--surface)',
-                border: `1.5px solid ${isSelected ? 'var(--coral)' : '#2a2a2a'}`,
+                border: `1px solid ${isSelected ? 'var(--coral)' : '#2a2a2a'}`,
                 borderRadius: 'var(--radius)',
                 padding: '18px 16px',
                 cursor: isMaxed ? 'default' : 'pointer',
@@ -86,7 +86,7 @@ export default function ActivityPreferences() {
               {/* Selection order badge */}
               <div style={{
                 width: 24, height: 24, borderRadius: '50%',
-                border: `2px solid ${isSelected ? 'var(--coral)' : '#444'}`,
+                border: `2px solid ${isSelected ? 'var(--coral)' : 'rgba(255, 255, 255, 0.10)'}`,
                 background: isSelected ? 'var(--coral)' : 'transparent',
                 display: 'flex', alignItems: 'center', justifyContent: 'center',
                 flexShrink: 0,

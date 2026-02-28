@@ -91,7 +91,7 @@ export default function Home() {
               alignItems: 'center',
               justifyContent: 'center',
               fontSize: 36,
-              color: '#333',
+              color: 'rgba(255, 255, 255, 0.15)',
             }}
           >
             👥
@@ -125,7 +125,7 @@ export default function Home() {
             <div
               key={g.id}
               className="card"
-              style={{ cursor: 'pointer', border: g.status === 'respond' ? '1.5px solid var(--coral)' : '1.5px solid transparent' }}
+              style={{ cursor: 'pointer', border: g.status === 'respond' ? '1px solid var(--coral)' : '1px solid transparent' }}
               onClick={() => g.status === 'respond' ? navigate('/respond') : navigate('/group-detail')}
             >
               <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start' }}>

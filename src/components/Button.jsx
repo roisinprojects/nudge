@@ -1,4 +1,4 @@
-export default function Button({ children, variant = 'primary', half, onClick, disabled, style }) {
+export default function Button({ children, variant = 'primary', half, onClick, disabled, style, type = 'button' }) {
   const cls = [
     'btn',
     disabled ? 'btn-disabled' : `btn-${variant}`,
@@ -7,8 +7,11 @@ export default function Button({ children, variant = 'primary', half, onClick, d
 
   return (
     <button
+      type={type}
       className={cls}
       onClick={disabled ? undefined : onClick}
+      disabled={disabled}
+      aria-disabled={disabled}
       style={style}
     >
       {children}

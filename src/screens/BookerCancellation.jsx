@@ -39,7 +39,7 @@ export default function BookerCancellation() {
         }}>
           <div style={{
             width: 72, height: 72, borderRadius: '50%',
-            background: 'rgba(107,182,160,0.15)', border: '2px solid rgba(107,182,160,0.3)',
+            background: 'var(--color-success-bg)', border: '1px solid var(--color-success-border)',
             display: 'flex', alignItems: 'center', justifyContent: 'center', fontSize: 32,
           }}>
             ✅
@@ -65,8 +65,8 @@ export default function BookerCancellation() {
       {/* Alert banner */}
       <div style={{
         marginTop: 16,
-        background: 'rgba(212,165,116,0.15)',
-        border: '1px solid rgba(212,165,116,0.3)',
+        background: 'var(--color-warning-bg)',
+        border: '1px solid var(--color-warning-border)',
         borderRadius: 'var(--radius)',
         padding: '12px 16px',
         display: 'flex',
@@ -89,7 +89,7 @@ export default function BookerCancellation() {
         background: 'var(--surface)',
         borderRadius: 'var(--radius)',
         padding: '14px 16px',
-        border: '1.5px solid #2a2a2a',
+        border: '1px solid rgba(255, 255, 255, 0.06)',
       }}>
         <p style={{ fontWeight: 600 }}>{MOCK_EVENT.venue}</p>
         <p style={{ fontSize: 14, color: 'var(--text-muted)', marginTop: 4 }}>
@@ -104,8 +104,8 @@ export default function BookerCancellation() {
       <div style={{
         marginTop: 16,
         padding: '14px 16px',
-        background: 'rgba(200,92,60,0.08)',
-        border: '1px solid rgba(200,92,60,0.2)',
+        background: 'var(--color-error-bg)',
+        border: '1px solid var(--color-error-border)',
         borderRadius: 'var(--radius)',
       }}>
         <p style={{ fontSize: 14 }}>
@@ -123,7 +123,7 @@ export default function BookerCancellation() {
         {/* Option 1: Contact OpenTable */}
         <div style={{
           background: 'var(--surface)', borderRadius: 'var(--radius)',
-          padding: '16px', border: '1.5px solid #2a2a2a',
+          padding: '16px', border: '1px solid rgba(255, 255, 255, 0.06)',
         }}>
           <p style={{ fontWeight: 600, fontSize: 14 }}>Contact OpenTable to adjust</p>
           <p style={{ fontSize: 13, color: 'var(--text-muted)', marginTop: 6, lineHeight: 1.5 }}>
@@ -131,7 +131,7 @@ export default function BookerCancellation() {
           </p>
           <div style={{
             marginTop: 10, display: 'flex', alignItems: 'center',
-            background: '#111', borderRadius: 6, padding: '8px 12px',
+            background: 'var(--surface2)', borderRadius: 6, padding: '8px 12px',
             border: '1px solid #2a2a2a',
           }}>
             <p style={{ flex: 1, fontWeight: 700, fontSize: 16, fontFamily: 'monospace', color: 'var(--text)' }}>
@@ -140,8 +140,8 @@ export default function BookerCancellation() {
             <button
               onClick={copyConfirmation}
               style={{
-                background: copied ? 'rgba(107,182,160,0.2)' : 'rgba(232,93,77,0.15)',
-                border: `1px solid ${copied ? 'rgba(107,182,160,0.4)' : 'rgba(232,93,77,0.3)'}`,
+                background: copied ? 'rgba(5,46,22,0.9)' : 'rgba(232,93,77,0.15)',
+                border: `1px solid ${copied ? 'var(--color-success-border)' : 'rgba(232,93,77,0.3)'}`,
                 borderRadius: 6, padding: '5px 12px',
                 color: copied ? 'var(--success)' : 'var(--coral)',
                 fontSize: 13, fontWeight: 600, cursor: 'pointer',
@@ -156,7 +156,7 @@ export default function BookerCancellation() {
               onClick={() => { window.location.href = 'mailto:?subject=OpenTable%20booking%20cancellation' }}
               style={{
                 flex: 1, height: 36, borderRadius: 6,
-                background: 'transparent', border: '1.5px solid #333',
+                background: 'transparent', border: '1px solid rgba(255, 255, 255, 0.10)',
                 color: 'var(--text-muted)', fontSize: 13, fontWeight: 600, cursor: 'pointer',
               }}
             >
@@ -166,7 +166,7 @@ export default function BookerCancellation() {
               onClick={() => { window.open('https://www.opentable.com/contact-us', '_blank', 'noopener,noreferrer') }}
               style={{
                 flex: 1, height: 36, borderRadius: 6,
-                background: 'transparent', border: '1.5px solid #333',
+                background: 'transparent', border: '1px solid rgba(255, 255, 255, 0.10)',
                 color: 'var(--text-muted)', fontSize: 13, fontWeight: 600, cursor: 'pointer',
               }}
             >
@@ -178,7 +178,7 @@ export default function BookerCancellation() {
         {/* Option 2: Invite someone else */}
         <div style={{
           background: 'var(--surface)', borderRadius: 'var(--radius)',
-          padding: '16px', border: '1.5px solid #2a2a2a',
+          padding: '16px', border: '1px solid rgba(255, 255, 255, 0.06)',
         }}>
           <p style={{ fontWeight: 600, fontSize: 14 }}>Invite someone else</p>
           <p style={{ fontSize: 13, color: 'var(--text-muted)', marginTop: 6 }}>
@@ -188,7 +188,7 @@ export default function BookerCancellation() {
             onClick={() => navigate('/invite-friends')}
             style={{
               marginTop: 10, width: '100%', height: 40,
-              background: 'transparent', border: '1.5px solid var(--coral)',
+              background: 'transparent', border: '1px solid var(--coral)',
               borderRadius: 6, color: 'var(--coral)',
               fontSize: 14, fontWeight: 600, cursor: 'pointer',
             }}
@@ -200,7 +200,7 @@ export default function BookerCancellation() {
         {/* Option 3: Dismiss */}
         <div style={{
           background: 'var(--surface)', borderRadius: 'var(--radius)',
-          padding: '16px', border: '1.5px solid #2a2a2a',
+          padding: '16px', border: '1px solid rgba(255, 255, 255, 0.06)',
         }}>
           <p style={{ fontWeight: 600, fontSize: 14 }}>It's fine, we'll manage</p>
           <p style={{ fontSize: 13, color: 'var(--text-muted)', marginTop: 6 }}>
@@ -210,7 +210,7 @@ export default function BookerCancellation() {
             onClick={() => setDismissed(true)}
             style={{
               marginTop: 10, width: '100%', height: 40,
-              background: 'transparent', border: '1.5px solid #333',
+              background: 'transparent', border: '1px solid rgba(255, 255, 255, 0.10)',
               borderRadius: 6, color: 'var(--text-muted)',
               fontSize: 14, fontWeight: 600, cursor: 'pointer',
             }}

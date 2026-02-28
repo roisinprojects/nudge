@@ -38,9 +38,9 @@ export default function Matching() {
                   width: 20, height: 20,
                   borderRadius: '50%',
                   background: step.done ? 'var(--success)' : 'var(--surface)',
-                  border: `2px solid ${step.done ? 'var(--success)' : '#444'}`,
+                  border: `2px solid ${step.done ? 'var(--success)' : 'rgba(255, 255, 255, 0.10)'}`,
                   display: 'flex', alignItems: 'center', justifyContent: 'center',
-                  fontSize: 11, color: '#fff', flexShrink: 0,
+                  fontSize: 11, color: 'var(--color-text-primary)', flexShrink: 0,
                 }}
               >
                 {step.done ? '✓' : ''}

@@ -83,7 +83,7 @@ export default function Profile() {
         }}>
           <div style={{
             width: 72, height: 72, borderRadius: '50%',
-            background: 'rgba(200,92,60,0.12)', border: '2px solid rgba(200,92,60,0.3)',
+            background: 'var(--color-error-bg)', border: '1px solid var(--color-error-border)',
             display: 'flex', alignItems: 'center', justifyContent: 'center', fontSize: 32,
           }}>
             ⚠️
@@ -159,7 +159,7 @@ export default function Profile() {
             <input type="file" accept="image/*" style={{ display: 'none' }} />
             <span style={{
               display: 'inline-block', padding: '8px 16px',
-              background: 'transparent', border: '1.5px solid var(--coral)',
+              background: 'transparent', border: '1px solid var(--coral)',
               borderRadius: 'var(--radius)', color: 'var(--coral)',
               fontSize: 14, fontWeight: 600,
             }}>
@@ -197,7 +197,7 @@ export default function Profile() {
           <div style={{
             display: 'flex', alignItems: 'center', justifyContent: 'space-between',
             background: 'var(--surface)', borderRadius: 'var(--radius)',
-            padding: '14px 16px', border: '1.5px solid #2a2a2a',
+            padding: '14px 16px', border: '1px solid rgba(255, 255, 255, 0.06)',
           }}>
             <p style={{ fontWeight: 600 }}>{firstName} {lastName}</p>
             <button
@@ -219,11 +219,11 @@ export default function Profile() {
         </p>
         <div style={{
           background: 'var(--surface)', borderRadius: 'var(--radius)',
-          padding: '14px 16px', border: '1.5px solid #2a2a2a',
+          padding: '14px 16px', border: '1px solid rgba(255, 255, 255, 0.06)',
         }}>
           <p style={{ fontWeight: 600, color: 'var(--text-muted)' }}>róisín@example.com</p>
         </div>
-        <p style={{ fontSize: 12, color: '#555', marginTop: 8, lineHeight: 1.6 }}>
+        <p style={{ fontSize: 12, color: 'var(--color-text-tertiary)', marginTop: 8, lineHeight: 1.6 }}>
           Your email is used for notifications and account recovery. To change your email, contact support.
         </p>
       </div>
@@ -256,7 +256,7 @@ export default function Profile() {
             <div style={{ display: 'flex', flexDirection: 'column', gap: 6 }}>
               <label className="input-label">New password</label>
               <input className="input" type="password" value={newPw} onChange={e => setNewPw(e.target.value)} />
-              <p style={{ fontSize: 12, color: newPw.length >= 8 ? 'var(--success)' : '#555' }}>
+              <p style={{ fontSize: 12, color: newPw.length >= 8 ? 'var(--color-success-text)' : 'var(--color-text-tertiary)' }}>
                 At least 8 characters {newPw.length >= 8 ? '✓' : ''}
               </p>
             </div>
@@ -276,7 +276,7 @@ export default function Profile() {
             onClick={() => setEditingPw(true)}
             style={{
               width: '100%', height: 48, borderRadius: 'var(--radius)',
-              background: 'var(--surface)', border: '1.5px solid #2a2a2a',
+              background: 'var(--surface)', border: '1px solid rgba(255, 255, 255, 0.06)',
               color: 'var(--coral)', fontSize: 14, fontWeight: 600, cursor: 'pointer',
               textAlign: 'left', paddingLeft: 16,
             }}
@@ -293,7 +293,7 @@ export default function Profile() {
         <p style={{ fontSize: 12, fontWeight: 700, color: 'var(--taupe)', textTransform: 'uppercase', letterSpacing: 0.8, marginBottom: 4 }}>
           Notifications
         </p>
-        <p style={{ fontSize: 13, color: '#555', marginBottom: 14 }}>Control how we reach you</p>
+        <p style={{ fontSize: 13, color: 'var(--color-text-tertiary)', marginBottom: 14 }}>Control how we reach you</p>
 
         {[
           {
@@ -323,7 +323,7 @@ export default function Profile() {
             style={{
               display: 'flex', alignItems: 'center', gap: 14,
               padding: '14px 16px', background: 'var(--surface)',
-              borderRadius: 'var(--radius)', border: '1.5px solid #2a2a2a',
+              borderRadius: 'var(--radius)', border: '1px solid rgba(255, 255, 255, 0.06)',
               marginBottom: 8,
             }}
           >
@@ -364,7 +364,7 @@ export default function Profile() {
           onClick={() => setDeleteModal(true)}
           style={{
             width: '100%', height: 48, borderRadius: 'var(--radius)',
-            background: 'rgba(200,92,60,0.08)', border: '1.5px solid rgba(200,92,60,0.25)',
+            background: 'var(--color-error-bg)', border: '1px solid var(--color-error-border)',
             color: 'var(--error)', fontSize: 16, fontWeight: 600, cursor: 'pointer',
           }}
         >

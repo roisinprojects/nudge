@@ -194,12 +194,20 @@ Build in this order (core loop first):
 
 ---
 
-## Key Reference File
+## Key Reference Files
 
-All detailed product specs, wireframe descriptions, and design rationale live in:
+| File | Purpose |
+|---|---|
+| `Nudge_Project_Brief.md` | Full product spec, wireframe descriptions, feature rationale |
+| `Nudge_UI_Design_System.md` | **Source of truth for all UI decisions** — tokens, typography, spacing, components, accessibility |
 
-```
-Nudge_Project_Brief.md
-```
+Read both before making product or UX decisions. `Nudge_UI_Design_System.md` overrides any design values in this file.
 
-Read it before making product or UX decisions.
+### Design System Quick Reference
+
+- **Text primary:** `#E5E5E5` — NEVER use pure `#FFFFFF`
+- **Borders:** `1px solid rgba(255,255,255,0.06)` (default) / `rgba(255,255,255,0.10)` (strong)
+- **Spacing:** 8pt grid — valid values: 4, 8, 12, 16, 24, 32, 40, 48, 64px
+- **Buttons:** hover = background-color change (not opacity), all 6 states required
+- **Semantic alerts:** use `--color-{success|warning|error|info}-{bg|border|text}` tokens
+- **Radius:** `--radius-md` (6px) for inputs/buttons, `--radius-lg` (8px) for cards, `--radius-xl` (12px) for modals

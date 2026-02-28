@@ -78,7 +78,7 @@ export default function CalendarPicker() {
 
       {/* Progress */}
       <div style={{ marginTop: 16, display: 'flex', alignItems: 'center', gap: 12 }}>
-        <div style={{ flex: 1, height: 4, background: '#2a2a2a', borderRadius: 2, overflow: 'hidden' }}>
+        <div style={{ flex: 1, height: 4, background: 'rgba(255, 255, 255, 0.06)', borderRadius: 2, overflow: 'hidden' }}>
           <div
             style={{
               width: `${(count / 3) * 100}%`,
@@ -130,7 +130,7 @@ export default function CalendarPicker() {
                       textAlign: 'center',
                       fontSize: 11,
                       fontWeight: 700,
-                      color: (d === 'Fr' || d === 'Sa' || d === 'Su') ? 'var(--taupe)' : '#444',
+                      color: (d === 'Fr' || d === 'Sa' || d === 'Su') ? 'var(--taupe)' : 'rgba(255, 255, 255, 0.10)',
                       padding: '2px 0',
                     }}
                   >
@@ -157,7 +157,7 @@ export default function CalendarPicker() {
                   let color = '#333'
                   if (isSelected) { bg = 'var(--coral)'; color = '#fff' }
                   else if (!isPast && isWknd && !isMaxed) { color = 'var(--text)' }
-                  else if (!isPast && isWknd && isMaxed) { color = '#555' }
+                  else if (!isPast && isWknd && isMaxed) { color = 'var(--color-text-tertiary)' }
 
                   return (
                     <div

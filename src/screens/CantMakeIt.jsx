@@ -39,8 +39,8 @@ export default function CantMakeIt() {
         }}>
           <div style={{
             width: 72, height: 72, borderRadius: '50%',
-            background: 'rgba(212,165,116,0.15)',
-            border: '2px solid rgba(212,165,116,0.3)',
+            background: 'var(--color-warning-bg)',
+            border: '1px solid var(--color-warning-border)',
             display: 'flex', alignItems: 'center', justifyContent: 'center',
             fontSize: 32,
           }}>
@@ -82,7 +82,7 @@ export default function CantMakeIt() {
         background: 'var(--surface)',
         borderRadius: 'var(--radius)',
         padding: '16px',
-        border: '1.5px solid #2a2a2a',
+        border: '1px solid rgba(255, 255, 255, 0.06)',
       }}>
         <p style={{ fontSize: 13, color: 'var(--taupe)', fontWeight: 600, textTransform: 'uppercase', letterSpacing: 0.5, marginBottom: 8 }}>
           You're cancelling

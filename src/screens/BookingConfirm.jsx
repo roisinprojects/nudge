@@ -39,7 +39,7 @@ export default function BookingConfirm() {
 
       {/* Selected venue preview */}
       {venue && (
-        <div className="card" style={{ marginTop: 24, border: '1.5px solid #2a2a2a' }}>
+        <div className="card" style={{ marginTop: 24, border: '1px solid rgba(255, 255, 255, 0.06)' }}>
           <div style={{ display: 'flex', gap: 14, alignItems: 'flex-start' }}>
             <div
               style={{

@@ -147,7 +147,7 @@ export default function GroupSettings() {
           <div style={{
             display: 'flex', alignItems: 'center', justifyContent: 'space-between',
             background: 'var(--surface)', borderRadius: 'var(--radius)',
-            padding: '14px 16px', border: '1.5px solid #2a2a2a',
+            padding: '14px 16px', border: '1px solid rgba(255, 255, 255, 0.06)',
           }}>
             <p style={{ fontWeight: 600 }}>{groupName}</p>
             <button
@@ -177,14 +177,14 @@ export default function GroupSettings() {
                 style={{
                   display: 'flex', alignItems: 'center', gap: 12,
                   padding: '13px 16px', borderRadius: 'var(--radius)',
-                  border: `1.5px solid ${cycle === opt ? 'var(--coral)' : '#2a2a2a'}`,
+                  border: `1px solid ${cycle === opt ? 'var(--coral)' : '#2a2a2a'}`,
                   background: cycle === opt ? 'rgba(232,93,77,0.08)' : 'var(--surface)',
                   cursor: 'pointer', transition: 'all 0.12s',
                 }}
               >
                 <div style={{
                   width: 18, height: 18, borderRadius: '50%',
-                  border: `2px solid ${cycle === opt ? 'var(--coral)' : '#444'}`,
+                  border: `2px solid ${cycle === opt ? 'var(--coral)' : 'rgba(255, 255, 255, 0.10)'}`,
                   background: cycle === opt ? 'var(--coral)' : 'transparent',
                   display: 'flex', alignItems: 'center', justifyContent: 'center', flexShrink: 0,
                 }}>
@@ -204,7 +204,7 @@ export default function GroupSettings() {
           <div style={{
             display: 'flex', alignItems: 'center', justifyContent: 'space-between',
             background: 'var(--surface)', borderRadius: 'var(--radius)',
-            padding: '14px 16px', border: '1.5px solid #2a2a2a',
+            padding: '14px 16px', border: '1px solid rgba(255, 255, 255, 0.06)',
           }}>
             <p style={{ fontWeight: 600 }}>{cycle}</p>
             <button
@@ -232,7 +232,7 @@ export default function GroupSettings() {
               style={{
                 display: 'flex', alignItems: 'center', gap: 12,
                 padding: '12px 14px', background: 'var(--surface)',
-                borderRadius: 'var(--radius)', border: '1.5px solid #2a2a2a',
+                borderRadius: 'var(--radius)', border: '1px solid rgba(255, 255, 255, 0.06)',
               }}
             >
               <div style={{
@@ -255,7 +255,7 @@ export default function GroupSettings() {
                 <button
                   onClick={() => setRemoveTarget(m.name)}
                   style={{
-                    background: 'rgba(200,92,60,0.1)', border: '1px solid rgba(200,92,60,0.25)',
+                    background: 'var(--color-error-bg)', border: '1px solid var(--color-error-border)',
                     borderRadius: 6, padding: '5px 12px',
                     color: 'var(--error)', fontSize: 13, fontWeight: 600, cursor: 'pointer',
                   }}
@@ -264,7 +264,7 @@ export default function GroupSettings() {
                 </button>
               )}
               {m.isCreator && (
-                <span style={{ fontSize: 12, color: '#555' }}>can't remove</span>
+                <span style={{ fontSize: 12, color: 'var(--color-text-tertiary)' }}>can't remove</span>
               )}
             </div>
           ))}
@@ -288,7 +288,7 @@ export default function GroupSettings() {
           onClick={() => setLeaveModal(true)}
           style={{
             width: '100%', height: 48, borderRadius: 'var(--radius)',
-            background: 'rgba(200,92,60,0.08)', border: '1.5px solid rgba(200,92,60,0.25)',
+            background: 'var(--color-error-bg)', border: '1px solid var(--color-error-border)',
             color: 'var(--error)', fontSize: 16, fontWeight: 600, cursor: 'pointer',
           }}
         >

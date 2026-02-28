@@ -23,7 +23,7 @@ export default function InviteLanding() {
             borderRadius: 'var(--radius)',
             padding: '24px 20px',
             textAlign: 'center',
-            border: '1.5px solid #2a2a2a',
+            border: '1px solid rgba(255, 255, 255, 0.06)',
           }}
         >
           <div style={{ fontSize: 40, marginBottom: 12 }}>🎉</div>

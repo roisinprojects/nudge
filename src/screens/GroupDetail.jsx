@@ -41,7 +41,7 @@ export default function GroupDetail() {
           <button
             onClick={() => navigate('/group-settings')}
             style={{
-              background: 'var(--surface)', border: '1.5px solid #2a2a2a',
+              background: 'var(--surface)', border: '1px solid rgba(255, 255, 255, 0.06)',
               borderRadius: 'var(--radius)', padding: '7px 14px',
               color: 'var(--text-muted)', fontSize: 13, fontWeight: 600,
               cursor: 'pointer',
@@ -74,7 +74,7 @@ export default function GroupDetail() {
         {MOCK_EVENT.scheduled ? (
           <div style={{
             background: 'var(--surface)', borderRadius: 'var(--radius)',
-            padding: '16px', border: '1.5px solid rgba(232,93,77,0.25)',
+            padding: '16px', border: '1px solid rgba(232, 93, 77, 0.35)',
           }}>
             <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start' }}>
               <div>
@@ -86,7 +86,7 @@ export default function GroupDetail() {
               </div>
               <span style={{
                 fontSize: 11, fontWeight: 700, color: 'var(--success)',
-                background: 'rgba(107,182,160,0.15)', border: '1px solid rgba(107,182,160,0.3)',
+                background: 'var(--color-success-bg)', border: '1px solid var(--color-success-border)',
                 borderRadius: 20, padding: '3px 10px',
               }}>Confirmed</span>
             </div>
@@ -96,7 +96,7 @@ export default function GroupDetail() {
                 onClick={() => navigate('/cant-make-it')}
                 style={{
                   flex: 1, height: 36, borderRadius: 6,
-                  background: 'transparent', border: '1.5px solid #333',
+                  background: 'transparent', border: '1px solid rgba(255, 255, 255, 0.10)',
                   color: 'var(--text-muted)', fontSize: 13, fontWeight: 600, cursor: 'pointer',
                 }}
               >
@@ -106,7 +106,7 @@ export default function GroupDetail() {
                 onClick={() => navigate('/calendar-invite')}
                 style={{
                   flex: 1, height: 36, borderRadius: 6,
-                  background: 'transparent', border: '1.5px solid var(--coral)',
+                  background: 'transparent', border: '1px solid var(--coral)',
                   color: 'var(--coral)', fontSize: 13, fontWeight: 600, cursor: 'pointer',
                 }}
               >
@@ -145,7 +145,7 @@ export default function GroupDetail() {
               style={{
                 display: 'flex', alignItems: 'center', gap: 12,
                 padding: '10px 14px', background: 'var(--surface)',
-                borderRadius: 'var(--radius)', border: '1.5px solid #2a2a2a',
+                borderRadius: 'var(--radius)', border: '1px solid rgba(255, 255, 255, 0.06)',
               }}
             >
               <div style={{
@@ -198,7 +198,7 @@ export default function GroupDetail() {
             borderRadius: 'var(--radius)', padding: '14px 16px', textAlign: 'center',
           }}>
             <p style={{ fontSize: 14, color: 'var(--taupe)' }}>No past hangouts yet</p>
-            <p style={{ fontSize: 13, color: '#555', marginTop: 4 }}>Your first is coming soon!</p>
+            <p style={{ fontSize: 13, color: 'var(--color-text-tertiary)', marginTop: 4 }}>Your first is coming soon!</p>
           </div>
         )}
       </div>

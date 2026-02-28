@@ -34,8 +34,8 @@ export default function ErrorNoOverlap() {
         {/* Warning box: best available */}
         <div
           style={{
-            background: 'rgba(212,165,116,0.12)',
-            border: '1px solid rgba(212,165,116,0.35)',
+            background: 'var(--color-warning-bg)',
+            border: '1px solid var(--color-warning-border)',
             borderRadius: 'var(--radius)',
             padding: '14px 16px',
           }}
@@ -53,7 +53,7 @@ export default function ErrorNoOverlap() {
         </div>
 
         {/* Who responded with what */}
-        <div className="card" style={{ border: '1.5px solid #2a2a2a' }}>
+        <div className="card" style={{ border: '1px solid rgba(255, 255, 255, 0.06)' }}>
           <p className="text-sm text-muted mb-12">Responses this round</p>
           <div style={{ display: 'flex', flexDirection: 'column', gap: 10 }}>
             {MOCK_RESPONSES.map(r => (

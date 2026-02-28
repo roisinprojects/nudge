@@ -25,7 +25,7 @@ export default function ResponseLocked() {
           style={{
             width: 80, height: 80,
             borderRadius: '50%',
-            background: 'rgba(107,182,160,0.15)',
+            background: 'var(--color-success-bg)',
             border: '2px solid var(--success)',
             display: 'flex', alignItems: 'center', justifyContent: 'center',
             fontSize: 36,
@@ -42,7 +42,7 @@ export default function ResponseLocked() {
 
         <div
           className="card"
-          style={{ marginTop: 32, width: '100%', textAlign: 'left', border: '1.5px solid #2a2a2a' }}
+          style={{ marginTop: 32, width: '100%', textAlign: 'left', border: '1px solid rgba(255, 255, 255, 0.06)' }}
         >
           <p className="text-sm text-muted mb-12">Your response summary</p>
           <div style={{ display: 'flex', flexDirection: 'column', gap: 8 }}>
