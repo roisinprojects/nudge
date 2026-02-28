@@ -46,6 +46,7 @@ export default function InviteFriends() {
               placeholder="friend@example.com"
               value={email}
               onChange={e => setEmail(e.target.value)}
+              onKeyDown={e => e.key === 'Enter' && addEmail()}
             />
           </div>
           <button
