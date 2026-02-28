@@ -1,4 +1,4 @@
-import { useNavigate } from 'react-router-dom'
+import { useNavigate, useLocation } from 'react-router-dom'
 import Screen from '../components/Screen'
 import Button from '../components/Button'
 
@@ -10,13 +10,10 @@ const MATCH = {
   activity: 'Food & Drinks',
 }
 
-function getBookedVenue() {
-  return sessionStorage.getItem('bookedVenueName') || 'The Botanist'
-}
-
 export default function CalendarInvite() {
-  const navigate = useNavigate()
-  const venueName = getBookedVenue()
+  const navigate  = useNavigate()
+  const { state } = useLocation()
+  const venueName = state?.venueName || 'The Botanist'
 
   return (
     <Screen style={{ paddingBottom: 40 }}>

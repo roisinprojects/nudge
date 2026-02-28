@@ -152,18 +152,24 @@ export default function BookerCancellation() {
             </button>
           </div>
           <div style={{ marginTop: 10, display: 'flex', gap: 8 }}>
-            <button style={{
-              flex: 1, height: 36, borderRadius: 6,
-              background: 'transparent', border: '1.5px solid #333',
-              color: 'var(--text-muted)', fontSize: 13, fontWeight: 600, cursor: 'pointer',
-            }}>
+            <button
+              onClick={() => { window.location.href = 'mailto:?subject=OpenTable%20booking%20cancellation' }}
+              style={{
+                flex: 1, height: 36, borderRadius: 6,
+                background: 'transparent', border: '1.5px solid #333',
+                color: 'var(--text-muted)', fontSize: 13, fontWeight: 600, cursor: 'pointer',
+              }}
+            >
               📧 Email OpenTable
             </button>
-            <button style={{
-              flex: 1, height: 36, borderRadius: 6,
-              background: 'transparent', border: '1.5px solid #333',
-              color: 'var(--text-muted)', fontSize: 13, fontWeight: 600, cursor: 'pointer',
-            }}>
+            <button
+              onClick={() => { window.open('https://www.opentable.com/contact-us', '_blank', 'noopener,noreferrer') }}
+              style={{
+                flex: 1, height: 36, borderRadius: 6,
+                background: 'transparent', border: '1.5px solid #333',
+                color: 'var(--text-muted)', fontSize: 13, fontWeight: 600, cursor: 'pointer',
+              }}
+            >
               📞 Call OpenTable
             </button>
           </div>

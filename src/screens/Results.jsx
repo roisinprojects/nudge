@@ -46,8 +46,7 @@ export default function Results() {
   const navigate = useNavigate()
 
   const handleVenueClick = (venue) => {
-    sessionStorage.setItem('selectedVenue', JSON.stringify(venue))
-    navigate('/booking-confirm')
+    navigate('/booking-confirm', { state: { venue } })
   }
 
   return (

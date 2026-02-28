@@ -1,9 +1,22 @@
-import { useNavigate } from 'react-router-dom'
+import { useNavigate, useLocation } from 'react-router-dom'
 import Screen from '../components/Screen'
 import Button from '../components/Button'
 
+const TIME_LABELS    = { lunch: 'Lunch', evening: 'Evening', late: 'Late' }
+const ACTIVITY_LABELS = { food: 'Food', food_drinks: 'Food + Drinks', drinks: 'Drinks', suggest: 'Flexible' }
+
 export default function ResponseLocked() {
-  const navigate = useNavigate()
+  const navigate  = useNavigate()
+  const { state } = useLocation()
+
+  // Build display rows from real state, or fall back to plausible mock data
+  const slots = state?.dates
+    ? state.dates.map(d => `${d.fmtDate} · ${TIME_LABELS[state.times?.[d.date]] ?? ''}`)
+    : ['Sat 1 Mar · Evening', 'Fri 7 Mar · Late', 'Sun 9 Mar · Lunch']
+
+  const activityDisplay = state?.activities?.length
+    ? state.activities.map(id => ACTIVITY_LABELS[id] ?? id).join(' · ')
+    : 'Drinks · Food + Drinks'
 
   return (
     <Screen>
@@ -33,22 +46,16 @@ export default function ResponseLocked() {
         >
           <p className="text-sm text-muted mb-12">Your response summary</p>
           <div style={{ display: 'flex', flexDirection: 'column', gap: 8 }}>
-            <div style={{ display: 'flex', alignItems: 'center', gap: 10 }}>
-              <span>📅</span>
-              <span className="text-sm">Sat 1 Mar · Evening</span>
-            </div>
-            <div style={{ display: 'flex', alignItems: 'center', gap: 10 }}>
-              <span>📅</span>
-              <span className="text-sm">Fri 7 Mar · Night</span>
-            </div>
-            <div style={{ display: 'flex', alignItems: 'center', gap: 10 }}>
-              <span>📅</span>
-              <span className="text-sm">Sun 9 Mar · Afternoon</span>
-            </div>
+            {slots.map((slot, i) => (
+              <div key={i} style={{ display: 'flex', alignItems: 'center', gap: 10 }}>
+                <span>📅</span>
+                <span className="text-sm">{slot}</span>
+              </div>
+            ))}
             <div className="divider" />
             <div style={{ display: 'flex', alignItems: 'center', gap: 10 }}>
               <span>🍸</span>
-              <span className="text-sm">Drinks · Food & Drinks</span>
+              <span className="text-sm">{activityDisplay}</span>
             </div>
           </div>
         </div>

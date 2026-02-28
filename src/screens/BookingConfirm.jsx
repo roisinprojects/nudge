@@ -1,5 +1,5 @@
 import { useState } from 'react'
-import { useNavigate } from 'react-router-dom'
+import { useNavigate, useLocation } from 'react-router-dom'
 import Screen from '../components/Screen'
 import Button from '../components/Button'
 import BackButton from '../components/BackButton'
@@ -12,25 +12,16 @@ const MATCH = {
   people: 5,
 }
 
-function getStoredVenue() {
-  try {
-    const raw = sessionStorage.getItem('selectedVenue')
-    return raw ? JSON.parse(raw) : null
-  } catch {
-    return null
-  }
-}
-
 export default function BookingConfirm() {
-  const navigate = useNavigate()
-  const venue = getStoredVenue()
+  const navigate  = useNavigate()
+  const { state } = useLocation()
+  const venue     = state?.venue ?? null
 
-  const [venueName, setVenueName] = useState(venue?.name ?? '')
+  const [venueName,      setVenueName]      = useState(venue?.name ?? '')
   const [confirmationNum, setConfirmationNum] = useState('')
 
   const handleConfirm = () => {
-    sessionStorage.setItem('bookedVenueName', venueName)
-    navigate('/calendar-invite')
+    navigate('/calendar-invite', { state: { venueName: venueName.trim() } })
   }
 
   return (

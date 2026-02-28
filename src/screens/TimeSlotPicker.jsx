@@ -154,7 +154,7 @@ export default function TimeSlotPicker() {
         <Button variant="ghost" half onClick={() => navigate('/calendar-picker')}>
           ← Back
         </Button>
-        <Button half disabled={!allSelected} onClick={() => navigate('/activity-preferences')}>
+        <Button half disabled={!allSelected} onClick={() => navigate('/activity-preferences', { state: { dates, times } })}>
           Continue →
         </Button>
       </div>

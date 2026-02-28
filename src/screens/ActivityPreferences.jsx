@@ -1,5 +1,5 @@
 import { useState } from 'react'
-import { useNavigate } from 'react-router-dom'
+import { useNavigate, useLocation } from 'react-router-dom'
 import Screen from '../components/Screen'
 import Button from '../components/Button'
 import BackButton from '../components/BackButton'
@@ -8,12 +8,23 @@ const ACTIVITIES = [
   { id: 'food',        label: 'Food',          icon: '🍽️',    desc: 'Restaurant, no drinks'          },
   { id: 'food_drinks', label: 'Food + Drinks',  icon: '🍽️🍷',  desc: 'Dinner with drinks'             },
   { id: 'drinks',      label: 'Drinks',         icon: '🍷',    desc: 'Bar only, no meal'              },
-  { id: 'suggest',     label: 'Suggest',        icon: '❓',    desc: "I'm flexible, whatever fits"    },
+  { id: 'suggest',     label: 'Flexible',       icon: '❓',    desc: "Whatever fits the group"       },
 ]
 
 export default function ActivityPreferences() {
-  const navigate  = useNavigate()
-  const [selected, setSelected] = useState(null) // single selection
+  const navigate       = useNavigate()
+  const { state }      = useLocation()
+  const [activities, setActivities] = useState([]) // ordered: first pick = [0], second = [1]
+
+  const toggle = (id) => {
+    setActivities(prev => {
+      if (prev.includes(id)) return prev.filter(a => a !== id)
+      if (prev.length >= 2) return prev // max 2
+      return [...prev, id]
+    })
+  }
+
+  const count = activities.length
 
   return (
     <Screen style={{ paddingBottom: 40 }}>
@@ -22,8 +33,8 @@ export default function ActivityPreferences() {
       </div>
 
       <div style={{ marginTop: 24 }}>
-        <h1>Pick an activity</h1>
-        <p className="text-muted mt-8">What are you in the mood for?</p>
+        <h1>Pick your activities</h1>
+        <p className="text-muted mt-8">Choose up to 2 — we'll find the best match.</p>
       </div>
 
       {/* Step indicator */}
@@ -33,30 +44,35 @@ export default function ActivityPreferences() {
             key={step}
             style={{
               flex: 1, height: 4, borderRadius: 2,
-              background: step <= 3 ? (step === 3 ? (selected ? 'var(--success)' : 'var(--coral)') : 'var(--success)') : '#2a2a2a',
+              background: step <= 3 ? (step === 3 ? (count > 0 ? 'var(--success)' : 'var(--coral)') : 'var(--success)') : '#2a2a2a',
               transition: 'background 0.2s',
             }}
           />
         ))}
       </div>
-      <p style={{ fontSize: 12, color: 'var(--taupe)', marginTop: 6 }}>Step 3 of 3</p>
+      <p style={{ fontSize: 12, color: 'var(--taupe)', marginTop: 6 }}>
+        Step 3 of 3 · {count}/2 selected
+      </p>
 
       <div style={{ marginTop: 24, display: 'flex', flexDirection: 'column', gap: 12 }}>
         {ACTIVITIES.map(a => {
-          const isSelected = selected === a.id
+          const selIndex  = activities.indexOf(a.id)
+          const isSelected = selIndex !== -1
+          const isMaxed   = !isSelected && count >= 2
           return (
             <div
               key={a.id}
-              onClick={() => setSelected(a.id)}
+              onClick={() => !isMaxed && toggle(a.id)}
               style={{
                 background: isSelected ? 'rgba(232,93,77,0.10)' : 'var(--surface)',
                 border: `1.5px solid ${isSelected ? 'var(--coral)' : '#2a2a2a'}`,
                 borderRadius: 'var(--radius)',
                 padding: '18px 16px',
-                cursor: 'pointer',
+                cursor: isMaxed ? 'default' : 'pointer',
                 display: 'flex',
                 alignItems: 'center',
                 gap: 16,
+                opacity: isMaxed ? 0.45 : 1,
                 transition: 'all 0.15s',
               }}
             >
@@ -67,16 +83,17 @@ export default function ActivityPreferences() {
                 </p>
                 <p style={{ fontSize: 13, color: 'var(--taupe)', marginTop: 3 }}>{a.desc}</p>
               </div>
-              {/* Radio indicator */}
+              {/* Selection order badge */}
               <div style={{
-                width: 20, height: 20, borderRadius: '50%',
+                width: 24, height: 24, borderRadius: '50%',
                 border: `2px solid ${isSelected ? 'var(--coral)' : '#444'}`,
                 background: isSelected ? 'var(--coral)' : 'transparent',
                 display: 'flex', alignItems: 'center', justifyContent: 'center',
                 flexShrink: 0,
+                fontSize: 12, fontWeight: 700, color: '#fff',
                 transition: 'all 0.15s',
               }}>
-                {isSelected && <div style={{ width: 6, height: 6, borderRadius: '50%', background: '#fff' }} />}
+                {isSelected ? selIndex + 1 : null}
               </div>
             </div>
           )
@@ -95,7 +112,11 @@ export default function ActivityPreferences() {
           <Button variant="ghost" half onClick={() => navigate('/time-picker')}>
             ← Back
           </Button>
-          <Button half disabled={!selected} onClick={() => navigate('/response-locked')}>
+          <Button
+            half
+            disabled={count === 0}
+            onClick={() => navigate('/response-locked', { state: { ...state, activities } })}
+          >
             Lock in →
           </Button>
         </div>
