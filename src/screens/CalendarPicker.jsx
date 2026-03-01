@@ -3,12 +3,24 @@ import { useNavigate } from 'react-router-dom'
 import Screen from '../components/Screen'
 import Button from '../components/Button'
 import BackButton from '../components/BackButton'
+import SegmentedBar from '../components/SegmentedBar'
+
+const GROUP_COLOUR = 'var(--group-lavender)'
 
 const MONTH_NAMES = [
   'January','February','March','April','May','June',
   'July','August','September','October','November','December',
 ]
 const DAY_LABELS = ['Su','Mo','Tu','We','Th','Fr','Sa']
+
+// Activity/vibe tags merged into this screen from the old ActivityPreferences screen
+const ACTIVITY_OPTIONS = [
+  { id: 'dinner',     label: 'Dinner out' },
+  { id: 'drinks',     label: 'Drinks'     },
+  { id: 'casual',     label: 'Casual'     },
+  { id: 'activities', label: 'Activities' },
+  { id: 'brunch',     label: 'Brunch'     },
+]
 
 function buildMonthGrid(year, month) {
   const firstDow = new Date(year, month, 1).getDay()
@@ -30,7 +42,8 @@ export default function CalendarPicker() {
   const today = new Date()
   today.setHours(0, 0, 0, 0)
 
-  const [selected, setSelected] = useState([]) // ISO strings
+  const [selected, setSelected] = useState([])      // ISO date strings (up to 3)
+  const [activities, setActivities] = useState([])   // up to 2 activity IDs
 
   // 3 months from current
   const months = []
@@ -47,7 +60,16 @@ export default function CalendarPicker() {
     })
   }
 
-  const count = selected.length
+  const toggleActivity = (id) => {
+    setActivities(prev => {
+      if (prev.includes(id)) return prev.filter(a => a !== id)
+      if (prev.length >= 2) return prev
+      return [...prev, id]
+    })
+  }
+
+  const dateCount = selected.length
+  const canContinue = dateCount >= 3 && activities.length >= 1
 
   const handleContinue = () => {
     const dates = selected.map(iso => {
@@ -59,49 +81,28 @@ export default function CalendarPicker() {
         fmtDate: date.toLocaleDateString('en-GB', { weekday: 'long', day: 'numeric', month: 'long' }),
       }
     })
-    navigate('/time-picker', { state: { dates } })
+    navigate('/time-picker', { state: { dates, activities } })
   }
 
   return (
     <Screen style={{ paddingBottom: 40 }}>
-      <div style={{ paddingTop: 56 }}>
+      <div style={{ paddingTop: 48 }}>
         <BackButton to="/respond" />
       </div>
 
-      <div style={{ marginTop: 24 }}>
-        <p style={{ fontSize: 12, fontWeight: 700, color: 'var(--taupe)', textTransform: 'uppercase', letterSpacing: 1 }}>
+      <div style={{ marginTop: 20 }}>
+        <p style={{ fontSize: 11, fontWeight: 700, color: 'var(--ink-muted)', textTransform: 'uppercase', letterSpacing: '0.06em' }}>
           Uni Friends
         </p>
-        <h1 style={{ marginTop: 6 }}>Pick your 3 best weekends</h1>
-        <p className="text-muted mt-8">Choose up to 3 — we'll find the one that works for everyone.</p>
+        <h1 style={{ marginTop: 6 }}>Pick your 3 best dates</h1>
+        <p style={{ marginTop: 6, fontSize: 13, color: 'var(--ink-secondary)' }}>
+          Choose up to 3 weekend dates (Fri–Sun) — we'll find one that works for everyone.
+        </p>
       </div>
 
       {/* Progress */}
-      <div style={{ marginTop: 16, display: 'flex', alignItems: 'center', gap: 12 }}>
-        <div style={{ flex: 1, height: 4, background: 'rgba(255, 255, 255, 0.06)', borderRadius: 2, overflow: 'hidden' }}>
-          <div
-            style={{
-              width: `${(count / 3) * 100}%`,
-              height: '100%',
-              background: count === 3 ? 'var(--success)' : 'var(--coral)',
-              borderRadius: 2,
-              transition: 'width 0.2s, background 0.2s',
-            }}
-          />
-        </div>
-        <span
-          style={{
-            fontSize: 13,
-            fontWeight: 600,
-            color: count === 3 ? 'var(--success)' : 'var(--text-muted)',
-            whiteSpace: 'nowrap',
-            minWidth: 68,
-            textAlign: 'right',
-            transition: 'color 0.2s',
-          }}
-        >
-          {count}/3 selected
-        </span>
+      <div style={{ marginTop: 16 }}>
+        <SegmentedBar total={2} current={1} counterText={`${dateCount}/3 dates`} />
       </div>
 
       {/* Calendar months */}
@@ -113,15 +114,15 @@ export default function CalendarPicker() {
               <p style={{
                 fontSize: 12,
                 fontWeight: 700,
-                color: 'var(--text-muted)',
+                color: 'var(--ink-secondary)',
                 textTransform: 'uppercase',
-                letterSpacing: 0.8,
+                letterSpacing: '0.05em',
                 marginBottom: 10,
               }}>
                 {MONTH_NAMES[month]} {year}
               </p>
 
-              {/* Day-of-week headers */}
+              {/* Day-of-week headers — only Fri/Sat/Sun highlighted */}
               <div style={{ display: 'grid', gridTemplateColumns: 'repeat(7, 1fr)', gap: 2, marginBottom: 4 }}>
                 {DAY_LABELS.map(d => (
                   <div
@@ -130,7 +131,9 @@ export default function CalendarPicker() {
                       textAlign: 'center',
                       fontSize: 11,
                       fontWeight: 700,
-                      color: (d === 'Fr' || d === 'Sa' || d === 'Su') ? 'var(--taupe)' : 'rgba(255, 255, 255, 0.10)',
+                      color: (d === 'Fr' || d === 'Sa' || d === 'Su')
+                        ? 'var(--ink-secondary)'
+                        : 'var(--ink-faint)',
                       padding: '2px 0',
                     }}
                   >
@@ -150,14 +153,23 @@ export default function CalendarPicker() {
                   const isPast = date < today
                   const iso = toISO(year, month, day)
                   const isSelected = selected.includes(iso)
-                  const isMaxed = !isSelected && count >= 3
+                  const isMaxed = !isSelected && dateCount >= 3
                   const disabled = isPast || !isWknd || isMaxed
 
                   let bg = 'transparent'
-                  let color = '#333'
-                  if (isSelected) { bg = 'var(--coral)'; color = '#fff' }
-                  else if (!isPast && isWknd && !isMaxed) { color = 'var(--text)' }
-                  else if (!isPast && isWknd && isMaxed) { color = 'var(--color-text-tertiary)' }
+                  let color = 'var(--ink-faint)'
+                  let border = 'none'
+
+                  if (isSelected) {
+                    bg = GROUP_COLOUR
+                    color = 'var(--ink-primary)'
+                    border = 'none'
+                  } else if (!isPast && isWknd && !isMaxed) {
+                    color = 'var(--ink-primary)'
+                    bg = 'transparent'
+                  } else if (!isPast && isWknd && isMaxed) {
+                    color = 'var(--ink-muted)'
+                  }
 
                   return (
                     <div
@@ -169,14 +181,14 @@ export default function CalendarPicker() {
                         display: 'flex',
                         alignItems: 'center',
                         justifyContent: 'center',
-                        fontSize: isSelected ? 13 : 14,
+                        fontSize: 14,
                         fontWeight: isWknd && !isPast ? 600 : 400,
                         cursor: disabled ? 'default' : 'pointer',
                         background: bg,
                         color,
-                        transition: 'all 0.12s',
+                        border,
+                        transition: 'all var(--duration-fast) var(--ease-out)',
                         userSelect: 'none',
-                        border: isSelected ? 'none' : 'none',
                       }}
                     >
                       {isSelected ? '✓' : day}
@@ -189,8 +201,41 @@ export default function CalendarPicker() {
         })}
       </div>
 
+      {/* Activity / vibe tags — merged from old ActivityPreferences screen */}
+      <div style={{ marginTop: 28 }}>
+        <p style={{ fontSize: 13, fontWeight: 700, color: 'var(--ink-primary)', marginBottom: 10 }}>
+          What's your vibe? <span style={{ fontWeight: 400, color: 'var(--ink-muted)' }}>Pick up to 2</span>
+        </p>
+        <div style={{ display: 'flex', flexWrap: 'wrap', gap: 8 }}>
+          {ACTIVITY_OPTIONS.map(a => {
+            const isSelected = activities.includes(a.id)
+            const isMaxed = !isSelected && activities.length >= 2
+            return (
+              <button
+                key={a.id}
+                onClick={() => !isMaxed && toggleActivity(a.id)}
+                style={{
+                  height: 36,
+                  padding: '0 14px',
+                  borderRadius: 'var(--radius-full)',
+                  border: `1px solid ${isSelected ? 'transparent' : 'var(--border-strong)'}`,
+                  background: isSelected ? GROUP_COLOUR : 'transparent',
+                  color: isSelected ? 'var(--ink-primary)' : isMaxed ? 'var(--ink-faint)' : 'var(--ink-secondary)',
+                  fontSize: 13,
+                  fontWeight: 600,
+                  cursor: isMaxed ? 'default' : 'pointer',
+                  transition: 'all var(--duration-fast) var(--ease-out)',
+                }}
+              >
+                {a.label}
+              </button>
+            )
+          })}
+        </div>
+      </div>
+
       <div style={{ paddingTop: 20 }}>
-        <Button disabled={count < 3} onClick={handleContinue}>
+        <Button disabled={!canContinue} onClick={handleContinue}>
           Pick times →
         </Button>
       </div>

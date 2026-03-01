@@ -4,16 +4,20 @@ import Button from '../components/Button'
 
 const MEMBERS = ['Sarah', 'Tom', 'Jess', 'Mike', 'You']
 
-const MATCH = {
-  date: 'Saturday, 1 March 2026',
-  time: 'Evening · 7:00pm onwards',
-  activity: 'Food & Drinks',
-}
-
 export default function CalendarInvite() {
   const navigate  = useNavigate()
   const { state } = useLocation()
-  const venueName = state?.venueName || 'The Botanist'
+
+  // Data provided by the TimeConfirm interceptor
+  const venueName     = state?.venueName     || 'The Botanist'
+  const venueAddress  = state?.venueAddress  || ''
+  const confirmedTime = state?.confirmedTime || '7pm'
+  const date          = state?.match?.date     || 'Saturday, 1 March 2026'
+  const activity      = state?.match?.activity || 'Food & Drinks'
+  const group         = state?.match?.group    || 'The Crew'
+
+  // Location field: use full address if captured, otherwise just the venue name
+  const locationLine  = venueAddress || venueName
 
   return (
     <Screen style={{ paddingBottom: 40 }}>
@@ -38,7 +42,7 @@ export default function CalendarInvite() {
         <h1 style={{ color: 'var(--success)', marginTop: 16 }}>It's booked!</h1>
         <p className="text-muted mt-8">
           Calendar invites are on their way to everyone in{' '}
-          <span className="bold">The Crew</span>.
+          <span className="bold">{group}</span>.
         </p>
       </div>
 
@@ -57,7 +61,7 @@ export default function CalendarInvite() {
             CALENDAR INVITE
           </p>
           <p className="bold" style={{ fontSize: 18, color: '#fff' }}>
-            The Crew hangout 🎉
+            {group} hangout 🎉
           </p>
         </div>
 
@@ -65,15 +69,18 @@ export default function CalendarInvite() {
           <div style={{ display: 'flex', gap: 12, alignItems: 'center' }}>
             <span style={{ fontSize: 18 }}>📅</span>
             <div>
-              <p className="bold text-sm">{MATCH.date}</p>
-              <p className="text-xs text-muted">{MATCH.time}</p>
+              <p className="bold text-sm">{date}</p>
+              <p className="text-xs text-muted">{confirmedTime}</p>
             </div>
           </div>
           <div style={{ display: 'flex', gap: 12, alignItems: 'center' }}>
             <span style={{ fontSize: 18 }}>📍</span>
             <div>
               <p className="bold text-sm">{venueName}</p>
-              <p className="text-xs text-muted">{MATCH.activity}</p>
+              {venueAddress
+                ? <p className="text-xs text-muted">{venueAddress}</p>
+                : <p className="text-xs text-muted">{activity}</p>
+              }
             </div>
           </div>
           <div style={{ display: 'flex', gap: 12, alignItems: 'flex-start' }}>

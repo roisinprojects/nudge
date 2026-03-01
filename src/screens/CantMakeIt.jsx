@@ -112,7 +112,7 @@ export default function CantMakeIt() {
 
       {/* Buttons */}
       <div style={{ marginTop: 'auto', paddingTop: 32, display: 'flex', flexDirection: 'column', gap: 12 }}>
-        <Button variant="primary" onClick={handleCancel}>
+        <Button variant="destructive" onClick={handleCancel}>
           Cancel attendance
         </Button>
         <Button variant="ghost" onClick={() => navigate('/group-detail')}>

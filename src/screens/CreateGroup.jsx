@@ -4,6 +4,7 @@ import Screen from '../components/Screen'
 import Button from '../components/Button'
 import Input from '../components/Input'
 import BackButton from '../components/BackButton'
+import SegmentedBar from '../components/SegmentedBar'
 
 export default function CreateGroup() {
   const navigate = useNavigate()
@@ -14,15 +15,11 @@ export default function CreateGroup() {
   return (
     <Screen>
       <div style={{ paddingTop: 56 }}>
-        <BackButton to="/set-password" />
+        <BackButton to="/display-name" />
       </div>
 
-      <div style={{ marginTop: 24, display: 'flex', justifyContent: 'center' }}>
-        <div className="progress-dots">
-          {[0, 1, 2, 3].map(i => (
-            <div key={i} className={`dot ${i <= 1 ? 'done' : i === 2 ? 'active' : ''}`} />
-          ))}
-        </div>
+      <div style={{ marginTop: 24 }}>
+        <SegmentedBar total={5} current={4} />
       </div>
 
       <div style={{ marginTop: 40, display: 'flex', flexDirection: 'column', gap: 24 }}>

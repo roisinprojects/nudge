@@ -1,10 +1,11 @@
 import { useState } from 'react'
-import { Routes, Route, Navigate } from 'react-router-dom'
+import { Routes, Route, Navigate, Link, useLocation } from 'react-router-dom'
 import { ViewModeContext } from './context/viewMode'
 
 import SignUp                from './screens/SignUp'
 import Login                 from './screens/Login'
 import SetPassword           from './screens/SetPassword'
+import DisplayName           from './screens/DisplayName'
 import CreateGroup           from './screens/CreateGroup'
 import InviteFriends         from './screens/InviteFriends'
 import Home                  from './screens/Home'
@@ -21,6 +22,7 @@ import WaitingForOthers      from './screens/WaitingForOthers'
 import Matching              from './screens/Matching'
 import Results               from './screens/Results'
 import BookingConfirm        from './screens/BookingConfirm'
+import TimeConfirm           from './screens/TimeConfirm'
 import CalendarInvite        from './screens/CalendarInvite'
 import CantMakeIt            from './screens/CantMakeIt'
 import BookerCancellation    from './screens/BookerCancellation'
@@ -35,6 +37,7 @@ export const SCREENS = [
   { path: '/signup',               label: 'Sign up',               group: 'Onboarding' },
   { path: '/login',                label: 'Log in',                group: 'Onboarding' },
   { path: '/set-password',         label: 'Set password',          group: 'Onboarding' },
+  { path: '/display-name',         label: 'Display name',          group: 'Onboarding' },
   { path: '/create-group',         label: 'Create group',          group: 'Onboarding' },
   { path: '/invite-friends',       label: 'Invite friends',        group: 'Onboarding' },
   // Home & Groups
@@ -54,6 +57,7 @@ export const SCREENS = [
   { path: '/matching',               label: 'Matching (loading)',        group: 'Results'        },
   { path: '/results',                label: 'Results',                  group: 'Results'        },
   { path: '/booking-confirm',        label: 'Booking confirm',          group: 'Results'        },
+  { path: '/time-confirm',           label: 'Confirm the time',         group: 'Results'        },
   { path: '/calendar-invite',        label: 'Calendar invite',          group: 'Results'        },
   // Cancellation
   { path: '/cant-make-it',           label: "Can't make it",            group: 'Cancellation'   },
@@ -143,6 +147,7 @@ function WebTopNav() {
 // ── Prototype nav sidebar ────────────────────────────────────────────────────
 function NavOverlay({ viewMode, setViewMode }) {
   const groups = [...new Set(SCREENS.map(s => s.group))]
+  const { pathname } = useLocation()
 
   return (
     <div
@@ -170,21 +175,21 @@ function NavOverlay({ viewMode, setViewMode }) {
         <div key={g} style={{ marginTop: 16 }}>
           <p style={{ color: '#555', fontSize: 10, fontWeight: 700, textTransform: 'uppercase', letterSpacing: 1, padding: '0 16px 6px' }}>{g}</p>
           {SCREENS.filter(s => s.group === g).map(s => (
-            <a
+            <Link
               key={s.path}
-              href={s.path}
+              to={s.path}
               style={{
                 display: 'block',
                 padding: '7px 16px',
-                color: window.location.pathname === s.path ? 'var(--coral)' : '#aaa',
+                color: pathname === s.path ? 'var(--coral)' : '#aaa',
                 fontSize: 13,
                 textDecoration: 'none',
-                background: window.location.pathname === s.path ? 'rgba(232,93,77,0.08)' : 'transparent',
-                borderLeft: window.location.pathname === s.path ? '2px solid var(--coral)' : '2px solid transparent',
+                background: pathname === s.path ? 'rgba(232,93,77,0.08)' : 'transparent',
+                borderLeft: pathname === s.path ? '2px solid var(--coral)' : '2px solid transparent',
               }}
             >
               {s.label}
-            </a>
+            </Link>
           ))}
         </div>
       ))}
@@ -228,6 +233,7 @@ export default function App() {
             <Route path="/signup"              element={<SignUp />} />
             <Route path="/login"               element={<Login />} />
             <Route path="/set-password"        element={<SetPassword />} />
+            <Route path="/display-name"        element={<DisplayName />} />
             <Route path="/create-group"        element={<CreateGroup />} />
             <Route path="/invite-friends"      element={<InviteFriends />} />
             <Route path="/home"                       element={<Home />} />
@@ -244,6 +250,7 @@ export default function App() {
             <Route path="/matching"                   element={<Matching />} />
             <Route path="/results"                    element={<Results />} />
             <Route path="/booking-confirm"            element={<BookingConfirm />} />
+            <Route path="/time-confirm"              element={<TimeConfirm />} />
             <Route path="/calendar-invite"            element={<CalendarInvite />} />
             <Route path="/cant-make-it"               element={<CantMakeIt />} />
             <Route path="/booker-cancellation"        element={<BookerCancellation />} />
