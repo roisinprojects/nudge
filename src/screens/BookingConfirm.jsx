@@ -2,77 +2,61 @@ import { useState } from 'react'
 import { useNavigate, useLocation } from 'react-router-dom'
 import Screen from '../components/Screen'
 import Button from '../components/Button'
-import BackButton from '../components/BackButton'
-import Input from '../components/Input'
+import SegmentedBar from '../components/SegmentedBar'
 
-const GROUP_COLOUR = 'var(--group-lavender)'
+const GROUP_COLOUR = 'var(--group-peach)'
 
 const MOCK_MATCH = {
-  date:        'Saturday, 1 March',
-  time:        'Evening · 7pm onwards',
-  matchedTime: '19:00',
-  timePeriod:  'Evening (5pm–9pm)',
-  activity:    'Food & Drinks',
-  group:       'Uni Friends',
+  date:     'Saturday, 1 March',
+  activity: 'Food & Drinks',
+  group:    'Uni Friends',
 }
 
-const NEXT_BOOKER = 'Sarah'
-const MOCK_MEMBERS = ['Sarah', 'Tom', 'Jess', 'Mike', 'You']
-
-// Time chips: 4 slots starting from matched time at 30-min increments
-function getTimeChips(matchedTime24) {
-  const [startH, startM] = matchedTime24.split(':').map(Number)
-  return Array.from({ length: 4 }, (_, i) => {
-    const total = startH * 60 + startM + i * 30
-    const h = Math.floor(total / 60) % 24
-    const m = total % 60
-    const suffix = h >= 12 ? 'pm' : 'am'
-    const h12 = h % 12 || 12
-    const label = m === 0 ? `${h12}${suffix}` : `${h12}:${String(m).padStart(2, '0')}${suffix}`
-    return { value: `${String(h).padStart(2, '0')}:${String(m).padStart(2, '0')}`, label }
-  })
+const MOCK_VENUE = {
+  name:         'The Botanist',
+  type:         'Cocktail Bar & Restaurant',
+  neighbourhood: 'Deansgate',
+  url:          'https://www.opentable.com/s/?term=The%20Botanist',
 }
+
+const MOCK_GUESTS = ['Sarah', 'Tom', 'Jess', 'Mike', 'You']
+
+const TIME_CHIPS = [
+  { value: '18:30', label: '6:30' },
+  { value: '19:00', label: '7:00' },
+  { value: '19:30', label: '7:30' },
+  { value: '20:00', label: '8:00' },
+]
+
+const META_ROWS = (match) => [
+  { label: 'Group', value: match.group },
+  { label: 'Date',  value: match.date  },
+  { label: 'Guests', value: `${MOCK_GUESTS.length} people` },
+]
 
 export default function BookingConfirm() {
   const navigate  = useNavigate()
   const { state } = useLocation()
 
-  const provisionalVenue = state?.provisionalVenue ?? null
-  const match            = state?.match            ?? MOCK_MATCH
+  const venue = state?.provisionalVenue ?? MOCK_VENUE
+  const match = state?.match            ?? MOCK_MATCH
 
-  const timeChips = getTimeChips(match.matchedTime || '19:00')
+  const venueName         = venue.name
+  const venueType         = venue.type         || MOCK_VENUE.type
+  const venueNeighbourhood = venue.neighbourhood || MOCK_VENUE.neighbourhood
+  const openTableUrl      = venue.url           || MOCK_VENUE.url
 
-  const [overrideVenue,   setOverrideVenue]   = useState(false)
-  const [manualVenueName, setManualVenueName] = useState('')
-  const [selectedTime,    setSelectedTime]    = useState(timeChips[0].value)
-  const [toast,           setToast]           = useState(false)
+  const [selectedTime, setSelectedTime] = useState('19:00')
+  const [isError,      setIsError]      = useState(false)
 
-  const usingProvisional = !!(provisionalVenue && !overrideVenue)
-  const currentVenueName = usingProvisional ? provisionalVenue.name : manualVenueName.trim()
-  const canProceed       = !!currentVenueName && !!selectedTime
-
-  const openTableUrl = usingProvisional
-    ? provisionalVenue.url
-    : manualVenueName.trim()
-      ? `https://www.opentable.com/s/?term=${encodeURIComponent(manualVenueName.trim())}`
-      : 'https://www.opentable.com'
-
-  // Convert 24h "HH:MM" → display like "7pm" or "7:30pm"
-  const toDisplay = (time24) => {
-    const chip = timeChips.find(c => c.value === time24)
-    if (chip) return chip.label
-    const [h, m] = time24.split(':').map(Number)
-    const suffix = h >= 12 ? 'pm' : 'am'
-    const h12 = h % 12 || 12
-    return m === 0 ? `${h12}${suffix}` : `${h12}:${String(m).padStart(2, '0')}${suffix}`
-  }
+  const selectedLabel = TIME_CHIPS.find(c => c.value === selectedTime)?.label ?? selectedTime
 
   const handleBooked = () => {
     navigate('/calendar-invite', {
       state: {
-        venueName:     currentVenueName,
-        venueAddress:  usingProvisional ? provisionalVenue.address : '',
-        confirmedTime: toDisplay(selectedTime),
+        venueName,
+        venueAddress: venue.address || venueNeighbourhood,
+        confirmedTime: selectedLabel,
         match: {
           date:     match.date,
           activity: match.activity,
@@ -82,159 +66,80 @@ export default function BookingConfirm() {
     })
   }
 
-  const handleCantBook = () => {
-    setToast(true)
-    setTimeout(() => setToast(false), 3500)
-  }
+  const metaRows = META_ROWS(match)
 
   return (
     <Screen style={{ paddingBottom: 40 }}>
       <div style={{ paddingTop: 48 }}>
-        <BackButton to="/results" />
+        <SegmentedBar total={4} current={4} />
       </div>
 
-      {/* Reassignment toast */}
-      {toast && (
-        <div style={{
-          position: 'absolute', top: 16, left: 16, right: 16,
-          background: 'var(--bg-card)',
-          border: '1px solid var(--border-strong)',
-          borderRadius: 'var(--radius-lg)',
-          padding: '12px 16px',
-          display: 'flex', gap: 10, alignItems: 'center',
-          zIndex: 50,
-          boxShadow: 'var(--shadow-md)',
-        }}>
-          <span style={{ color: 'var(--semantic-success)', fontSize: 16 }}>✓</span>
-          <p style={{ fontSize: 13, color: 'var(--ink-primary)' }}>
-            We've asked {NEXT_BOOKER} to book instead.
-          </p>
-        </div>
-      )}
-
-      {/* Header */}
-      <div style={{ marginTop: 24, textAlign: 'center' }}>
-        <div style={{ fontSize: 48, lineHeight: 1 }}>🎯</div>
-        <h1 style={{ marginTop: 12 }}>You're the booker!</h1>
-        <p style={{ marginTop: 6, fontSize: 14, color: 'var(--ink-secondary)' }}>
-          Randomly assigned — next time it's someone else's turn.
+      <div style={{ marginTop: 24 }}>
+        <h1>Confirm booking</h1>
+        <p className="text-sm text-muted" style={{ marginTop: 4 }}>
+          {match.group} · {match.date}
         </p>
       </div>
 
-      {/* Venue + hangout summary card */}
-      <div style={{
-        marginTop: 20,
-        background: 'var(--bg-card)',
-        borderRadius: 'var(--radius-lg)',
-        border: '1px solid var(--border-default)',
-        borderLeft: `3px solid ${GROUP_COLOUR}`,
-        borderLeftWidth: 3,
-        borderLeftColor: GROUP_COLOUR,
-        padding: '14px 16px',
-        boxShadow: 'var(--shadow-sm)',
-      }}>
-        <div style={{ display: 'flex', flexDirection: 'column', gap: 10 }}>
-          <div style={{ display: 'flex', gap: 12, alignItems: 'center' }}>
-            <span style={{ fontSize: 18 }}>👥</span>
-            <p style={{ fontWeight: 700, fontSize: 14 }}>{match.group}</p>
-          </div>
-          <div style={{ display: 'flex', gap: 12, alignItems: 'center' }}>
-            <span style={{ fontSize: 18 }}>📅</span>
-            <div>
-              <p style={{ fontWeight: 700, fontSize: 14 }}>{match.date}</p>
-              <p style={{ fontSize: 12, color: 'var(--ink-secondary)', marginTop: 2 }}>{match.time}</p>
-            </div>
-          </div>
-          <div style={{ display: 'flex', gap: 12, alignItems: 'center' }}>
-            <span style={{ fontSize: 18 }}>🍹</span>
-            <p style={{ fontWeight: 700, fontSize: 14 }}>{match.activity}</p>
-          </div>
-          <div style={{ display: 'flex', gap: 12, alignItems: 'center' }}>
-            <span style={{ fontSize: 18 }}>📍</span>
-            {usingProvisional ? (
-              <p style={{ fontWeight: 700, fontSize: 14 }}>{provisionalVenue.name}</p>
-            ) : (
-              <p style={{ fontSize: 14, color: 'var(--ink-muted)', fontStyle: 'italic' }}>Venue TBC</p>
-            )}
-          </div>
-          <div style={{ display: 'flex', gap: 12, alignItems: 'center' }}>
-            <span style={{ fontSize: 18 }}>👤</span>
-            <p style={{ fontSize: 13, color: 'var(--ink-secondary)' }}>
-              {MOCK_MEMBERS.join(' · ')}
-            </p>
-          </div>
-        </div>
+      {/* Venue section */}
+      <p style={{ fontSize: 11, fontWeight: 700, color: 'var(--ink-muted)', textTransform: 'uppercase', letterSpacing: '0.06em', marginTop: 24, marginBottom: 10 }}>
+        Venue
+      </p>
+      <div className="card" style={{ borderLeft: `3px solid ${GROUP_COLOUR}` }}>
+        <h3 style={{ fontSize: 15, fontWeight: 700 }}>{venueName}</h3>
+        <p className="text-sm text-muted" style={{ marginTop: 4 }}>
+          {venueType} · {venueNeighbourhood}
+        </p>
       </div>
 
-      {/* Venue override */}
-      {usingProvisional && (
-        <p style={{ marginTop: 10, fontSize: 13, color: 'var(--ink-muted)' }}>
-          We'll use {provisionalVenue.name} —{' '}
+      {/* Confirm time section */}
+      <p style={{ fontSize: 11, fontWeight: 700, color: 'var(--ink-muted)', textTransform: 'uppercase', letterSpacing: '0.06em', marginTop: 24, marginBottom: 10 }}>
+        Confirm time
+      </p>
+      <div style={{ display: 'grid', gridTemplateColumns: 'repeat(4, 1fr)', gap: 8 }}>
+        {TIME_CHIPS.map(chip => (
           <span
-            style={{ color: 'var(--ink-primary)', cursor: 'pointer', textDecoration: 'underline', fontWeight: 600 }}
-            onClick={() => { setOverrideVenue(true); setManualVenueName('') }}
+            key={chip.value}
+            className={`chip ${selectedTime === chip.value ? 'chip-selected' : 'chip-outline'}`}
+            onClick={() => setSelectedTime(chip.value)}
+            style={{ cursor: 'pointer', display: 'block', textAlign: 'center' }}
           >
-            did you book somewhere else?
+            {chip.label}
           </span>
-        </p>
-      )}
-
-      {(!provisionalVenue || overrideVenue) && (
-        <div style={{ marginTop: 16 }}>
-          <Input
-            label="Where did you book?"
-            placeholder="e.g. The Ivy"
-            value={manualVenueName}
-            onChange={e => setManualVenueName(e.target.value)}
-          />
-        </div>
-      )}
-
-      {/* Time chips */}
-      <div style={{ marginTop: 20 }}>
-        <p style={{ fontSize: 13, fontWeight: 700, color: 'var(--ink-primary)', marginBottom: 10 }}>
-          What time did you book?
-        </p>
-        <div style={{ display: 'flex', gap: 8, flexWrap: 'wrap' }}>
-          {timeChips.map(chip => {
-            const isSelected = selectedTime === chip.value
-            return (
-              <span
-                key={chip.value}
-                className={`chip ${isSelected ? 'chip-selected' : 'chip-outline'}`}
-                onClick={() => setSelectedTime(chip.value)}
-                style={{ cursor: 'pointer' }}
-              >
-                {chip.label}
-              </span>
-            )
-          })}
-        </div>
+        ))}
       </div>
 
-      {/* Info callout */}
-      <div className="alert alert-warning" style={{ marginTop: 16 }}>
-        <span>💡</span>
-        <p style={{ fontSize: 13 }}>
-          The group is waiting on you. Once you've booked, tap confirm below.
-        </p>
-      </div>
+      {/* Divider */}
+      <div style={{ height: 1, background: 'var(--border-default)', margin: '20px 0' }} />
+
+      {/* Meta rows */}
+      {metaRows.map((row, i) => (
+        <div key={row.label}>
+          <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', padding: '10px 0' }}>
+            <p style={{ fontSize: 14, color: 'var(--ink-muted)' }}>{row.label}</p>
+            <p style={{ fontSize: 14, fontWeight: 600, color: 'var(--ink-primary)' }}>{row.value}</p>
+          </div>
+          {i < metaRows.length - 1 && (
+            <div style={{ height: 1, background: 'var(--border-default)' }} />
+          )}
+        </div>
+      ))}
+
+      {/* Error alert */}
+      {isError && (
+        <div className="alert alert-error" style={{ marginTop: 16 }}>
+          <span>⚠️</span>
+          <p style={{ fontSize: 13 }}>Something went wrong. Please try again.</p>
+        </div>
+      )}
 
       {/* CTAs */}
-      <div style={{ marginTop: 'auto', paddingTop: 24, display: 'flex', flexDirection: 'column', gap: 12 }}>
-        <Button
-          variant="secondary"
-          onClick={() => window.open(openTableUrl, '_blank', 'noopener,noreferrer')}
-        >
+      <div style={{ marginTop: 24, display: 'flex', flexDirection: 'column', gap: 12 }}>
+        <Button onClick={() => window.open(openTableUrl, '_blank', 'noopener,noreferrer')}>
           Open OpenTable →
         </Button>
-
-        <Button disabled={!canProceed} onClick={handleBooked}>
+        <Button variant="ghost" onClick={handleBooked}>
           ✓ I've booked it
-        </Button>
-
-        <Button variant="ghost" onClick={handleCantBook}>
-          I can't book right now
         </Button>
       </div>
     </Screen>

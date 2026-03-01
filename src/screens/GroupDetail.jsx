@@ -6,30 +6,26 @@ import BackButton from '../components/BackButton'
 const GROUP_COLOUR = 'var(--group-lavender)'
 
 const MOCK_GROUP = {
-  name:       'Uni Friends',
-  isCreator:  true,
-  memberCount: 4,
+  name: 'Uni Friends',
 }
 
 const MOCK_MEMBERS = [
-  { name: 'Alex',   initial: 'A', role: 'Creator' },
-  { name: 'Jordan', initial: 'J', role: 'Member'  },
-  { name: 'Priya',  initial: 'P', role: 'Member'  },
-  { name: 'Róisín', initial: 'R', role: 'Member', isYou: true },
+  { name: 'Alex',   initial: 'A' },
+  { name: 'Jordan', initial: 'J' },
+  { name: 'Priya',  initial: 'P' },
+  { name: 'Róisín', initial: 'R', isYou: true },
 ]
 
-const MOCK_EVENT = {
-  scheduled: true,
-  day:  'Saturday, 15 March',
-  time: '7pm',
-  venue: 'The Ivy',
-  cuisine: 'Modern European',
+const MOCK_STATS = {
+  lastHangout: '28 Jan 2026',
+  cycle:       'Every 6 weeks',
+  status:      'Respond now',
 }
 
-const MOCK_HISTORY = [
-  { date: '28 Jan 2026', venue: 'The Botanist',  cuisine: 'Modern British' },
-  { date: '13 Dec 2025', venue: 'Dishoom',        cuisine: 'Indian'        },
-  { date: '4 Oct 2025',  venue: 'Hawksmoor',      cuisine: 'Steakhouse'    },
+const STAT_ROWS = [
+  { label: 'Last hangout', value: MOCK_STATS.lastHangout },
+  { label: 'Cycle',        value: MOCK_STATS.cycle       },
+  { label: 'Status',       value: MOCK_STATS.status      },
 ]
 
 export default function GroupDetail() {
@@ -37,195 +33,68 @@ export default function GroupDetail() {
 
   return (
     <Screen style={{ paddingBottom: 40 }}>
-      <div style={{ paddingTop: 48, display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
+      {/* Top bar */}
+      <div style={{ paddingTop: 48, display: 'flex', alignItems: 'center', position: 'relative' }}>
         <BackButton to="/home" />
-        {MOCK_GROUP.isCreator && (
-          <button
-            onClick={() => navigate('/group-settings')}
-            style={{
-              background: 'transparent',
-              border: '1px solid var(--border-strong)',
-              borderRadius: 'var(--radius-md)',
-              padding: '6px 12px',
-              color: 'var(--ink-secondary)',
-              fontSize: 13,
-              fontWeight: 600,
-              cursor: 'pointer',
-              display: 'flex',
-              alignItems: 'center',
-              gap: 6,
-            }}
-          >
-            Settings
-          </button>
-        )}
-      </div>
-
-      {/* Header with group colour dot */}
-      <div style={{ marginTop: 20 }}>
-        <div style={{ display: 'flex', alignItems: 'center', gap: 8 }}>
-          <div style={{
-            width: 10, height: 10, borderRadius: '50%',
-            background: GROUP_COLOUR,
-            flexShrink: 0,
-          }} />
-          <h1>{MOCK_GROUP.name}</h1>
-        </div>
-        <p style={{ marginTop: 4, fontSize: 13, color: 'var(--ink-muted)' }}>
-          {MOCK_GROUP.memberCount} members
-          {MOCK_GROUP.isCreator && (
-            <span style={{ marginLeft: 8, color: 'var(--ink-secondary)', fontWeight: 600 }}>
-              · Creator
-            </span>
-          )}
+        <p style={{
+          position: 'absolute', left: '50%', transform: 'translateX(-50%)',
+          fontSize: 15, fontWeight: 700, color: 'var(--ink-primary)',
+          whiteSpace: 'nowrap',
+        }}>
+          {MOCK_GROUP.name}
         </p>
       </div>
 
-      {/* Upcoming hangout */}
-      <div style={{ marginTop: 24 }}>
-        <p style={{ fontSize: 11, fontWeight: 700, color: 'var(--ink-muted)', textTransform: 'uppercase', letterSpacing: '0.06em', marginBottom: 10 }}>
-          Upcoming hangout
-        </p>
-
-        {MOCK_EVENT.scheduled ? (
-          <div style={{
-            background: 'var(--bg-card)',
-            borderRadius: 'var(--radius-lg)',
-            borderLeft: `3px solid ${GROUP_COLOUR}`,
-            border: '1px solid var(--border-default)',
-            borderLeftWidth: 3,
-            borderLeftColor: GROUP_COLOUR,
-            padding: '14px 16px',
-            boxShadow: 'var(--shadow-sm)',
-          }}>
-            <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start' }}>
-              <div>
-                <p style={{ fontWeight: 700, fontSize: 15 }}>{MOCK_EVENT.venue}</p>
-                <p style={{ fontSize: 13, color: 'var(--ink-secondary)', marginTop: 4 }}>
-                  {MOCK_EVENT.day} · {MOCK_EVENT.time}
-                </p>
-                <span className="tag" style={{ marginTop: 8, display: 'inline-block' }}>{MOCK_EVENT.cuisine}</span>
-              </div>
-              <span className="badge badge-confirmed">Confirmed</span>
-            </div>
-            <div style={{ height: 1, background: 'var(--border-default)', margin: '12px 0' }} />
-            <div style={{ display: 'flex', gap: 8 }}>
-              <Button half variant="ghost" onClick={() => navigate('/cant-make-it')}>
-                Can't make it
-              </Button>
-              <Button half variant="secondary" onClick={() => navigate('/calendar-invite')}>
-                Add to calendar
-              </Button>
-            </div>
-          </div>
-        ) : (
-          <div style={{
-            background: 'var(--bg-ui)',
-            border: '1px solid var(--border-default)',
-            borderRadius: 'var(--radius-lg)',
-            padding: '14px 16px',
-            display: 'flex',
-            gap: 12,
-            alignItems: 'flex-start',
-          }}>
-            <span style={{ fontSize: 20 }}>📅</span>
-            <div>
-              <p style={{ fontSize: 14, fontWeight: 600, color: 'var(--ink-secondary)' }}>No upcoming hangout yet</p>
-              <p style={{ fontSize: 13, color: 'var(--ink-muted)', marginTop: 4 }}>
-                Next nudge on March 11 — we'll send everyone a reminder!
-              </p>
-            </div>
-          </div>
-        )}
+      {/* Group name with colour dot */}
+      <div style={{ marginTop: 24, display: 'flex', alignItems: 'center', gap: 8 }}>
+        <div style={{
+          width: 8, height: 8, borderRadius: '50%',
+          background: GROUP_COLOUR, flexShrink: 0,
+        }} />
+        <h1>{MOCK_GROUP.name}</h1>
       </div>
 
-      {/* Members */}
-      <div style={{ height: 1, background: 'var(--border-default)', margin: '20px 0' }} />
+      {/* Avatar row */}
+      <div style={{ marginTop: 16, display: 'flex', gap: 8, flexWrap: 'wrap' }}>
+        {MOCK_MEMBERS.map(m => (
+          <div key={m.name} className="avatar" title={m.isYou ? `${m.name} (You)` : m.name}>
+            {m.initial}
+          </div>
+        ))}
+      </div>
 
-      <div>
-        <p style={{ fontSize: 11, fontWeight: 700, color: 'var(--ink-muted)', textTransform: 'uppercase', letterSpacing: '0.06em', marginBottom: 12 }}>
-          Members
-        </p>
-        <div style={{ display: 'flex', flexDirection: 'column', gap: 8 }}>
-          {MOCK_MEMBERS.map(m => (
-            <div
-              key={m.name}
-              style={{
-                display: 'flex',
-                alignItems: 'center',
-                gap: 12,
-                padding: '10px 14px',
-                background: 'var(--bg-card)',
-                borderRadius: 'var(--radius-lg)',
-                border: '1px solid var(--border-default)',
-                boxShadow: 'var(--shadow-xs)',
-              }}
-            >
-              <div className="avatar">{m.initial}</div>
-              <div style={{ flex: 1 }}>
-                <p style={{ fontSize: 14, fontWeight: 600, color: 'var(--ink-primary)' }}>
-                  {m.name}{m.isYou && <span style={{ color: 'var(--ink-muted)', fontWeight: 400 }}> (You)</span>}
-                </p>
-                <p style={{ fontSize: 12, color: 'var(--ink-muted)', marginTop: 2 }}>{m.role}</p>
-              </div>
+      {/* Stats card */}
+      <div
+        className="card"
+        style={{ marginTop: 20, borderLeft: `3px solid ${GROUP_COLOUR}`, padding: 0 }}
+      >
+        {STAT_ROWS.map((row, i) => (
+          <div key={row.label}>
+            <div style={{
+              display: 'flex', justifyContent: 'space-between', alignItems: 'center',
+              padding: '14px 16px',
+            }}>
+              <p style={{ fontSize: 14, color: 'var(--ink-muted)' }}>{row.label}</p>
+              <p style={{ fontSize: 14, fontWeight: 600, color: 'var(--ink-primary)' }}>{row.value}</p>
             </div>
-          ))}
-        </div>
+            {i < STAT_ROWS.length - 1 && (
+              <div style={{ height: 1, background: 'var(--border-default)' }} />
+            )}
+          </div>
+        ))}
       </div>
 
-      {/* Past hangouts */}
-      <div style={{ height: 1, background: 'var(--border-default)', margin: '20px 0' }} />
-
-      <div>
-        <p style={{ fontSize: 11, fontWeight: 700, color: 'var(--ink-muted)', textTransform: 'uppercase', letterSpacing: '0.06em', marginBottom: 12 }}>
-          Past hangouts
-        </p>
-        {MOCK_HISTORY.length > 0 ? (
-          <div style={{ display: 'flex', flexDirection: 'column', gap: 8 }}>
-            {MOCK_HISTORY.map((h, i) => (
-              <div
-                key={i}
-                style={{
-                  display: 'flex',
-                  justifyContent: 'space-between',
-                  alignItems: 'center',
-                  padding: '12px 16px',
-                  background: 'var(--bg-card)',
-                  borderRadius: 'var(--radius-lg)',
-                  border: '1px solid var(--border-default)',
-                  boxShadow: 'var(--shadow-xs)',
-                }}
-              >
-                <div>
-                  <p style={{ fontSize: 14, fontWeight: 600 }}>{h.venue}</p>
-                  <p style={{ fontSize: 12, color: 'var(--ink-muted)', marginTop: 3 }}>{h.date}</p>
-                </div>
-                <span className="tag">{h.cuisine}</span>
-              </div>
-            ))}
-          </div>
-        ) : (
-          <div style={{
-            background: 'var(--bg-ui)',
-            border: '1px solid var(--border-default)',
-            borderRadius: 'var(--radius-lg)',
-            padding: '14px 16px',
-            textAlign: 'center',
-          }}>
-            <p style={{ fontSize: 14, color: 'var(--ink-muted)' }}>No past hangouts yet</p>
-            <p style={{ fontSize: 13, color: 'var(--ink-muted)', marginTop: 4 }}>Your first is coming soon!</p>
-          </div>
-        )}
-      </div>
-
-      {/* Invite CTA */}
-      <div style={{ marginTop: 20 }}>
+      {/* CTAs */}
+      <div style={{ marginTop: 24, display: 'flex', flexDirection: 'column', gap: 12 }}>
         <Button
           variant="group"
           style={{ '--group-color': GROUP_COLOUR }}
-          onClick={() => navigate('/invite-friends')}
+          onClick={() => navigate('/respond')}
         >
-          + Invite someone
+          Respond to nudge →
+        </Button>
+        <Button variant="ghost" onClick={() => navigate('/group-settings')}>
+          Group settings
         </Button>
       </div>
     </Screen>
