@@ -30,6 +30,7 @@ import MultipleCancellations from './screens/MultipleCancellations'
 import ErrorNoOverlap        from './screens/ErrorNoOverlap'
 import ErrorNoVenues         from './screens/ErrorNoVenues'
 import GenericError          from './screens/GenericError'
+import DesignSystem          from './screens/DesignSystem'
 
 // ── Screen map used by the nav overlay ──────────────────────────────────────
 export const SCREENS = [
@@ -67,6 +68,8 @@ export const SCREENS = [
   { path: '/error-no-overlap',       label: 'Error: no overlap',        group: 'Errors'         },
   { path: '/error-no-venues',        label: 'Error: no venues',         group: 'Errors'         },
   { path: '/error',                  label: 'Error: generic',           group: 'Errors'         },
+  // Reference
+  { path: '/design-system',          label: 'Design system',            group: 'Reference'      },
 ]
 
 // ── View mode toggle (inside prototype nav) ──────────────────────────────────
@@ -258,6 +261,7 @@ export default function App() {
             <Route path="/error-no-overlap"           element={<ErrorNoOverlap />} />
             <Route path="/error-no-venues"            element={<ErrorNoVenues />} />
             <Route path="/error"                      element={<GenericError />} />
+            <Route path="/design-system"              element={<DesignSystem />} />
           </Routes>
         </div>
       </div>
