@@ -1,4 +1,4 @@
-import { useState } from 'react'
+import { useState, useEffect } from 'react'
 import { Routes, Route, Navigate, Link, useLocation } from 'react-router-dom'
 import { ViewModeContext } from './context/viewMode'
 
@@ -71,6 +71,34 @@ export const SCREENS = [
   // Reference
   { path: '/design-system',          label: 'Design system',            group: 'Reference'      },
 ]
+
+// ── Theme toggle ─────────────────────────────────────────────────────────────
+function ThemeToggle({ dark, setDark }) {
+  return (
+    <button
+      onClick={() => setDark(d => !d)}
+      title={dark ? 'Switch to light mode' : 'Switch to dark mode'}
+      style={{
+        width: '100%',
+        height: 28,
+        borderRadius: 6,
+        border: '1px solid #333',
+        background: '#1a1a1a',
+        color: dark ? '#f0e68c' : '#aaa',
+        fontSize: 12,
+        fontWeight: 600,
+        cursor: 'pointer',
+        display: 'flex',
+        alignItems: 'center',
+        justifyContent: 'center',
+        gap: 6,
+        transition: 'color 0.15s',
+      }}
+    >
+      {dark ? '☀ Light mode' : '☾ Dark mode'}
+    </button>
+  )
+}
 
 // ── View mode toggle (inside prototype nav) ──────────────────────────────────
 function ViewToggle({ viewMode, setViewMode }) {
@@ -148,7 +176,7 @@ function WebTopNav() {
 }
 
 // ── Prototype nav sidebar ────────────────────────────────────────────────────
-function NavOverlay({ viewMode, setViewMode }) {
+function NavOverlay({ viewMode, setViewMode, dark, setDark }) {
   const groups = [...new Set(SCREENS.map(s => s.group))]
   const { pathname } = useLocation()
 
@@ -170,9 +198,12 @@ function NavOverlay({ viewMode, setViewMode }) {
       }}
     >
       <div style={{ padding: '0 16px 12px', borderBottom: '1px solid #222' }}>
-        <p style={{ color: 'var(--coral)', fontWeight: 700, fontSize: 16, fontFamily: 'Poppins, sans-serif' }}>nudge</p>
+        <p style={{ color: '#aaa', fontWeight: 700, fontSize: 16, fontFamily: 'Poppins, sans-serif' }}>nudge</p>
         <p style={{ color: '#555', fontSize: 11, marginTop: 2, marginBottom: 10 }}>prototype · all screens</p>
         <ViewToggle viewMode={viewMode} setViewMode={setViewMode} />
+        <div style={{ marginTop: 6 }}>
+          <ThemeToggle dark={dark} setDark={setDark} />
+        </div>
       </div>
       {groups.map(g => (
         <div key={g} style={{ marginTop: 16 }}>
@@ -206,6 +237,17 @@ export default function App() {
     () => localStorage.getItem('nudge-view-mode') || 'mobile'
   )
 
+  const [dark, setDark] = useState(() => {
+    const saved = localStorage.getItem('nudge-theme')
+    if (saved) return saved === 'dark'
+    return window.matchMedia('(prefers-color-scheme: dark)').matches
+  })
+
+  useEffect(() => {
+    document.documentElement.setAttribute('data-theme', dark ? 'dark' : 'light')
+    localStorage.setItem('nudge-theme', dark ? 'dark' : 'light')
+  }, [dark])
+
   const handleSetViewMode = (mode) => {
     setViewMode(mode)
     localStorage.setItem('nudge-view-mode', mode)
@@ -216,7 +258,7 @@ export default function App() {
   return (
     <ViewModeContext.Provider value={viewMode}>
       <div style={{ display: 'flex' }}>
-        <NavOverlay viewMode={viewMode} setViewMode={handleSetViewMode} />
+        <NavOverlay viewMode={viewMode} setViewMode={handleSetViewMode} dark={dark} setDark={setDark} />
         <div
           style={{
             marginLeft: 220,
