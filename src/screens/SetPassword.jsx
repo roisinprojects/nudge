@@ -1,7 +1,6 @@
 import { useState } from 'react'
 import { useNavigate } from 'react-router-dom'
 import Screen from '../components/Screen'
-import Logo from '../components/Logo'
 import Button from '../components/Button'
 import Input from '../components/Input'
 import BackButton from '../components/BackButton'
@@ -43,9 +42,9 @@ export default function SetPassword() {
           <div style={{ display: 'flex', alignItems: 'center', gap: 8, marginTop: -12 }}>
             <div style={{
               height: 4, flex: 1, borderRadius: 2,
-              background: strong ? 'var(--success)' : 'var(--error)'
+              background: strong ? 'var(--semantic-success)' : 'var(--semantic-error)'
             }} />
-            <span className="text-xs" style={{ color: strong ? 'var(--success)' : 'var(--error)' }}>
+            <span className="text-xs" style={{ color: strong ? 'var(--semantic-success)' : 'var(--semantic-error)' }}>
               {strong ? 'Strong' : 'Too short'}
             </span>
           </div>

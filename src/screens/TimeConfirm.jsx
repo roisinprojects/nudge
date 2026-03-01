@@ -75,10 +75,11 @@ export default function TimeConfirm() {
 
   return (
     <Screen style={{ paddingBottom: 40 }}>
-      {/* No back button — required step */}
       <div style={{ paddingTop: 56 }}>
         <h1>What time did you get?</h1>
-        <p className="text-muted mt-8">We'll use this for everyone's calendar invite.</p>
+        <p className="text-sm text-muted" style={{ marginTop: 4 }}>
+          We'll use this for everyone's calendar invite.
+        </p>
       </div>
 
       {/* Time option rows */}
@@ -96,9 +97,9 @@ export default function TimeConfirm() {
                 display: 'flex', alignItems: 'center',
                 padding: '0 16px',
                 borderRadius: 'var(--radius-lg)',
-                border: `1px solid ${isSelected ? 'var(--color-primary-500)' : 'var(--color-border-strong)'}`,
+                border: `1px solid ${isSelected ? 'var(--ink-primary)' : 'var(--border-strong)'}`,
                 borderLeftWidth: isSelected ? '3px' : '1px',
-                background: isSelected ? 'rgba(232, 93, 77, 0.08)' : 'var(--color-bg-card)',
+                background: isSelected ? 'var(--bg-ui)' : 'var(--bg-card)',
                 cursor: 'pointer',
                 transition: 'all var(--duration-fast) var(--ease-out)',
               }}
@@ -106,14 +107,14 @@ export default function TimeConfirm() {
               <div style={{ flex: 1 }}>
                 <span style={{
                   fontSize: 16, fontWeight: 600,
-                  color: isSelected ? 'var(--color-text-primary)' : 'var(--color-text-secondary)',
+                  color: isSelected ? 'var(--ink-primary)' : 'var(--ink-secondary)',
                 }}>
                   {to12h(slot)}
                 </span>
                 {isMatched && (
                   <span style={{
                     marginLeft: 8, fontSize: 11,
-                    color: 'var(--color-text-tertiary)',
+                    color: 'var(--ink-muted)',
                     fontWeight: 400,
                   }}>
                     your matched time
@@ -123,12 +124,12 @@ export default function TimeConfirm() {
               {/* Radio */}
               <div style={{
                 width: 20, height: 20, borderRadius: '50%', flexShrink: 0,
-                border: `2px solid ${isSelected ? 'var(--color-primary-500)' : 'var(--color-border-strong)'}`,
-                background: isSelected ? 'var(--color-primary-500)' : 'transparent',
+                border: `2px solid ${isSelected ? 'var(--ink-primary)' : 'var(--border-strong)'}`,
+                background: isSelected ? 'var(--ink-primary)' : 'transparent',
                 display: 'flex', alignItems: 'center', justifyContent: 'center',
                 transition: 'all var(--duration-fast) var(--ease-out)',
               }}>
-                {isSelected && <div style={{ width: 6, height: 6, borderRadius: '50%', background: '#fff' }} />}
+                {isSelected && <div style={{ width: 6, height: 6, borderRadius: '50%', background: 'var(--btn-primary-fg)' }} />}
               </div>
             </div>
           )
@@ -142,27 +143,27 @@ export default function TimeConfirm() {
             display: 'flex', alignItems: 'center',
             padding: '0 16px',
             borderRadius: 'var(--radius-lg)',
-            border: `1px solid ${isDifferent ? 'var(--color-primary-500)' : 'var(--color-border-strong)'}`,
+            border: `1px solid ${isDifferent ? 'var(--ink-primary)' : 'var(--border-strong)'}`,
             borderLeftWidth: isDifferent ? '3px' : '1px',
-            background: isDifferent ? 'rgba(232, 93, 77, 0.08)' : 'var(--color-bg-card)',
+            background: isDifferent ? 'var(--bg-ui)' : 'var(--bg-card)',
             cursor: 'pointer',
             transition: 'all var(--duration-fast) var(--ease-out)',
           }}
         >
           <span style={{
             flex: 1, fontSize: 16, fontWeight: 600,
-            color: isDifferent ? 'var(--color-text-primary)' : 'var(--color-text-secondary)',
+            color: isDifferent ? 'var(--ink-primary)' : 'var(--ink-secondary)',
           }}>
             Different time
           </span>
           <div style={{
             width: 20, height: 20, borderRadius: '50%', flexShrink: 0,
-            border: `2px solid ${isDifferent ? 'var(--color-primary-500)' : 'var(--color-border-strong)'}`,
-            background: isDifferent ? 'var(--color-primary-500)' : 'transparent',
+            border: `2px solid ${isDifferent ? 'var(--ink-primary)' : 'var(--border-strong)'}`,
+            background: isDifferent ? 'var(--ink-primary)' : 'transparent',
             display: 'flex', alignItems: 'center', justifyContent: 'center',
             transition: 'all var(--duration-fast) var(--ease-out)',
           }}>
-            {isDifferent && <div style={{ width: 6, height: 6, borderRadius: '50%', background: '#fff' }} />}
+            {isDifferent && <div style={{ width: 6, height: 6, borderRadius: '50%', background: 'var(--btn-primary-fg)' }} />}
           </div>
         </div>
 
@@ -174,10 +175,10 @@ export default function TimeConfirm() {
             onChange={e => setCustomTime(e.target.value)}
             style={{
               width: '100%', height: 48,
-              background: 'var(--color-bg-card)',
-              border: '1px solid var(--color-border-focus)',
+              background: 'var(--bg-card)',
+              border: '1px solid var(--border-default)',
               borderRadius: 'var(--radius-lg)',
-              color: 'var(--color-text-primary)',
+              color: 'var(--ink-primary)',
               fontSize: 16,
               padding: '0 16px',
               outline: 'none',
@@ -188,7 +189,7 @@ export default function TimeConfirm() {
       </div>
 
       {/* Time context label */}
-      <p style={{ marginTop: 10, fontSize: 13, color: 'var(--color-text-tertiary)' }}>
+      <p style={{ marginTop: 10, fontSize: 13, color: 'var(--ink-muted)' }}>
         Your group matched for {match.timePeriod || 'Evening (5pm–9pm)'}
       </p>
 

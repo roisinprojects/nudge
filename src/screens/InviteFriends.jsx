@@ -50,8 +50,8 @@ export default function InviteFriends() {
             onClick={addEmail}
             style={{
               height: 48, width: 48, flexShrink: 0,
-              background: 'var(--coral)', border: 'none',
-              borderRadius: 'var(--radius)', color: '#fff',
+              background: 'var(--ink-primary)', border: 'none',
+              borderRadius: 'var(--radius)', color: 'var(--btn-primary-fg)',
               fontSize: 24, cursor: 'pointer',
               display: 'flex', alignItems: 'center', justifyContent: 'center'
             }}

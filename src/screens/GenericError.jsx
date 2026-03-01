@@ -41,18 +41,9 @@ export default function GenericError() {
           </p>
         </div>
 
-        <div
-          style={{
-            background: 'var(--color-error-bg)',
-            border: '1px solid var(--color-error-border)',
-            borderRadius: 'var(--radius)',
-            padding: '12px 16px',
-            width: '100%',
-            textAlign: 'left',
-          }}
-        >
+        <div className="alert alert-error" style={{ width: '100%', flexDirection: 'column', alignItems: 'flex-start' }}>
           <p className="text-xs text-muted">Error details</p>
-          <p className="text-sm mt-8" style={{ color: 'var(--error)' }}>
+          <p className="text-sm mt-8">
             Could not save your response. Please try again.
           </p>
         </div>

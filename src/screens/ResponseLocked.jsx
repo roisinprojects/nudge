@@ -25,8 +25,8 @@ export default function ResponseLocked() {
           style={{
             width: 80, height: 80,
             borderRadius: '50%',
-            background: 'var(--color-success-bg)',
-            border: '2px solid var(--success)',
+            background: 'var(--semantic-success-bg)',
+            border: '2px solid var(--semantic-success)',
             display: 'flex', alignItems: 'center', justifyContent: 'center',
             fontSize: 36,
             marginBottom: 24,
@@ -35,7 +35,7 @@ export default function ResponseLocked() {
           ✓
         </div>
 
-        <h1 style={{ color: 'var(--success)' }}>You're locked in!</h1>
+        <h1 style={{ color: 'var(--semantic-success)' }}>You're locked in!</h1>
         <p className="text-muted mt-16">
           All saved. We'll match everyone up as responses come in and send you results within 48 hours.
         </p>
@@ -45,7 +45,7 @@ export default function ResponseLocked() {
           style={{ marginTop: 32, width: '100%', textAlign: 'left' }}
         >
           {/* Dates section */}
-          <p style={{ fontSize: 11, fontWeight: 700, color: 'var(--color-text-tertiary)', textTransform: 'uppercase', letterSpacing: '0.08em', marginBottom: 10 }}>
+          <p style={{ fontSize: 11, fontWeight: 700, color: 'var(--ink-muted)', textTransform: 'uppercase', letterSpacing: '0.06em', marginBottom: 10 }}>
             Your dates
           </p>
           <div style={{ display: 'flex', flexDirection: 'column', gap: 8 }}>
@@ -58,10 +58,10 @@ export default function ResponseLocked() {
           </div>
 
           {/* Divider */}
-          <div style={{ height: 1, background: 'var(--color-border-default)', margin: '14px 0' }} />
+          <div style={{ height: 1, background: 'var(--border-default)', margin: '14px 0' }} />
 
           {/* Vibe section */}
-          <p style={{ fontSize: 11, fontWeight: 700, color: 'var(--color-text-tertiary)', textTransform: 'uppercase', letterSpacing: '0.08em', marginBottom: 10 }}>
+          <p style={{ fontSize: 11, fontWeight: 700, color: 'var(--ink-muted)', textTransform: 'uppercase', letterSpacing: '0.06em', marginBottom: 10 }}>
             Your vibe
           </p>
           <div style={{ display: 'flex', alignItems: 'center', gap: 10 }}>

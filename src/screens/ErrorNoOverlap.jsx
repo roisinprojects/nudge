@@ -47,19 +47,8 @@ export default function ErrorNoOverlap() {
             {MOCK_RESPONSES.map(r => (
               <div key={r.name} style={{ display: 'flex', gap: 10, alignItems: 'flex-start' }}>
                 <div
-                  style={{
-                    width: 28,
-                    height: 28,
-                    borderRadius: '50%',
-                    background: 'var(--surface2)',
-                    display: 'flex',
-                    alignItems: 'center',
-                    justifyContent: 'center',
-                    fontSize: 12,
-                    fontWeight: 700,
-                    color: 'var(--taupe)',
-                    flexShrink: 0,
-                  }}
+                  className="avatar"
+                  style={{ width: 28, height: 28, fontSize: 11, flexShrink: 0 }}
                 >
                   {r.name[0]}
                 </div>

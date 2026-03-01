@@ -78,21 +78,21 @@ export default function CantMakeIt() {
 
       {/* Event summary */}
       <div className="card" style={{ marginTop: 24 }}>
-        <p style={{ fontSize: 13, color: 'var(--taupe)', fontWeight: 600, textTransform: 'uppercase', letterSpacing: 0.5, marginBottom: 8 }}>
+        <p style={{ fontSize: 11, fontWeight: 700, color: 'var(--ink-muted)', textTransform: 'uppercase', letterSpacing: '0.06em', marginBottom: 8 }}>
           You're cancelling
         </p>
         <p style={{ fontWeight: 600, fontSize: 16 }}>{MOCK_EVENT.day}</p>
-        <p style={{ color: 'var(--text-muted)', fontSize: 14, marginTop: 4 }}>
+        <p style={{ color: 'var(--ink-secondary)', fontSize: 14, marginTop: 4 }}>
           {MOCK_EVENT.time} · {MOCK_EVENT.venue}
         </p>
-        <p style={{ fontSize: 13, color: 'var(--taupe)', marginTop: 2 }}>
+        <p style={{ fontSize: 13, color: 'var(--ink-muted)', marginTop: 2 }}>
           {MOCK_EVENT.cuisine} · {MOCK_EVENT.partySize} people
         </p>
       </div>
 
       {/* Empathetic message */}
       <div style={{ marginTop: 24 }}>
-        <p style={{ fontSize: 16, lineHeight: 1.6, color: 'var(--text-muted)' }}>
+        <p style={{ fontSize: 16, lineHeight: 1.6, color: 'var(--ink-secondary)' }}>
           Let the booker know so they can adjust the reservation. Some venues charge for no-shows, so it's important to tell us!
         </p>
       </div>
