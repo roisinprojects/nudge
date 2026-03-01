@@ -110,29 +110,12 @@ export default function GroupDetail() {
             </div>
             <div style={{ height: 1, background: 'var(--border-default)', margin: '12px 0' }} />
             <div style={{ display: 'flex', gap: 8 }}>
-              <button
-                onClick={() => navigate('/cant-make-it')}
-                style={{
-                  flex: 1, height: 40, borderRadius: 'var(--radius-md)',
-                  background: 'transparent', border: 'none',
-                  color: 'var(--ink-muted)', fontSize: 13, fontWeight: 600,
-                  cursor: 'pointer',
-                }}
-              >
+              <Button half variant="ghost" onClick={() => navigate('/cant-make-it')}>
                 Can't make it
-              </button>
-              <button
-                onClick={() => navigate('/calendar-invite')}
-                style={{
-                  flex: 1, height: 40, borderRadius: 'var(--radius-md)',
-                  background: 'transparent',
-                  border: '1px solid var(--border-strong)',
-                  color: 'var(--ink-primary)', fontSize: 13, fontWeight: 600,
-                  cursor: 'pointer',
-                }}
-              >
+              </Button>
+              <Button half variant="secondary" onClick={() => navigate('/calendar-invite')}>
                 Add to calendar
-              </button>
+              </Button>
             </div>
           </div>
         ) : (
@@ -178,17 +161,7 @@ export default function GroupDetail() {
                 boxShadow: 'var(--shadow-xs)',
               }}
             >
-              <div style={{
-                width: 36, height: 36, borderRadius: '50%',
-                background: m.isYou ? GROUP_COLOUR : 'var(--bg-ui)',
-                border: `1.5px solid ${m.isYou ? 'transparent' : 'var(--border-strong)'}`,
-                display: 'flex', alignItems: 'center', justifyContent: 'center',
-                fontSize: 13, fontWeight: 700,
-                color: 'var(--ink-primary)',
-                flexShrink: 0,
-              }}>
-                {m.initial}
-              </div>
+              <div className="avatar">{m.initial}</div>
               <div style={{ flex: 1 }}>
                 <p style={{ fontSize: 14, fontWeight: 600, color: 'var(--ink-primary)' }}>
                   {m.name}{m.isYou && <span style={{ color: 'var(--ink-muted)', fontWeight: 400 }}> (You)</span>}
