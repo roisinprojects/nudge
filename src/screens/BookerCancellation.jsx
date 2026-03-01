@@ -63,18 +63,9 @@ export default function BookerCancellation() {
       </div>
 
       {/* Alert banner */}
-      <div style={{
-        marginTop: 16,
-        background: 'var(--color-warning-bg)',
-        border: '1px solid var(--color-warning-border)',
-        borderRadius: 'var(--radius)',
-        padding: '12px 16px',
-        display: 'flex',
-        alignItems: 'center',
-        gap: 10,
-      }}>
-        <span style={{ fontSize: 18 }}>⚠️</span>
-        <p style={{ fontWeight: 600, color: 'var(--warning)', fontSize: 14 }}>
+      <div className="alert alert-warning" style={{ marginTop: 16 }}>
+        <span>⚠️</span>
+        <p style={{ fontWeight: 600, fontSize: 14 }}>
           {MOCK_CANCELLATION.name} can't make it!
         </p>
       </div>
@@ -84,66 +75,52 @@ export default function BookerCancellation() {
       </div>
 
       {/* Event summary */}
-      <div style={{
-        marginTop: 16,
-        background: 'var(--surface)',
-        borderRadius: 'var(--radius)',
-        padding: '14px 16px',
-        border: '1px solid rgba(255, 255, 255, 0.06)',
-      }}>
+      <div className="card" style={{ marginTop: 16 }}>
         <p style={{ fontWeight: 600 }}>{MOCK_EVENT.venue}</p>
-        <p style={{ fontSize: 14, color: 'var(--text-muted)', marginTop: 4 }}>
+        <p style={{ fontSize: 14, color: 'var(--ink-secondary)', marginTop: 4 }}>
           {MOCK_EVENT.day} · {MOCK_EVENT.time}
         </p>
-        <p style={{ fontSize: 13, color: 'var(--taupe)', marginTop: 4 }}>
+        <p style={{ fontSize: 13, color: 'var(--ink-muted)', marginTop: 4 }}>
           Confirmation #: {MOCK_EVENT.confirmNum}
         </p>
       </div>
 
       {/* Who cancelled */}
-      <div style={{
-        marginTop: 16,
-        padding: '14px 16px',
-        background: 'var(--color-error-bg)',
-        border: '1px solid var(--color-error-border)',
-        borderRadius: 'var(--radius)',
-      }}>
-        <p style={{ fontSize: 14 }}>
-          ❌ <strong>{MOCK_CANCELLATION.name}</strong> can't attend
-        </p>
-        <p style={{ fontSize: 13, color: 'var(--text-muted)', marginTop: 6 }}>
-          Party size: <strong>3 people</strong>{' '}
-          <span style={{ color: 'var(--taupe)' }}>(was {MOCK_EVENT.partySize}, now 1 cancelled)</span>
-        </p>
+      <div className="alert alert-error" style={{ marginTop: 16 }}>
+        <span>❌</span>
+        <div>
+          <p style={{ fontSize: 14 }}><strong>{MOCK_CANCELLATION.name}</strong> can't attend</p>
+          <p style={{ fontSize: 13, marginTop: 4 }}>
+            Party size: <strong>3 people</strong>{' '}
+            <span style={{ opacity: 0.7 }}>(was {MOCK_EVENT.partySize}, now 1 cancelled)</span>
+          </p>
+        </div>
       </div>
 
       {/* Options */}
       <div style={{ marginTop: 24, display: 'flex', flexDirection: 'column', gap: 12 }}>
 
         {/* Option 1: Contact OpenTable */}
-        <div style={{
-          background: 'var(--surface)', borderRadius: 'var(--radius)',
-          padding: '16px', border: '1px solid rgba(255, 255, 255, 0.06)',
-        }}>
+        <div className="card">
           <p style={{ fontWeight: 600, fontSize: 14 }}>Contact OpenTable to adjust</p>
-          <p style={{ fontSize: 13, color: 'var(--text-muted)', marginTop: 6, lineHeight: 1.5 }}>
+          <p style={{ fontSize: 13, color: 'var(--ink-secondary)', marginTop: 6, lineHeight: 1.5 }}>
             Reduce the party size to 3. Have your confirmation number ready:
           </p>
           <div style={{
             marginTop: 10, display: 'flex', alignItems: 'center',
-            background: 'var(--surface2)', borderRadius: 6, padding: '8px 12px',
-            border: '1px solid #2a2a2a',
+            background: 'var(--bg-ui)', borderRadius: 6, padding: '8px 12px',
+            border: '1px solid var(--border-strong)',
           }}>
-            <p style={{ flex: 1, fontWeight: 700, fontSize: 16, fontFamily: 'monospace', color: 'var(--text)' }}>
+            <p style={{ flex: 1, fontWeight: 700, fontSize: 16, fontFamily: 'monospace', color: 'var(--ink-primary)' }}>
               #{MOCK_EVENT.confirmNum}
             </p>
             <button
               onClick={copyConfirmation}
               style={{
-                background: copied ? 'rgba(5,46,22,0.9)' : 'rgba(232,93,77,0.15)',
-                border: `1px solid ${copied ? 'var(--color-success-border)' : 'rgba(232,93,77,0.3)'}`,
+                background: copied ? 'var(--color-success-bg)' : 'var(--bg-ui)',
+                border: `1px solid ${copied ? 'var(--color-success-border)' : 'var(--border-strong)'}`,
                 borderRadius: 6, padding: '5px 12px',
-                color: copied ? 'var(--success)' : 'var(--coral)',
+                color: copied ? 'var(--color-success-text)' : 'var(--ink-primary)',
                 fontSize: 13, fontWeight: 600, cursor: 'pointer',
                 transition: 'all 0.2s',
               }}
@@ -156,8 +133,8 @@ export default function BookerCancellation() {
               onClick={() => { window.location.href = 'mailto:?subject=OpenTable%20booking%20cancellation' }}
               style={{
                 flex: 1, height: 36, borderRadius: 6,
-                background: 'transparent', border: '1px solid rgba(255, 255, 255, 0.10)',
-                color: 'var(--text-muted)', fontSize: 13, fontWeight: 600, cursor: 'pointer',
+                background: 'transparent', border: '1px solid var(--border-strong)',
+                color: 'var(--ink-secondary)', fontSize: 13, fontWeight: 600, cursor: 'pointer',
               }}
             >
               📧 Email OpenTable
@@ -166,8 +143,8 @@ export default function BookerCancellation() {
               onClick={() => { window.open('https://www.opentable.com/contact-us', '_blank', 'noopener,noreferrer') }}
               style={{
                 flex: 1, height: 36, borderRadius: 6,
-                background: 'transparent', border: '1px solid rgba(255, 255, 255, 0.10)',
-                color: 'var(--text-muted)', fontSize: 13, fontWeight: 600, cursor: 'pointer',
+                background: 'transparent', border: '1px solid var(--border-strong)',
+                color: 'var(--ink-secondary)', fontSize: 13, fontWeight: 600, cursor: 'pointer',
               }}
             >
               📞 Call OpenTable
@@ -176,47 +153,29 @@ export default function BookerCancellation() {
         </div>
 
         {/* Option 2: Invite someone else */}
-        <div style={{
-          background: 'var(--surface)', borderRadius: 'var(--radius)',
-          padding: '16px', border: '1px solid rgba(255, 255, 255, 0.06)',
-        }}>
+        <div className="card">
           <p style={{ fontWeight: 600, fontSize: 14 }}>Invite someone else</p>
-          <p style={{ fontSize: 13, color: 'var(--text-muted)', marginTop: 6 }}>
+          <p style={{ fontSize: 13, color: 'var(--ink-secondary)', marginTop: 6 }}>
             Want to fill {MOCK_CANCELLATION.name}'s spot?
           </p>
-          <button
-            onClick={() => navigate('/invite-friends')}
-            style={{
-              marginTop: 10, width: '100%', height: 40,
-              background: 'transparent', border: '1px solid var(--coral)',
-              borderRadius: 6, color: 'var(--coral)',
-              fontSize: 14, fontWeight: 600, cursor: 'pointer',
-            }}
-          >
-            + Invite a friend
-          </button>
+          <div style={{ marginTop: 10 }}>
+            <Button variant="secondary" onClick={() => navigate('/invite-friends')}>
+              + Invite a friend
+            </Button>
+          </div>
         </div>
 
         {/* Option 3: Dismiss */}
-        <div style={{
-          background: 'var(--surface)', borderRadius: 'var(--radius)',
-          padding: '16px', border: '1px solid rgba(255, 255, 255, 0.06)',
-        }}>
+        <div className="card">
           <p style={{ fontWeight: 600, fontSize: 14 }}>It's fine, we'll manage</p>
-          <p style={{ fontSize: 13, color: 'var(--text-muted)', marginTop: 6 }}>
+          <p style={{ fontSize: 13, color: 'var(--ink-secondary)', marginTop: 6 }}>
             We've noted the change. No action needed.
           </p>
-          <button
-            onClick={() => setDismissed(true)}
-            style={{
-              marginTop: 10, width: '100%', height: 40,
-              background: 'transparent', border: '1px solid rgba(255, 255, 255, 0.10)',
-              borderRadius: 6, color: 'var(--text-muted)',
-              fontSize: 14, fontWeight: 600, cursor: 'pointer',
-            }}
-          >
-            Dismiss
-          </button>
+          <div style={{ marginTop: 10 }}>
+            <Button variant="ghost" onClick={() => setDismissed(true)}>
+              Dismiss
+            </Button>
+          </div>
         </div>
 
       </div>

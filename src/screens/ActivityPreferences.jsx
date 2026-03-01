@@ -53,9 +53,9 @@ export default function ActivityPreferences() {
               key={a.id}
               onClick={() => !isMaxed && toggle(a.id)}
               style={{
-                background: isSelected ? 'rgba(232,93,77,0.10)' : 'var(--surface)',
-                border: `1px solid ${isSelected ? 'var(--coral)' : '#2a2a2a'}`,
-                borderRadius: 'var(--radius)',
+                background: isSelected ? 'var(--bg-ui)' : 'var(--bg-card)',
+                border: `1px solid ${isSelected ? 'var(--ink-primary)' : 'var(--border-default)'}`,
+                borderRadius: 'var(--radius-lg)',
                 padding: '18px 16px',
                 cursor: isMaxed ? 'default' : 'pointer',
                 display: 'flex',
@@ -75,11 +75,11 @@ export default function ActivityPreferences() {
               {/* Selection order badge */}
               <div style={{
                 width: 24, height: 24, borderRadius: '50%',
-                border: `2px solid ${isSelected ? 'var(--coral)' : 'rgba(255, 255, 255, 0.10)'}`,
-                background: isSelected ? 'var(--coral)' : 'transparent',
+                border: `2px solid ${isSelected ? 'var(--ink-primary)' : 'var(--border-strong)'}`,
+                background: isSelected ? 'var(--ink-primary)' : 'transparent',
                 display: 'flex', alignItems: 'center', justifyContent: 'center',
                 flexShrink: 0,
-                fontSize: 12, fontWeight: 700, color: '#fff',
+                fontSize: 12, fontWeight: 700, color: 'var(--btn-primary-fg)',
                 transition: 'all 0.15s',
               }}>
                 {isSelected ? selIndex + 1 : null}

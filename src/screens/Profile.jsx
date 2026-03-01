@@ -110,16 +110,9 @@ export default function Profile() {
             ))}
           </div>
           <div style={{ width: '100%', display: 'flex', flexDirection: 'column', gap: 12 }}>
-            <button
-              onClick={() => setDeleted(true)}
-              style={{
-                width: '100%', height: 48, borderRadius: 'var(--radius)',
-                background: 'var(--error)', border: 'none',
-                color: '#fff', fontSize: 16, fontWeight: 600, cursor: 'pointer',
-              }}
-            >
+            <Button variant="destructive" onClick={() => setDeleted(true)}>
               Yes, delete account
-            </button>
+            </Button>
             <Button variant="ghost" onClick={() => setDeleteModal(false)}>
               Cancel
             </Button>
@@ -197,7 +190,7 @@ export default function Profile() {
           <div style={{
             display: 'flex', alignItems: 'center', justifyContent: 'space-between',
             background: 'var(--surface)', borderRadius: 'var(--radius)',
-            padding: '14px 16px', border: '1px solid rgba(255, 255, 255, 0.06)',
+            padding: '14px 16px', border: '1px solid var(--border-default)',
           }}>
             <p style={{ fontWeight: 600 }}>{firstName} {lastName}</p>
             <button
@@ -219,7 +212,7 @@ export default function Profile() {
         </p>
         <div style={{
           background: 'var(--surface)', borderRadius: 'var(--radius)',
-          padding: '14px 16px', border: '1px solid rgba(255, 255, 255, 0.06)',
+          padding: '14px 16px', border: '1px solid var(--border-default)',
         }}>
           <p style={{ fontWeight: 600, color: 'var(--text-muted)' }}>róisín@example.com</p>
         </div>
@@ -276,7 +269,7 @@ export default function Profile() {
             onClick={() => setEditingPw(true)}
             style={{
               width: '100%', height: 48, borderRadius: 'var(--radius)',
-              background: 'var(--surface)', border: '1px solid rgba(255, 255, 255, 0.06)',
+              background: 'var(--surface)', border: '1px solid var(--border-default)',
               color: 'var(--coral)', fontSize: 14, fontWeight: 600, cursor: 'pointer',
               textAlign: 'left', paddingLeft: 16,
             }}
@@ -323,7 +316,7 @@ export default function Profile() {
             style={{
               display: 'flex', alignItems: 'center', gap: 14,
               padding: '14px 16px', background: 'var(--surface)',
-              borderRadius: 'var(--radius)', border: '1px solid rgba(255, 255, 255, 0.06)',
+              borderRadius: 'var(--radius)', border: '1px solid var(--border-default)',
               marginBottom: 8,
             }}
           >
@@ -337,7 +330,7 @@ export default function Profile() {
               onClick={() => n.set(v => !v)}
               style={{
                 width: 46, height: 26, borderRadius: 13,
-                background: n.value ? 'var(--coral)' : '#333',
+                background: n.value ? 'var(--ink-primary)' : 'var(--border-strong)',
                 position: 'relative', cursor: 'pointer',
                 transition: 'background 0.2s', flexShrink: 0,
               }}
@@ -360,16 +353,9 @@ export default function Profile() {
         <p style={{ fontSize: 12, fontWeight: 700, color: 'var(--error)', textTransform: 'uppercase', letterSpacing: 0.8, marginBottom: 12 }}>
           Danger zone
         </p>
-        <button
-          onClick={() => setDeleteModal(true)}
-          style={{
-            width: '100%', height: 48, borderRadius: 'var(--radius)',
-            background: 'var(--color-error-bg)', border: '1px solid var(--color-error-border)',
-            color: 'var(--error)', fontSize: 16, fontWeight: 600, cursor: 'pointer',
-          }}
-        >
+        <Button variant="destructive" onClick={() => setDeleteModal(true)}>
           Delete account
-        </button>
+        </Button>
       </div>
     </Screen>
   )

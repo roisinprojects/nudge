@@ -42,7 +42,7 @@ export default function ResponseLocked() {
 
         <div
           className="card"
-          style={{ marginTop: 32, width: '100%', textAlign: 'left', border: '1px solid rgba(255, 255, 255, 0.06)' }}
+          style={{ marginTop: 32, width: '100%', textAlign: 'left' }}
         >
           {/* Dates section */}
           <p style={{ fontSize: 11, fontWeight: 700, color: 'var(--color-text-tertiary)', textTransform: 'uppercase', letterSpacing: '0.08em', marginBottom: 10 }}>

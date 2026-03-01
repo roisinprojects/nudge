@@ -37,8 +37,8 @@ export default function Matching() {
                 style={{
                   width: 20, height: 20,
                   borderRadius: '50%',
-                  background: step.done ? 'var(--success)' : 'var(--surface)',
-                  border: `2px solid ${step.done ? 'var(--success)' : 'rgba(255, 255, 255, 0.10)'}`,
+                  background: step.done ? 'var(--semantic-success)' : 'var(--bg-ui)',
+                  border: `2px solid ${step.done ? 'var(--semantic-success)' : 'var(--border-strong)'}`,
                   display: 'flex', alignItems: 'center', justifyContent: 'center',
                   fontSize: 11, color: 'var(--color-text-primary)', flexShrink: 0,
                 }}
@@ -47,7 +47,7 @@ export default function Matching() {
               </div>
               <span
                 className="text-sm"
-                style={{ color: step.done ? 'var(--success)' : 'var(--text-muted)' }}
+                style={{ color: step.done ? 'var(--semantic-success)' : 'var(--ink-secondary)' }}
               >
                 {step.label}
               </span>

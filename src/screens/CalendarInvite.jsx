@@ -47,20 +47,12 @@ export default function CalendarInvite() {
       </div>
 
       {/* Calendar invite card */}
-      <div
-        style={{
-          marginTop: 32,
-          background: 'var(--surface)',
-          borderRadius: 'var(--radius)',
-          overflow: 'hidden',
-          border: '1px solid rgba(255, 255, 255, 0.06)',
-        }}
-      >
-        <div style={{ background: 'var(--coral)', padding: '16px' }}>
-          <p className="text-xs" style={{ color: 'rgba(255,255,255,0.7)', marginBottom: 4 }}>
+      <div className="card" style={{ marginTop: 32, padding: 0, overflow: 'hidden' }}>
+        <div style={{ background: 'var(--ink-primary)', padding: '16px' }}>
+          <p className="text-xs" style={{ color: 'var(--btn-primary-fg)', opacity: 0.7, marginBottom: 4 }}>
             CALENDAR INVITE
           </p>
-          <p className="bold" style={{ fontSize: 18, color: '#fff' }}>
+          <p className="bold" style={{ fontSize: 18, color: 'var(--btn-primary-fg)' }}>
             {group} hangout 🎉
           </p>
         </div>

@@ -21,7 +21,7 @@ export default function RespondNow() {
 
         <div
           className="card"
-          style={{ marginTop: 32, width: '100%', textAlign: 'left', border: '1px solid rgba(255, 255, 255, 0.06)' }}
+          style={{ marginTop: 32, width: '100%', textAlign: 'left' }}
         >
           <div style={{ display: 'flex', flexDirection: 'column', gap: 12 }}>
             <div style={{ display: 'flex', alignItems: 'center', gap: 12 }}>

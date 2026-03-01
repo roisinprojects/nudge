@@ -27,22 +27,15 @@ export default function ErrorNoVenues() {
         </div>
 
         {/* Error box */}
-        <div
-          style={{
-            background: 'var(--color-error-bg)',
-            border: '1px solid var(--color-error-border)',
-            borderRadius: 'var(--radius)',
-            padding: '14px 16px',
-          }}
-        >
-          <p className="text-sm bold" style={{ color: 'var(--error)' }}>No availability found</p>
-          <p className="text-sm mt-8" style={{ color: 'var(--text-muted)' }}>
+        <div className="alert alert-error" style={{ flexDirection: 'column', alignItems: 'flex-start' }}>
+          <p className="text-sm bold">No availability found</p>
+          <p className="text-sm mt-8">
             {MATCH.date} · {MATCH.time} · {MATCH.activity} — nothing on OpenTable within 2 miles.
           </p>
         </div>
 
         {/* Options card */}
-        <div className="card" style={{ border: '1px solid rgba(255, 255, 255, 0.06)' }}>
+        <div className="card">
           <p className="text-sm text-muted mb-12">What you can do</p>
           <div style={{ display: 'flex', flexDirection: 'column', gap: 12 }}>
             <div style={{ display: 'flex', gap: 10 }}>
@@ -62,15 +55,8 @@ export default function ErrorNoVenues() {
 
         {/* Manual booking panel */}
         {showManual ? (
-          <div
-            style={{
-              background: 'var(--color-success-bg)',
-              border: '1px solid var(--color-success-border)',
-              borderRadius: 'var(--radius)',
-              padding: '16px',
-            }}
-          >
-            <p className="text-sm bold" style={{ color: 'var(--success)' }}>Manual booking details</p>
+          <div className="alert alert-success" style={{ flexDirection: 'column', alignItems: 'flex-start' }}>
+            <p className="text-sm bold">Manual booking details</p>
             <p className="text-sm text-muted mt-8 mb-12">
               Share this with your booker, or search OpenTable directly:
             </p>

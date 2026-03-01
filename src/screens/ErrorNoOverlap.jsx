@@ -32,28 +32,16 @@ export default function ErrorNoOverlap() {
         </div>
 
         {/* Warning box: best available */}
-        <div
-          style={{
-            background: 'var(--color-warning-bg)',
-            border: '1px solid var(--color-warning-border)',
-            borderRadius: 'var(--radius)',
-            padding: '14px 16px',
-          }}
-        >
-          <p className="text-sm bold" style={{ color: 'var(--warning)' }}>Best available time</p>
-          <p
-            className="bold mt-8"
-            style={{ color: 'var(--text)', fontSize: 18 }}
-          >
-            {BEST_MATCH.slot}
-          </p>
-          <p className="text-sm mt-8" style={{ color: 'var(--warning)' }}>
+        <div className="alert alert-warning" style={{ flexDirection: 'column', alignItems: 'flex-start' }}>
+          <p className="text-sm bold">Best available time</p>
+          <p className="bold mt-8" style={{ fontSize: 18 }}>{BEST_MATCH.slot}</p>
+          <p className="text-sm mt-8">
             {BEST_MATCH.count} of {BEST_MATCH.total} people free ({BEST_MATCH.who.join(' & ')})
           </p>
         </div>
 
         {/* Who responded with what */}
-        <div className="card" style={{ border: '1px solid rgba(255, 255, 255, 0.06)' }}>
+        <div className="card">
           <p className="text-sm text-muted mb-12">Responses this round</p>
           <div style={{ display: 'flex', flexDirection: 'column', gap: 10 }}>
             {MOCK_RESPONSES.map(r => (

@@ -211,24 +211,14 @@ export default function CalendarPicker() {
             const isSelected = activities.includes(a.id)
             const isMaxed = !isSelected && activities.length >= 2
             return (
-              <button
+              <span
                 key={a.id}
+                className={`chip ${isSelected ? 'chip-selected' : 'chip-outline'}`}
                 onClick={() => !isMaxed && toggleActivity(a.id)}
-                style={{
-                  height: 36,
-                  padding: '0 14px',
-                  borderRadius: 'var(--radius-full)',
-                  border: `1px solid ${isSelected ? 'transparent' : 'var(--border-strong)'}`,
-                  background: isSelected ? GROUP_COLOUR : 'transparent',
-                  color: isSelected ? 'var(--ink-primary)' : isMaxed ? 'var(--ink-faint)' : 'var(--ink-secondary)',
-                  fontSize: 13,
-                  fontWeight: 600,
-                  cursor: isMaxed ? 'default' : 'pointer',
-                  transition: 'all var(--duration-fast) var(--ease-out)',
-                }}
+                style={{ opacity: isMaxed ? 0.4 : 1, cursor: isMaxed ? 'default' : 'pointer' }}
               >
                 {a.label}
-              </button>
+              </span>
             )
           })}
         </div>

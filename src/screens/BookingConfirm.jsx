@@ -199,24 +199,14 @@ export default function BookingConfirm() {
           {timeChips.map(chip => {
             const isSelected = selectedTime === chip.value
             return (
-              <button
+              <span
                 key={chip.value}
+                className={`chip ${isSelected ? 'chip-selected' : 'chip-outline'}`}
                 onClick={() => setSelectedTime(chip.value)}
-                style={{
-                  height: 40,
-                  padding: '0 16px',
-                  borderRadius: 'var(--radius-lg)',
-                  border: `1px solid ${isSelected ? 'transparent' : 'var(--border-strong)'}`,
-                  background: isSelected ? GROUP_COLOUR : 'transparent',
-                  color: isSelected ? 'var(--ink-primary)' : 'var(--ink-secondary)',
-                  fontSize: 14,
-                  fontWeight: 600,
-                  cursor: 'pointer',
-                  transition: 'all var(--duration-fast) var(--ease-out)',
-                }}
+                style={{ cursor: 'pointer' }}
               >
                 {chip.label}
-              </button>
+              </span>
             )
           })}
         </div>
@@ -243,17 +233,9 @@ export default function BookingConfirm() {
           ✓ I've booked it
         </Button>
 
-        <button
-          onClick={handleCantBook}
-          style={{
-            background: 'none', border: 'none',
-            color: 'var(--ink-muted)', fontSize: 13,
-            cursor: 'pointer', textAlign: 'center',
-            padding: '4px 0',
-          }}
-        >
+        <Button variant="ghost" onClick={handleCantBook}>
           I can't book right now
-        </button>
+        </Button>
       </div>
     </Screen>
   )

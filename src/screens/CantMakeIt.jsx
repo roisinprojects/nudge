@@ -77,13 +77,7 @@ export default function CantMakeIt() {
       </div>
 
       {/* Event summary */}
-      <div style={{
-        marginTop: 24,
-        background: 'var(--surface)',
-        borderRadius: 'var(--radius)',
-        padding: '16px',
-        border: '1px solid rgba(255, 255, 255, 0.06)',
-      }}>
+      <div className="card" style={{ marginTop: 24 }}>
         <p style={{ fontSize: 13, color: 'var(--taupe)', fontWeight: 600, textTransform: 'uppercase', letterSpacing: 0.5, marginBottom: 8 }}>
           You're cancelling
         </p>
