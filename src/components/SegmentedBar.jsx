@@ -9,25 +9,16 @@ export default function SegmentedBar({ total, current, counterText }) {
       <div style={{ display: 'flex', alignItems: 'center', gap: 4 }}>
         {Array.from({ length: total }).map((_, i) => {
           const step = i + 1
-          let bg
-          if (step < current)      bg = 'var(--color-primary-500)'        // complete
-          else if (step === current) bg = 'rgba(232, 93, 77, 0.6)'          // current
-          else                       bg = 'var(--color-neutral-300)'         // upcoming
-          return (
-            <div
-              key={i}
-              style={{
-                flex: 1, height: 4, borderRadius: 2,
-                background: bg,
-                transition: 'background var(--duration-normal) var(--ease-out)',
-              }}
-            />
-          )
+          let cls
+          if (step < current)       cls = 'progress-seg done'
+          else if (step === current) cls = 'progress-seg active'
+          else                       cls = 'progress-seg todo'
+          return <div key={i} className={cls} style={{ flex: 1 }} />
         })}
         {counterText && (
           <span style={{
-            fontSize: 13,
-            color: 'var(--color-text-secondary)',
+            fontSize: 12,
+            color: 'var(--ink-secondary)',
             whiteSpace: 'nowrap',
             paddingLeft: 12,
             fontWeight: 600,
@@ -36,7 +27,7 @@ export default function SegmentedBar({ total, current, counterText }) {
           </span>
         )}
       </div>
-      <p style={{ fontSize: 13, color: 'var(--color-text-secondary)', marginTop: 6 }}>
+      <p style={{ fontSize: 12, color: 'var(--ink-muted)', marginTop: 6 }}>
         Step {current} of {total}
       </p>
     </div>

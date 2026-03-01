@@ -5,6 +5,8 @@ import Button from '../components/Button'
 import BackButton from '../components/BackButton'
 import Input from '../components/Input'
 
+const GROUP_COLOUR = 'var(--group-lavender)'
+
 const MOCK_MATCH = {
   date:        'Saturday, 1 March',
   time:        'Evening · 7pm onwards',
@@ -15,6 +17,21 @@ const MOCK_MATCH = {
 }
 
 const NEXT_BOOKER = 'Sarah'
+const MOCK_MEMBERS = ['Sarah', 'Tom', 'Jess', 'Mike', 'You']
+
+// Time chips: 4 slots starting from matched time at 30-min increments
+function getTimeChips(matchedTime24) {
+  const [startH, startM] = matchedTime24.split(':').map(Number)
+  return Array.from({ length: 4 }, (_, i) => {
+    const total = startH * 60 + startM + i * 30
+    const h = Math.floor(total / 60) % 24
+    const m = total % 60
+    const suffix = h >= 12 ? 'pm' : 'am'
+    const h12 = h % 12 || 12
+    const label = m === 0 ? `${h12}${suffix}` : `${h12}:${String(m).padStart(2, '0')}${suffix}`
+    return { value: `${String(h).padStart(2, '0')}:${String(m).padStart(2, '0')}`, label }
+  })
+}
 
 export default function BookingConfirm() {
   const navigate  = useNavigate()
@@ -23,15 +40,16 @@ export default function BookingConfirm() {
   const provisionalVenue = state?.provisionalVenue ?? null
   const match            = state?.match            ?? MOCK_MATCH
 
-  // true when provisional exists but booker tapped "did you book somewhere else?"
+  const timeChips = getTimeChips(match.matchedTime || '19:00')
+
   const [overrideVenue,   setOverrideVenue]   = useState(false)
   const [manualVenueName, setManualVenueName] = useState('')
+  const [selectedTime,    setSelectedTime]    = useState(timeChips[0].value)
   const [toast,           setToast]           = useState(false)
 
-  // Which venue is currently "active" for the flow
   const usingProvisional = !!(provisionalVenue && !overrideVenue)
   const currentVenueName = usingProvisional ? provisionalVenue.name : manualVenueName.trim()
-  const canProceed       = !!currentVenueName
+  const canProceed       = !!currentVenueName && !!selectedTime
 
   const openTableUrl = usingProvisional
     ? provisionalVenue.url
@@ -39,14 +57,27 @@ export default function BookingConfirm() {
       ? `https://www.opentable.com/s/?term=${encodeURIComponent(manualVenueName.trim())}`
       : 'https://www.opentable.com'
 
+  // Convert 24h "HH:MM" → display like "7pm" or "7:30pm"
+  const toDisplay = (time24) => {
+    const chip = timeChips.find(c => c.value === time24)
+    if (chip) return chip.label
+    const [h, m] = time24.split(':').map(Number)
+    const suffix = h >= 12 ? 'pm' : 'am'
+    const h12 = h % 12 || 12
+    return m === 0 ? `${h12}${suffix}` : `${h12}:${String(m).padStart(2, '0')}${suffix}`
+  }
+
   const handleBooked = () => {
-    navigate('/time-confirm', {
+    navigate('/calendar-invite', {
       state: {
-        venue: {
-          name:    currentVenueName,
-          address: usingProvisional ? provisionalVenue.address : '',
+        venueName:     currentVenueName,
+        venueAddress:  usingProvisional ? provisionalVenue.address : '',
+        confirmedTime: toDisplay(selectedTime),
+        match: {
+          date:     match.date,
+          activity: match.activity,
+          group:    match.group,
         },
-        match,
       },
     })
   }
@@ -58,24 +89,24 @@ export default function BookingConfirm() {
 
   return (
     <Screen style={{ paddingBottom: 40 }}>
-      <div style={{ paddingTop: 56 }}>
+      <div style={{ paddingTop: 48 }}>
         <BackButton to="/results" />
       </div>
 
-      {/* Auto-dismiss reassignment toast */}
+      {/* Reassignment toast */}
       {toast && (
         <div style={{
           position: 'absolute', top: 16, left: 16, right: 16,
-          background: 'var(--color-bg-elevated)',
-          border: '1px solid var(--color-border-strong)',
+          background: 'var(--bg-card)',
+          border: '1px solid var(--border-strong)',
           borderRadius: 'var(--radius-lg)',
           padding: '12px 16px',
           display: 'flex', gap: 10, alignItems: 'center',
           zIndex: 50,
           boxShadow: 'var(--shadow-md)',
         }}>
-          <span style={{ color: 'var(--color-success-icon)', fontSize: 16 }}>✓</span>
-          <p style={{ fontSize: 13, color: 'var(--color-text-primary)' }}>
+          <span style={{ color: 'var(--semantic-success)', fontSize: 16 }}>✓</span>
+          <p style={{ fontSize: 13, color: 'var(--ink-primary)' }}>
             We've asked {NEXT_BOOKER} to book instead.
           </p>
         </div>
@@ -83,50 +114,64 @@ export default function BookingConfirm() {
 
       {/* Header */}
       <div style={{ marginTop: 24, textAlign: 'center' }}>
-        <div style={{ fontSize: 56, lineHeight: 1 }}>🎯</div>
-        <h1 style={{ marginTop: 16 }}>You're the booker this round!</h1>
-        <p className="text-muted mt-8">
+        <div style={{ fontSize: 48, lineHeight: 1 }}>🎯</div>
+        <h1 style={{ marginTop: 12 }}>You're the booker!</h1>
+        <p style={{ marginTop: 6, fontSize: 14, color: 'var(--ink-secondary)' }}>
           Randomly assigned — next time it's someone else's turn.
         </p>
       </div>
 
-      {/* Hangout summary card */}
-      <div className="card" style={{ marginTop: 24, border: '1px solid rgba(255, 255, 255, 0.06)' }}>
-        <p className="text-sm text-muted mb-12">Your hangout</p>
+      {/* Venue + hangout summary card */}
+      <div style={{
+        marginTop: 20,
+        background: 'var(--bg-card)',
+        borderRadius: 'var(--radius-lg)',
+        border: '1px solid var(--border-default)',
+        borderLeft: `3px solid ${GROUP_COLOUR}`,
+        borderLeftWidth: 3,
+        borderLeftColor: GROUP_COLOUR,
+        padding: '14px 16px',
+        boxShadow: 'var(--shadow-sm)',
+      }}>
         <div style={{ display: 'flex', flexDirection: 'column', gap: 10 }}>
           <div style={{ display: 'flex', gap: 12, alignItems: 'center' }}>
-            <span style={{ fontSize: 20 }}>📅</span>
+            <span style={{ fontSize: 18 }}>👥</span>
+            <p style={{ fontWeight: 700, fontSize: 14 }}>{match.group}</p>
+          </div>
+          <div style={{ display: 'flex', gap: 12, alignItems: 'center' }}>
+            <span style={{ fontSize: 18 }}>📅</span>
             <div>
-              <p className="bold">{match.date}</p>
-              <p className="text-sm text-muted">{match.time}</p>
+              <p style={{ fontWeight: 700, fontSize: 14 }}>{match.date}</p>
+              <p style={{ fontSize: 12, color: 'var(--ink-secondary)', marginTop: 2 }}>{match.time}</p>
             </div>
           </div>
           <div style={{ display: 'flex', gap: 12, alignItems: 'center' }}>
-            <span style={{ fontSize: 20 }}>🍹</span>
-            <p className="bold">{match.activity}</p>
+            <span style={{ fontSize: 18 }}>🍹</span>
+            <p style={{ fontWeight: 700, fontSize: 14 }}>{match.activity}</p>
           </div>
           <div style={{ display: 'flex', gap: 12, alignItems: 'center' }}>
-            <span style={{ fontSize: 20 }}>👥</span>
-            <p className="bold">{match.group}</p>
-          </div>
-          {/* Venue line */}
-          <div style={{ display: 'flex', gap: 12, alignItems: 'center' }}>
-            <span style={{ fontSize: 20 }}>📍</span>
+            <span style={{ fontSize: 18 }}>📍</span>
             {usingProvisional ? (
-              <p className="bold">{provisionalVenue.name}</p>
+              <p style={{ fontWeight: 700, fontSize: 14 }}>{provisionalVenue.name}</p>
             ) : (
-              <p className="text-muted" style={{ fontStyle: 'italic' }}>Venue TBC</p>
+              <p style={{ fontSize: 14, color: 'var(--ink-muted)', fontStyle: 'italic' }}>Venue TBC</p>
             )}
+          </div>
+          <div style={{ display: 'flex', gap: 12, alignItems: 'center' }}>
+            <span style={{ fontSize: 18 }}>👤</span>
+            <p style={{ fontSize: 13, color: 'var(--ink-secondary)' }}>
+              {MOCK_MEMBERS.join(' · ')}
+            </p>
           </div>
         </div>
       </div>
 
-      {/* Venue context — shown when provisional venue is set and not overriding */}
+      {/* Venue override */}
       {usingProvisional && (
-        <p style={{ marginTop: 10, fontSize: 13, color: 'var(--color-text-secondary)' }}>
-          We'll use {provisionalVenue.name} for the calendar invite —{' '}
+        <p style={{ marginTop: 10, fontSize: 13, color: 'var(--ink-muted)' }}>
+          We'll use {provisionalVenue.name} —{' '}
           <span
-            style={{ color: 'var(--color-primary-500)', cursor: 'pointer', textDecoration: 'underline' }}
+            style={{ color: 'var(--ink-primary)', cursor: 'pointer', textDecoration: 'underline', fontWeight: 600 }}
             onClick={() => { setOverrideVenue(true); setManualVenueName('') }}
           >
             did you book somewhere else?
@@ -134,7 +179,6 @@ export default function BookingConfirm() {
         </p>
       )}
 
-      {/* Manual venue input — shown when no provisional, or after override */}
       {(!provisionalVenue || overrideVenue) && (
         <div style={{ marginTop: 16 }}>
           <Input
@@ -145,6 +189,38 @@ export default function BookingConfirm() {
           />
         </div>
       )}
+
+      {/* Time chips */}
+      <div style={{ marginTop: 20 }}>
+        <p style={{ fontSize: 13, fontWeight: 700, color: 'var(--ink-primary)', marginBottom: 10 }}>
+          What time did you book?
+        </p>
+        <div style={{ display: 'flex', gap: 8, flexWrap: 'wrap' }}>
+          {timeChips.map(chip => {
+            const isSelected = selectedTime === chip.value
+            return (
+              <button
+                key={chip.value}
+                onClick={() => setSelectedTime(chip.value)}
+                style={{
+                  height: 40,
+                  padding: '0 16px',
+                  borderRadius: 'var(--radius-lg)',
+                  border: `1px solid ${isSelected ? 'transparent' : 'var(--border-strong)'}`,
+                  background: isSelected ? GROUP_COLOUR : 'transparent',
+                  color: isSelected ? 'var(--ink-primary)' : 'var(--ink-secondary)',
+                  fontSize: 14,
+                  fontWeight: 600,
+                  cursor: 'pointer',
+                  transition: 'all var(--duration-fast) var(--ease-out)',
+                }}
+              >
+                {chip.label}
+              </button>
+            )
+          })}
+        </div>
+      </div>
 
       {/* Info callout */}
       <div className="alert alert-warning" style={{ marginTop: 16 }}>
@@ -171,7 +247,7 @@ export default function BookingConfirm() {
           onClick={handleCantBook}
           style={{
             background: 'none', border: 'none',
-            color: 'var(--color-text-secondary)', fontSize: 13,
+            color: 'var(--ink-muted)', fontSize: 13,
             cursor: 'pointer', textAlign: 'center',
             padding: '4px 0',
           }}

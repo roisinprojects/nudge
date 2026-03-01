@@ -15,6 +15,9 @@ export default function Screen({ children, style }) {
           display: 'flex',
           flexDirection: 'column',
           position: 'relative',
+          backgroundColor: 'var(--bg-primary)',
+          backgroundImage: 'radial-gradient(circle, var(--dot-color) 1px, transparent 1px)',
+          backgroundSize: 'var(--dot-size) var(--dot-size)',
           ...style,
         }}
       >
