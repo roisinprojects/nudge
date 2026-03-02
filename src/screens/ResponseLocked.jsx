@@ -1,18 +1,29 @@
 import { useNavigate, useLocation } from 'react-router-dom'
 import Screen from '../components/Screen'
 import Button from '../components/Button'
+import Icon from '../components/Icon'
 
-const TIME_LABELS    = { lunch: 'Lunch', evening: 'Evening', late: 'Late' }
+const TIME_LABELS    = { lunch: '11am – 3pm', evening: '5pm – 9pm', late: '9pm+' }
 const ACTIVITY_LABELS = { food: 'Food', food_drinks: 'Food + Drinks', drinks: 'Drinks', suggest: 'Flexible' }
+
+const GROUP_COLOUR = 'var(--group-lavender)'
 
 export default function ResponseLocked() {
   const navigate  = useNavigate()
   const { state } = useLocation()
 
-  // Build display rows from real state, or fall back to plausible mock data
+  // Build display rows from real state, or fall back to mock data
   const slots = state?.dates
-    ? state.dates.map(d => `${d.fmtDate} · ${TIME_LABELS[state.times?.[d.date]] ?? ''}`)
-    : ['Sat 1 Mar · Evening', 'Fri 7 Mar · Late', 'Sun 9 Mar · Lunch']
+    ? state.dates.map(d => {
+        const timeId = state.times?.[d.date]
+        const timeRange = timeId ? TIME_LABELS[timeId] : ''
+        return { label: d.fmtDate, time: timeRange }
+      })
+    : [
+        { label: 'Saturday, 1 March', time: '5pm – 9pm' },
+        { label: 'Friday, 7 March',   time: '9pm+' },
+        { label: 'Sunday, 9 March',   time: '11am – 3pm' },
+      ]
 
   const activityDisplay = state?.activities?.length
     ? state.activities.map(id => ACTIVITY_LABELS[id] ?? id).join(' · ')
@@ -28,11 +39,10 @@ export default function ResponseLocked() {
             background: 'var(--semantic-success-bg)',
             border: '2px solid var(--semantic-success)',
             display: 'flex', alignItems: 'center', justifyContent: 'center',
-            fontSize: 36,
             marginBottom: 24,
           }}
         >
-          ✓
+          <Icon name="check_circle" size={48} style={{ color: 'var(--semantic-success)' }} />
         </div>
 
         <h1 style={{ color: 'var(--semantic-success)' }}>You're locked in!</h1>
@@ -44,15 +54,23 @@ export default function ResponseLocked() {
           className="card"
           style={{ marginTop: 32, width: '100%', textAlign: 'left' }}
         >
+          {/* Group name */}
+          <p style={{ fontSize: 14, fontWeight: 500, color: GROUP_COLOUR, marginBottom: 10 }}>
+            Uni Friends
+          </p>
+
           {/* Dates section */}
           <p style={{ fontSize: 11, fontWeight: 700, color: 'var(--ink-muted)', textTransform: 'uppercase', letterSpacing: '0.06em', marginBottom: 10 }}>
             Your dates
           </p>
-          <div style={{ display: 'flex', flexDirection: 'column', gap: 8 }}>
+          <div style={{ display: 'flex', flexDirection: 'column', gap: 10 }}>
             {slots.map((slot, i) => (
-              <div key={i} style={{ display: 'flex', alignItems: 'center', gap: 10 }}>
-                <span>📅</span>
-                <span className="text-sm">{slot}</span>
+              <div key={i} style={{ display: 'flex', alignItems: 'flex-start', gap: 10 }}>
+                <Icon name="event" size={16} style={{ color: 'var(--ink-muted)', marginTop: 2, flexShrink: 0 }} />
+                <div>
+                  <p style={{ fontSize: 16, fontWeight: 600, color: 'var(--ink-primary)' }}>{slot.label}</p>
+                  <p style={{ fontSize: 16, color: 'var(--ink-secondary)', marginTop: 2 }}>{slot.time}</p>
+                </div>
               </div>
             ))}
           </div>
@@ -65,13 +83,13 @@ export default function ResponseLocked() {
             Your vibe
           </p>
           <div style={{ display: 'flex', alignItems: 'center', gap: 10 }}>
-            <span>🍸</span>
+            <Icon name="local_bar" size={16} style={{ color: 'var(--ink-muted)', flexShrink: 0 }} />
             <span className="text-sm">{activityDisplay}</span>
           </div>
         </div>
 
         <div className="alert alert-success" style={{ marginTop: 24, width: '100%' }}>
-          <span>🔒</span>
+          <Icon name="lock" size={16} style={{ color: 'var(--semantic-success)', flexShrink: 0 }} />
           <p className="text-sm">Responses are locked to keep it fair — no one can backtrack based on seeing others' picks.</p>
         </div>
       </div>

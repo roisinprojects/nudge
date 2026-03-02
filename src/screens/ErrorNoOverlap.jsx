@@ -1,6 +1,7 @@
 import { useNavigate } from 'react-router-dom'
 import Screen from '../components/Screen'
 import Button from '../components/Button'
+import Icon from '../components/Icon'
 
 const MOCK_RESPONSES = [
   { name: 'Sarah', slots: ['Sat 28 Feb · 7pm', 'Sun 1 Mar · 3pm'] },
@@ -10,10 +11,10 @@ const MOCK_RESPONSES = [
 ]
 
 const BEST_MATCH = {
-  slot: 'Sat, 28 Feb · 7pm',
+  slot:  'Sat, 28 Feb · 7pm',
   count: 2,
   total: 4,
-  who: ['Sarah', 'Tom'],
+  who:   ['Sarah', 'Tom'],
 }
 
 export default function ErrorNoOverlap() {
@@ -23,7 +24,15 @@ export default function ErrorNoOverlap() {
     <Screen style={{ paddingBottom: 40 }}>
       <div style={{ flex: 1, display: 'flex', flexDirection: 'column', gap: 24, paddingTop: 56 }}>
         <div style={{ textAlign: 'center' }}>
-          <div style={{ fontSize: 52 }}>😬</div>
+          <div style={{
+            width: 72, height: 72, borderRadius: '50%',
+            background: 'var(--semantic-warning-bg)',
+            border: '1px solid var(--semantic-warning-border)',
+            display: 'flex', alignItems: 'center', justifyContent: 'center',
+            margin: '0 auto',
+          }}>
+            <Icon name="event_busy" size={36} style={{ color: 'var(--semantic-warning)' }} />
+          </div>
           <h1 style={{ marginTop: 16 }}>No overlap found</h1>
           <p className="text-muted mt-8">
             Everyone's got different schedules this round. No single time works for all of{' '}
@@ -31,7 +40,7 @@ export default function ErrorNoOverlap() {
           </p>
         </div>
 
-        {/* Warning box: best available */}
+        {/* Best available time */}
         <div className="alert alert-warning" style={{ flexDirection: 'column', alignItems: 'flex-start' }}>
           <p className="text-sm bold">Best available time</p>
           <p className="bold mt-8" style={{ fontSize: 18 }}>{BEST_MATCH.slot}</p>
@@ -40,7 +49,7 @@ export default function ErrorNoOverlap() {
           </p>
         </div>
 
-        {/* Who responded with what */}
+        {/* Responses */}
         <div className="card">
           <p className="text-sm text-muted mb-12">Responses this round</p>
           <div style={{ display: 'flex', flexDirection: 'column', gap: 10 }}>
@@ -66,16 +75,12 @@ export default function ErrorNoOverlap() {
             Match with available members
           </Button>
           <Button variant="secondary" onClick={() => navigate('/results')}>
-            Pick closest match
+            Pick the closest match
           </Button>
           <Button variant="ghost" onClick={() => navigate('/home')}>
-            Wait for the next nudge
+            Wait for next nudge in 2 weeks
           </Button>
         </div>
-
-        <p className="text-center text-xs text-muted" style={{ marginTop: -8 }}>
-          Next nudge: in 2 weeks
-        </p>
       </div>
     </Screen>
   )

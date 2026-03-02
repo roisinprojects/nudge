@@ -52,7 +52,10 @@ export default function SignUp() {
 
       <div style={{ marginTop: 'auto', paddingBottom: 40, display: 'flex', flexDirection: 'column', gap: 12 }}>
         <p className="text-center text-xs text-muted">
-          By continuing you agree to our Terms & Privacy Policy.
+          By continuing you agree to our{' '}
+          <a href="#" style={{ color: 'var(--ink-primary)', textDecoration: 'underline' }}>Terms of Service</a>
+          {' '}and{' '}
+          <a href="#" style={{ color: 'var(--ink-primary)', textDecoration: 'underline' }}>Privacy Policy</a>.
         </p>
       </div>
     </Screen>

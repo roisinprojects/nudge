@@ -3,6 +3,7 @@ import { useNavigate, useLocation } from 'react-router-dom'
 import Screen from '../components/Screen'
 import Button from '../components/Button'
 import SegmentedBar from '../components/SegmentedBar'
+import Icon from '../components/Icon'
 
 const GROUP_COLOUR = 'var(--group-peach)'
 
@@ -29,8 +30,8 @@ const TIME_CHIPS = [
 ]
 
 const META_ROWS = (match) => [
-  { label: 'Group', value: match.group },
-  { label: 'Date',  value: match.date  },
+  { label: 'Group',  value: match.group },
+  { label: 'Date',   value: match.date  },
   { label: 'Guests', value: `${MOCK_GUESTS.length} people` },
 ]
 
@@ -41,15 +42,18 @@ export default function BookingConfirm() {
   const venue = state?.provisionalVenue ?? MOCK_VENUE
   const match = state?.match            ?? MOCK_MATCH
 
-  const venueName         = venue.name
-  const venueType         = venue.type         || MOCK_VENUE.type
-  const venueNeighbourhood = venue.neighbourhood || MOCK_VENUE.neighbourhood
-  const openTableUrl      = venue.url           || MOCK_VENUE.url
+  const venueName          = venue.name
+  const venueType          = venue.type          || MOCK_VENUE.type
+  const venueNeighbourhood = venue.neighbourhood  || MOCK_VENUE.neighbourhood
+  const openTableUrl       = venue.url            || MOCK_VENUE.url
 
-  const [selectedTime, setSelectedTime] = useState('19:00')
+  // No default — CTA disabled until user explicitly picks a time
+  const [selectedTime, setSelectedTime] = useState(null)
   const [isError,      setIsError]      = useState(false)
 
-  const selectedLabel = TIME_CHIPS.find(c => c.value === selectedTime)?.label ?? selectedTime
+  const selectedLabel = selectedTime
+    ? (TIME_CHIPS.find(c => c.value === selectedTime)?.label ?? selectedTime)
+    : null
 
   const handleBooked = () => {
     navigate('/calendar-invite', {
@@ -70,10 +74,12 @@ export default function BookingConfirm() {
 
   return (
     <Screen style={{ paddingBottom: 40 }}>
+      {/* Stepper */}
       <div style={{ paddingTop: 48 }}>
-        <SegmentedBar total={4} current={4} />
+        <SegmentedBar total={2} current={2} />
       </div>
 
+      {/* Title */}
       <div style={{ marginTop: 24 }}>
         <h1>Confirm booking</h1>
         <p className="text-sm text-muted" style={{ marginTop: 4 }}>
@@ -81,7 +87,7 @@ export default function BookingConfirm() {
         </p>
       </div>
 
-      {/* Venue section */}
+      {/* Venue card */}
       <p style={{ fontSize: 11, fontWeight: 700, color: 'var(--ink-muted)', textTransform: 'uppercase', letterSpacing: '0.06em', marginTop: 24, marginBottom: 10 }}>
         Venue
       </p>
@@ -92,7 +98,34 @@ export default function BookingConfirm() {
         </p>
       </div>
 
-      {/* Confirm time section */}
+      {/* Group info */}
+      <div style={{ marginTop: 16 }}>
+        {metaRows.map((row, i) => (
+          <div key={row.label}>
+            <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', padding: '10px 0' }}>
+              <p style={{ fontSize: 14, color: 'var(--ink-muted)' }}>{row.label}</p>
+              <p style={{ fontSize: 14, fontWeight: 600, color: 'var(--ink-primary)' }}>{row.value}</p>
+            </div>
+            {i < metaRows.length - 1 && (
+              <div style={{ height: 1, background: 'var(--border-default)' }} />
+            )}
+          </div>
+        ))}
+      </div>
+
+      {/* Open OpenTable CTA */}
+      <div style={{ marginTop: 24 }}>
+        <Button onClick={() => window.open(openTableUrl, '_blank', 'noopener,noreferrer')}>
+          Open OpenTable
+        </Button>
+      </div>
+
+      {/* Instructional text */}
+      <p className="text-sm text-muted" style={{ marginTop: 16, lineHeight: 1.6 }}>
+        Complete your reservation on OpenTable, then come back and confirm the time below.
+      </p>
+
+      {/* Time picker */}
       <p style={{ fontSize: 11, fontWeight: 700, color: 'var(--ink-muted)', textTransform: 'uppercase', letterSpacing: '0.06em', marginTop: 24, marginBottom: 10 }}>
         Confirm time
       </p>
@@ -109,37 +142,18 @@ export default function BookingConfirm() {
         ))}
       </div>
 
-      {/* Divider */}
-      <div style={{ height: 1, background: 'var(--border-default)', margin: '20px 0' }} />
-
-      {/* Meta rows */}
-      {metaRows.map((row, i) => (
-        <div key={row.label}>
-          <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', padding: '10px 0' }}>
-            <p style={{ fontSize: 14, color: 'var(--ink-muted)' }}>{row.label}</p>
-            <p style={{ fontSize: 14, fontWeight: 600, color: 'var(--ink-primary)' }}>{row.value}</p>
-          </div>
-          {i < metaRows.length - 1 && (
-            <div style={{ height: 1, background: 'var(--border-default)' }} />
-          )}
-        </div>
-      ))}
-
       {/* Error alert */}
       {isError && (
         <div className="alert alert-error" style={{ marginTop: 16 }}>
-          <span>⚠️</span>
+          <Icon name="warning" size={16} style={{ color: 'var(--semantic-error)', flexShrink: 0 }} />
           <p style={{ fontSize: 13 }}>Something went wrong. Please try again.</p>
         </div>
       )}
 
-      {/* CTAs */}
-      <div style={{ marginTop: 24, display: 'flex', flexDirection: 'column', gap: 12 }}>
-        <Button onClick={() => window.open(openTableUrl, '_blank', 'noopener,noreferrer')}>
-          Open OpenTable →
-        </Button>
-        <Button variant="ghost" onClick={handleBooked}>
-          ✓ I've booked it
+      {/* I've booked it CTA — disabled until time selected */}
+      <div style={{ marginTop: 24 }}>
+        <Button variant="ghost" disabled={!selectedTime} onClick={handleBooked}>
+          I've booked it
         </Button>
       </div>
     </Screen>

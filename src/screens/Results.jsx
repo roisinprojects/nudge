@@ -2,6 +2,7 @@ import { useNavigate } from 'react-router-dom'
 import Screen from '../components/Screen'
 import Button from '../components/Button'
 import SegmentedBar from '../components/SegmentedBar'
+import Icon from '../components/Icon'
 
 const GROUP_COLOUR = 'var(--group-lavender)'
 
@@ -79,7 +80,7 @@ export default function Results() {
   return (
     <Screen style={{ paddingBottom: 40 }}>
       <div style={{ paddingTop: 48 }}>
-        <SegmentedBar total={4} current={4} />
+        <SegmentedBar total={2} current={1} />
       </div>
 
       <div style={{ marginTop: 24 }}>
@@ -90,7 +91,7 @@ export default function Results() {
       </div>
 
       <div className="alert alert-success" style={{ marginTop: 20 }}>
-        <span>✓</span>
+        <Icon name="check_circle" size={16} style={{ color: 'var(--semantic-success)', flexShrink: 0 }} />
         <p style={{ fontSize: 13, fontWeight: 600 }}>
           Everyone is free — time to pick a venue.
         </p>
@@ -118,11 +119,12 @@ export default function Results() {
               ))}
             </div>
 
-            <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginTop: 12 }}>
-              <span style={{ fontSize: 12, color: 'var(--ink-muted)' }}>
-                ⭐ {v.rating} · {v.distance}
-              </span>
-              <Button variant="secondary" onClick={() => handleBook(v)}>Book →</Button>
+            <div style={{ display: 'flex', alignItems: 'center', gap: 4, marginTop: 10 }}>
+              <Icon name="star" size={14} style={{ color: 'var(--semantic-warning)' }} />
+              <span style={{ fontSize: 12, color: 'var(--ink-muted)' }}>{v.rating} · {v.distance}</span>
+            </div>
+            <div style={{ marginTop: 12 }}>
+              <Button onClick={() => handleBook(v)}>Book on OpenTable</Button>
             </div>
           </div>
         ))}

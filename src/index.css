@@ -29,6 +29,10 @@
   --btn-primary-hover:  #2D2D2D;
   --btn-primary-active: #404040;
 
+  /* Disabled button — visible muted state */
+  --btn-disabled-bg: rgba(26, 26, 26, 0.20);
+  --btn-disabled-fg: rgba(26, 26, 26, 0.40);
+
   /* Semantic — success */
   --semantic-success:        #2D7D4F;
   --semantic-success-bg:     #EDF7F2;
@@ -176,6 +180,10 @@
     --btn-primary-fg:     #1A1A1A;
     --btn-primary-hover:  #FFFFFF;
     --btn-primary-active: #F0EDE6;
+
+    /* Disabled button — dark mode */
+    --btn-disabled-bg: rgba(232, 228, 220, 0.20);
+    --btn-disabled-fg: rgba(232, 228, 220, 0.40);
 
     --semantic-success:        #6BCCA0;
     --semantic-success-bg:     #0A2E1A;
@@ -503,10 +511,12 @@ h3 {
   background: var(--semantic-error-bg);
 }
 
-/* Disabled */
+/* Disabled — visible muted state (not invisible) */
 .btn-disabled,
 .btn[disabled] {
-  opacity: 0.35;
+  background: var(--btn-disabled-bg) !important;
+  color: var(--btn-disabled-fg) !important;
+  border-color: transparent !important;
   cursor: not-allowed;
   pointer-events: none;
 }
@@ -574,6 +584,16 @@ h3 {
   padding: 16px;
   border: 1px solid var(--border-default);
   box-shadow: var(--shadow-sm);
+  transition: box-shadow var(--duration-fast) var(--ease-out), background-color var(--duration-fast) var(--ease-out);
+}
+.card-interactive {
+  cursor: pointer;
+}
+@media (hover: hover) {
+  .card-interactive:hover {
+    box-shadow: var(--shadow-md);
+    background-color: rgba(26, 26, 26, 0.03);
+  }
 }
 
 /* ── Alert banners ── */
@@ -753,13 +773,21 @@ h3 {
   color: var(--bg-primary);
 }
 .badge-waiting {
-  background: var(--semantic-warning-bg);
-  color: var(--semantic-warning);
-  border: 1px solid var(--semantic-warning-border);
+  background: #E8E4DF;
+  color: #3A3530;
 }
 .badge-idle {
-  background: var(--bg-ui);
-  color: var(--ink-muted);
+  background: #D4A574;
+  color: #3A2A10;
+}
+.badge-matched {
+  background: var(--ink-primary);
+  color: var(--btn-primary-fg);
+}
+.badge-booked {
+  background: var(--semantic-success-bg);
+  color: var(--semantic-success);
+  border: 1px solid var(--semantic-success-border);
 }
 .badge-confirmed {
   background: var(--semantic-success-bg);
@@ -819,4 +847,18 @@ h3 {
   background: var(--border-strong);
 }
 .dot.active { background: var(--ink-primary); }
+
+/* ── Confetti animation ── */
+@keyframes confetti-fall {
+  0%   { transform: translateY(-20px) rotate(0deg) scaleX(1);   opacity: 1; }
+  80%  { opacity: 1; }
+  100% { transform: translateY(110vh) rotate(720deg) scaleX(-1); opacity: 0; }
+}
+.confetti-piece {
+  position: absolute;
+  top: -20px;
+  border-radius: 2px;
+  animation: confetti-fall linear forwards;
+  pointer-events: none;
+}
 .dot.done   { background: var(--semantic-success-icon); }
