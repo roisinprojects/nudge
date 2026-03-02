@@ -26,8 +26,10 @@ import MultipleCancellations from './screens/MultipleCancellations'
 import ErrorNoOverlap        from './screens/ErrorNoOverlap'
 import ErrorNoVenues         from './screens/ErrorNoVenues'
 import GenericError          from './screens/GenericError'
-import BookedCardDetails     from './screens/BookedCardDetails'
-import DesignSystem          from './screens/DesignSystem'
+import BookedCardDetails      from './screens/BookedCardDetails'
+import HomeLight              from './screens/HomeLight'
+import BookedCardDetailsLight from './screens/BookedCardDetailsLight'
+import DesignSystem           from './screens/DesignSystem'
 
 // ── Screen map used by the nav overlay ──────────────────────────────────────
 export const SCREENS = [
@@ -44,7 +46,9 @@ export const SCREENS = [
   { path: '/group-settings',         label: 'Group settings',           group: 'Home & Groups'  },
   { path: '/invite-landing',         label: 'Invite landing',           group: 'Home & Groups'  },
   { path: '/profile',                label: 'Profile & settings',       group: 'Home & Groups'  },
-  { path: '/booked-details',         label: 'Booked event details',     group: 'Home & Groups'  },
+  { path: '/booked-details',         label: 'Booked event details',       group: 'Home & Groups'  },
+  { path: '/home-light',             label: 'Home – card states (light)', group: 'Home & Groups'  },
+  { path: '/booked-details-light',   label: 'Booked details (light)',     group: 'Home & Groups'  },
   // Response flow
   { path: '/respond',                label: 'Respond now',              group: 'Response flow'  },
   { path: '/calendar-picker',        label: 'Pick 3 dates',             group: 'Response flow'  },
@@ -294,6 +298,8 @@ export default function App() {
             <Route path="/error-no-venues"            element={<ErrorNoVenues />} />
             <Route path="/error"                      element={<GenericError />} />
             <Route path="/booked-details"             element={<BookedCardDetails />} />
+            <Route path="/home-light"               element={<HomeLight />} />
+            <Route path="/booked-details-light"     element={<BookedCardDetailsLight />} />
             <Route path="/design-system"              element={<DesignSystem />} />
           </Routes>
         </div>
