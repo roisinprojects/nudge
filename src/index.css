@@ -657,9 +657,9 @@ h3 {
   border-radius: 2px;
   transition: background var(--duration-normal) var(--ease-out);
 }
-.progress-seg.done    { background: var(--ink-primary); }
-.progress-seg.active  { background: #555555; }
-.progress-seg.todo    { background: #333333; }
+.progress-seg.active  { background: var(--ink-primary); }
+.progress-seg.done    { background: var(--ink-secondary); }
+.progress-seg.todo    { background: var(--border-strong); }
 
 /* ── Pill / chip ── */
 .chip {
