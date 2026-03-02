@@ -29,9 +29,9 @@
   --btn-primary-hover:  #2D2D2D;
   --btn-primary-active: #404040;
 
-  /* Disabled button — visible muted state */
-  --btn-disabled-bg: rgba(26, 26, 26, 0.20);
-  --btn-disabled-fg: rgba(26, 26, 26, 0.40);
+  /* Disabled button — solid muted state */
+  --btn-disabled-bg: #D0CBC5;
+  --btn-disabled-fg: #8C8884;
 
   /* Semantic — success */
   --semantic-success:        #2D7D4F;
@@ -182,8 +182,8 @@
     --btn-primary-active: #F0EDE6;
 
     /* Disabled button — dark mode */
-    --btn-disabled-bg: rgba(232, 228, 220, 0.20);
-    --btn-disabled-fg: rgba(232, 228, 220, 0.40);
+    --btn-disabled-bg: #2E2B28;
+    --btn-disabled-fg: #66625E;
 
     --semantic-success:        #6BCCA0;
     --semantic-success-bg:     #0A2E1A;

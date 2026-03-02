@@ -86,7 +86,6 @@ export default function GroupSettings() {
 
       <div style={{ marginTop: 20 }}>
         <h1>Group settings</h1>
-        <p className="text-muted mt-8">Creator only</p>
       </div>
 
       {/* Section: Group name */}

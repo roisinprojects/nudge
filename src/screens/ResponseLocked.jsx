@@ -95,8 +95,8 @@ export default function ResponseLocked() {
       </div>
 
       <div style={{ paddingBottom: 40 }}>
-        <Button onClick={() => navigate('/waiting')}>
-          See who's responded
+        <Button onClick={() => navigate('/home')}>
+          Back to home
         </Button>
       </div>
     </Screen>

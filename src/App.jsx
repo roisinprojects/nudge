@@ -16,13 +16,9 @@ import Profile               from './screens/Profile'
 import RespondNow            from './screens/RespondNow'
 import CalendarPicker        from './screens/CalendarPicker'
 import TimeSlotPicker        from './screens/TimeSlotPicker'
-import ActivityPreferences   from './screens/ActivityPreferences'
 import ResponseLocked        from './screens/ResponseLocked'
-import WaitingForOthers      from './screens/WaitingForOthers'
-import Matching              from './screens/Matching'
 import Results               from './screens/Results'
 import BookingConfirm        from './screens/BookingConfirm'
-import TimeConfirm           from './screens/TimeConfirm'
 import CalendarInvite        from './screens/CalendarInvite'
 import CantMakeIt            from './screens/CantMakeIt'
 import BookerCancellation    from './screens/BookerCancellation'
@@ -53,14 +49,10 @@ export const SCREENS = [
   { path: '/respond',                label: 'Respond now',              group: 'Response flow'  },
   { path: '/calendar-picker',        label: 'Pick 3 dates',             group: 'Response flow'  },
   { path: '/time-picker',            label: 'Pick times',               group: 'Response flow'  },
-  { path: '/activity-preferences',   label: 'Pick activity',            group: 'Response flow'  },
   { path: '/response-locked',        label: 'Response locked',          group: 'Response flow'  },
-  { path: '/waiting',                label: 'Waiting for others',       group: 'Response flow'  },
   // Matching & results
-  { path: '/matching',               label: 'Matching (loading)',        group: 'Results'        },
   { path: '/results',                label: 'Results',                  group: 'Results'        },
   { path: '/booking-confirm',        label: 'Booking confirm',          group: 'Results'        },
-  { path: '/time-confirm',           label: 'Confirm the time',         group: 'Results'        },
   { path: '/calendar-invite',        label: 'Calendar invite',          group: 'Results'        },
   // Cancellation
   { path: '/cant-make-it',           label: "Can't make it",            group: 'Cancellation'   },
@@ -291,13 +283,9 @@ export default function App() {
             <Route path="/respond"                    element={<RespondNow />} />
             <Route path="/calendar-picker"            element={<CalendarPicker />} />
             <Route path="/time-picker"                element={<TimeSlotPicker />} />
-            <Route path="/activity-preferences"       element={<ActivityPreferences />} />
             <Route path="/response-locked"            element={<ResponseLocked />} />
-            <Route path="/waiting"                    element={<WaitingForOthers />} />
-            <Route path="/matching"                   element={<Matching />} />
             <Route path="/results"                    element={<Results />} />
             <Route path="/booking-confirm"            element={<BookingConfirm />} />
-            <Route path="/time-confirm"              element={<TimeConfirm />} />
             <Route path="/calendar-invite"            element={<CalendarInvite />} />
             <Route path="/cant-make-it"               element={<CantMakeIt />} />
             <Route path="/booker-cancellation"        element={<BookerCancellation />} />
