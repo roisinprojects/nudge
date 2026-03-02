@@ -6,12 +6,9 @@ import BackButton from '../components/BackButton'
 import Icon from '../components/Icon'
 
 const MOCK_EVENT = {
-  day:      'Saturday, 15 March',
-  time:     '7pm',
-  venue:    'The Ivy',
-  cuisine:  'Modern European',
-  partySize: 4,
-  venuePhone: 'tel:+44207123456',
+  day:   'Saturday, 15 March',
+  time:  '7pm',
+  venue: 'The Ivy',
 }
 
 export default function CantMakeIt() {
@@ -85,12 +82,9 @@ export default function CantMakeIt() {
         </p>
       </div>
 
-      <div style={{ marginTop: 'auto', paddingTop: 32, display: 'flex', flexDirection: 'column', gap: 12 }}>
-        <Button onClick={() => window.open(MOCK_EVENT.venuePhone, '_self')}>
-          Contact {MOCK_EVENT.venue}
-        </Button>
-        <Button variant="ghost" onClick={handleCancel}>
-          Got it
+      <div style={{ marginTop: 'auto', paddingTop: 32 }}>
+        <Button variant="destructive" onClick={handleCancel}>
+          Confirm
         </Button>
       </div>
     </Screen>
