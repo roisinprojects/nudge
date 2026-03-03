@@ -12,15 +12,25 @@ export default function DisplayName() {
 
   return (
     <Screen>
-      <div style={{ paddingTop: 56 }}>
+
+      {/* ── Header: back left, Log in right ── */}
+      <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', paddingTop: 24 }}>
         <BackButton to="/set-password" />
+        <button
+          onClick={() => navigate('/login')}
+          style={{ background: 'none', border: 'none', cursor: 'pointer', fontSize: 14, fontWeight: 500, color: 'var(--ink-secondary)', padding: '4px 0' }}
+        >
+          Log in
+        </button>
       </div>
 
+      {/* ── Progress ── */}
       <div style={{ marginTop: 24 }}>
         <SegmentedBar total={5} current={3} />
       </div>
 
-      <div style={{ marginTop: 40, display: 'flex', flexDirection: 'column', gap: 32 }}>
+      {/* ── Form ── */}
+      <div style={{ marginTop: 32, display: 'flex', flexDirection: 'column', gap: 16 }}>
         <div>
           <h1>What should we call you?</h1>
           <p className="text-muted mt-8">This is how you'll appear to your groups.</p>
@@ -37,6 +47,7 @@ export default function DisplayName() {
           Continue
         </Button>
       </div>
+
     </Screen>
   )
 }

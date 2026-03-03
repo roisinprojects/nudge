@@ -16,51 +16,63 @@ export default function SetPassword() {
 
   return (
     <Screen>
-      <div style={{ paddingTop: 56 }}>
+
+      {/* ── Header: back left, Log in right ── */}
+      <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', paddingTop: 24 }}>
         <BackButton to="/signup" />
+        <button
+          onClick={() => navigate('/login')}
+          style={{ background: 'none', border: 'none', cursor: 'pointer', fontSize: 14, fontWeight: 500, color: 'var(--ink-secondary)', padding: '4px 0' }}
+        >
+          Log in
+        </button>
       </div>
 
+      {/* ── Progress ── */}
       <div style={{ marginTop: 24 }}>
         <SegmentedBar total={5} current={2} />
       </div>
 
-      <div style={{ marginTop: 40, display: 'flex', flexDirection: 'column', gap: 24 }}>
+      {/* ── Form ── */}
+      <div style={{ marginTop: 32, display: 'flex', flexDirection: 'column', gap: 16 }}>
         <div>
           <h1>Secure your account</h1>
           <p className="text-muted mt-8">Choose a password to protect your account.</p>
         </div>
 
-        <Input
-          label="Password"
-          type="password"
-          placeholder="At least 8 characters"
-          value={password}
-          onChange={e => setPassword(e.target.value)}
-        />
+        <div style={{ display: 'flex', flexDirection: 'column', gap: 6 }}>
+          <Input
+            label="Password"
+            type="password"
+            placeholder="At least 8 characters"
+            value={password}
+            onChange={e => setPassword(e.target.value)}
+          />
+          {password.length > 0 && (
+            <div style={{ display: 'flex', alignItems: 'center', gap: 8 }}>
+              <div style={{
+                height: 3, flex: 1, borderRadius: 2,
+                background: strong ? 'var(--semantic-success)' : 'var(--semantic-error)'
+              }} />
+              <span className="text-xs" style={{ color: strong ? 'var(--semantic-success)' : 'var(--semantic-error)' }}>
+                {strong ? 'Strong' : 'Too short'}
+              </span>
+            </div>
+          )}
+        </div>
 
-        {password.length > 0 && (
-          <div style={{ display: 'flex', alignItems: 'center', gap: 8, marginTop: -12 }}>
-            <div style={{
-              height: 4, flex: 1, borderRadius: 2,
-              background: strong ? 'var(--semantic-success)' : 'var(--semantic-error)'
-            }} />
-            <span className="text-xs" style={{ color: strong ? 'var(--semantic-success)' : 'var(--semantic-error)' }}>
-              {strong ? 'Strong' : 'Too short'}
-            </span>
-          </div>
-        )}
-
-        <Input
-          label="Confirm password"
-          type="password"
-          placeholder="••••••••"
-          value={confirm}
-          onChange={e => setConfirm(e.target.value)}
-        />
-
-        {confirm.length > 0 && !matches && (
-          <p className="text-xs text-error" style={{ marginTop: -12 }}>Passwords don't match</p>
-        )}
+        <div style={{ display: 'flex', flexDirection: 'column', gap: 6 }}>
+          <Input
+            label="Confirm password"
+            type="password"
+            placeholder="••••••••"
+            value={confirm}
+            onChange={e => setConfirm(e.target.value)}
+          />
+          {confirm.length > 0 && !matches && (
+            <p className="text-xs" style={{ color: 'var(--semantic-error)' }}>Passwords don't match</p>
+          )}
+        </div>
 
         <Button
           disabled={!(strong && matches)}
@@ -69,6 +81,7 @@ export default function SetPassword() {
           Continue
         </Button>
       </div>
+
     </Screen>
   )
 }

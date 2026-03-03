@@ -7,7 +7,6 @@ import BackButton from '../components/BackButton'
 import SegmentedBar from '../components/SegmentedBar'
 import Icon from '../components/Icon'
 
-// Mock — in production this would come from auth context
 const MY_EMAIL = 'you@example.com'
 
 export default function InviteFriends() {
@@ -19,7 +18,6 @@ export default function InviteFriends() {
   const addEmail = () => {
     const trimmed = email.trim().toLowerCase()
     if (!trimmed) return
-
     if (trimmed === MY_EMAIL.toLowerCase()) {
       setInputError("You can't invite yourself")
       return
@@ -28,7 +26,6 @@ export default function InviteFriends() {
       setInputError('This email has already been added')
       return
     }
-
     setInvited(prev => [...prev, email.trim()])
     setEmail('')
     setInputError('')
@@ -38,18 +35,28 @@ export default function InviteFriends() {
 
   return (
     <Screen>
-      <div style={{ paddingTop: 56 }}>
+
+      {/* ── Header: back left, Log in right ── */}
+      <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', paddingTop: 24 }}>
         <BackButton to="/create-group" />
+        <button
+          onClick={() => navigate('/login')}
+          style={{ background: 'none', border: 'none', cursor: 'pointer', fontSize: 14, fontWeight: 500, color: 'var(--ink-secondary)', padding: '4px 0' }}
+        >
+          Log in
+        </button>
       </div>
 
+      {/* ── Progress ── */}
       <div style={{ marginTop: 24 }}>
         <SegmentedBar total={5} current={5} />
       </div>
 
-      <div style={{ marginTop: 40, display: 'flex', flexDirection: 'column', gap: 24 }}>
+      {/* ── Form ── */}
+      <div style={{ marginTop: 32, display: 'flex', flexDirection: 'column', gap: 16 }}>
         <div>
-          <h1>Add your people</h1>
-          <p className="text-sm text-muted" style={{ marginTop: 4 }}>Invite friends by email. They'll get a link to join your group.</p>
+          <h1>Invite your people</h1>
+          <p className="text-muted mt-8">Invite friends by email. They'll get a link to join your group.</p>
         </div>
 
         <div>
@@ -68,10 +75,11 @@ export default function InviteFriends() {
               style={{
                 height: 48, width: 48, flexShrink: 0,
                 background: 'var(--ink-primary)', border: 'none',
-                borderRadius: 'var(--radius)', color: 'var(--btn-primary-fg)',
+                borderRadius: 'var(--radius-lg)', color: 'var(--btn-primary-fg)',
                 cursor: 'pointer',
-                display: 'flex', alignItems: 'center', justifyContent: 'center'
+                display: 'flex', alignItems: 'center', justifyContent: 'center',
               }}
+              aria-label="Add email"
             >
               <Icon name="add" size={22} />
             </button>
@@ -94,6 +102,7 @@ export default function InviteFriends() {
                 <button
                   onClick={() => remove(e)}
                   style={{ background: 'none', border: 'none', color: 'var(--ink-muted)', cursor: 'pointer', display: 'flex', alignItems: 'center' }}
+                  aria-label={`Remove ${e}`}
                 >
                   <Icon name="close" size={18} />
                 </button>
@@ -103,14 +112,19 @@ export default function InviteFriends() {
         )}
       </div>
 
-      <div style={{ marginTop: 'auto', paddingBottom: 40 }}>
-        <Button
-          disabled={invited.length === 0}
-          onClick={() => navigate('/home')}
-        >
-          {invited.length > 0 ? `Send ${invited.length} invite${invited.length > 1 ? 's' : ''}` : 'Send invites'}
+      {/* ── CTAs ── */}
+      <div style={{ marginTop: 'auto', paddingBottom: 40, display: 'flex', flexDirection: 'column', gap: 12 }}>
+        <Button onClick={() => navigate('/home')}>
+          Continue
+        </Button>
+        <Button variant="secondary" onClick={() => {}}>
+          Copy invite link
+        </Button>
+        <Button variant="ghost" onClick={() => navigate('/home')}>
+          Skip for now
         </Button>
       </div>
+
     </Screen>
   )
 }
