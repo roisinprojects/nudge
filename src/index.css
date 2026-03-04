@@ -758,42 +758,59 @@ h3 {
 }
 
 /* ── Badge (status) ── */
+@keyframes nudge-pulse {
+  0%, 100% { opacity: 1; }
+  50%       { opacity: 0.4; }
+}
+
 .badge {
   display: inline-flex;
   align-items: center;
+  gap: 4px;
   font-size: 11px;
   font-weight: 700;
-  padding: 3px 10px;
-  border-radius: var(--radius-full);
-  letter-spacing: 0.02em;
+  padding: 4px 10px;
+  border-radius: 999px;
+  letter-spacing: 0.01em;
   white-space: nowrap;
 }
-.badge-respond {
-  background: var(--ink-primary);
-  color: var(--bg-primary);
+.badge-dot {
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  flex-shrink: 0;
 }
-.badge-waiting {
-  background: #E8E4DF;
-  color: #3A3530;
-}
-.badge-idle {
-  background: #D4A574;
-  color: #3A2A10;
-}
-.badge-matched {
-  background: var(--ink-primary);
-  color: var(--btn-primary-fg);
-}
-.badge-booked {
-  background: var(--semantic-success-bg);
-  color: var(--semantic-success);
-  border: 1px solid var(--semantic-success-border);
-}
-.badge-confirmed {
-  background: var(--semantic-success-bg);
-  color: var(--semantic-success);
-  border: 1px solid var(--semantic-success-border);
-}
+
+/* 1. Respond now */
+.badge-respond              { background: #1A1A1A; color: #F8F5EE; }
+.badge-respond .badge-dot   { background: #F8F5EE; animation: nudge-pulse 1.5s ease-in-out infinite; }
+
+/* 2. Book now */
+.badge-book                 { background: #FEF4E0; color: #7A5010; border: 1px solid rgba(196,132,30,0.2); }
+.badge-book .badge-dot      { background: #C4841E; }
+
+/* 3. Waiting for others */
+.badge-waiting              { background: #ECEAE3; color: #9A9488; }
+.badge-waiting .badge-dot   { background: #C8C4BC; }
+
+/* 4. Booked */
+.badge-booked               { background: #EBF5EE; color: #1E5C35; }
+.badge-booked .badge-dot    { background: #3D8C5A; }
+
+/* 5. Idle */
+.badge-idle                 { background: #ECEAE3; color: #C8C4BC; }
+.badge-idle .badge-dot      { background: #C8C4BC; opacity: 0.5; }
+
+/* Existing variants — unchanged */
+.badge-matched   { background: var(--ink-primary); color: var(--btn-primary-fg); }
+.badge-confirmed { background: var(--semantic-success-bg); color: var(--semantic-success); border: 1px solid var(--semantic-success-border); }
+
+/* Dark mode overrides */
+.dark .badge-respond { background: #F0EAE0; color: #161412; }
+.dark .badge-book    { background: #2A2010; color: #D4A840; border-color: rgba(212,168,64,0.2); }
+.dark .badge-waiting { background: #2A2620; color: #706860; }
+.dark .badge-booked  { background: #1A2E20; color: #5ABE7A; }
+.dark .badge-idle    { background: #2A2620; color: #4A4640; }
 
 /* ── Utility classes ── */
 .gap-4  { gap: 4px;  }

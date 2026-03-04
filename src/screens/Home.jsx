@@ -4,6 +4,7 @@ import Button from '../components/Button'
 import Icon from '../components/Icon'
 import { useViewMode } from '../context/viewMode'
 
+// Sorted by urgency: respond → book → waiting → booked → idle
 const MOCK_GROUPS = [
   {
     id: 1,
@@ -15,13 +16,14 @@ const MOCK_GROUPS = [
     deadline:    'Friday',
   },
   {
-    id: 2,
-    name:        'The Crew',
-    colour:      'var(--group-sky)',
-    members:     ['Sarah', 'Tom', 'Jess', 'Mike'],
-    lastHangout: '6 weeks ago',
-    nextNudge:   '12 days',
-    status:      'idle',
+    id: 4,
+    name:        'Uni Friends',
+    colour:      'var(--group-sage)',
+    members:     ['Ben', 'Chloe', 'Marcus', 'Zoe'],
+    lastHangout: '2 months ago',
+    matchedDate: 'Sat 15 Mar',
+    isBooker:    true,
+    status:      'book',
   },
   {
     id: 3,
@@ -35,39 +37,66 @@ const MOCK_GROUPS = [
     status:      'waiting',
   },
   {
-    id: 4,
-    name:        'Uni Friends',
-    colour:      'var(--group-sage)',
-    members:     ['Ben', 'Chloe', 'Marcus', 'Zoe'],
-    lastHangout: '2 months ago',
-    matchedDate: 'Saturday, 15 March',
-    matchedTime: '7pm',
-    status:      'matched',
-  },
-  {
     id: 5,
     name:        'Book Club',
     colour:      'var(--group-rose)',
     members:     ['Diana', 'Felix', 'Ingrid'],
     lastHangout: '6 weeks ago',
-    bookedDate:  'Saturday, 8 March',
+    bookedDate:  'Sat 8 Mar',
     venueName:   'The Ivy',
     status:      'booked',
   },
+  {
+    id: 2,
+    name:          'The Crew',
+    colour:        'var(--group-sky)',
+    members:       ['Sarah', 'Tom', 'Jess', 'Mike'],
+    lastHangout:   '6 weeks ago',
+    daysUntilNudge: 12,
+    status:        'idle',
+  },
 ]
 
-function StatusBadge({ status }) {
-  if (status === 'respond')  return <span className="badge badge-respond">Respond now</span>
-  if (status === 'waiting')  return <span className="badge badge-waiting">Waiting on others</span>
-  if (status === 'matched')  return <span className="badge badge-matched">Matched</span>
-  if (status === 'booked')   return <span className="badge badge-booked">Booked</span>
-  return <span className="badge badge-idle">Nudge soon</span>
+function StatusBadge({ g }) {
+  if (g.status === 'respond') return (
+    <span className="badge badge-respond">
+      <span className="badge-dot" />
+      Respond now!
+    </span>
+  )
+  if (g.status === 'book') return (
+    <span className="badge badge-book">
+      <span className="badge-dot" />
+      Book now
+    </span>
+  )
+  if (g.status === 'waiting') return (
+    <span className="badge badge-waiting">
+      <span className="badge-dot" />
+      Waiting for others
+    </span>
+  )
+  if (g.status === 'booked') return (
+    <span className="badge badge-booked">
+      <span className="badge-dot" />
+      Booked ✓
+    </span>
+  )
+  // idle
+  return (
+    <span className="badge badge-idle">
+      <span className="badge-dot" />
+      Next nudge in {g.daysUntilNudge} days
+    </span>
+  )
 }
 
 function groupCardStyle(g) {
+  const actionBorder = { border: `1.5px solid ${g.colour}`, borderLeftWidth: '3px' }
   return {
     borderLeft: `3px solid ${g.colour}`,
-    ...(g.status === 'respond' ? { border: `1.5px solid ${g.colour}`, borderLeftWidth: '3px' } : {}),
+    ...(g.status === 'respond' || g.status === 'book' ? actionBorder : {}),
+    ...(g.status === 'idle' ? { opacity: 0.75 } : {}),
   }
 }
 
@@ -81,26 +110,14 @@ function CardBody({ g, navigate }) {
     )
   }
 
-  if (g.status === 'waiting') {
-    return (
-      <>
-        <div style={{ height: 1, background: 'var(--border-default)', margin: '12px 0' }} />
-        <div style={{ display: 'flex', alignItems: 'center', gap: 6 }}>
-          <Icon name="group" size={14} style={{ color: 'var(--ink-muted)' }} />
-          <p className="text-xs text-muted">{g.responded} of {g.total} responded · Closes {g.closes}</p>
-        </div>
-      </>
-    )
-  }
-
-  if (g.status === 'matched') {
+  if (g.status === 'book') {
     return (
       <>
         <div style={{ height: 1, background: 'var(--border-default)', margin: '12px 0' }} />
         <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
           <div>
-            <p className="text-xs text-muted">Matched slot</p>
-            <p className="text-sm" style={{ marginTop: 2, fontWeight: 600 }}>{g.matchedDate} · {g.matchedTime}</p>
+            <p className="text-xs text-muted">Match found</p>
+            <p className="text-sm" style={{ marginTop: 2, fontWeight: 600 }}>{g.matchedDate}</p>
           </div>
           <button
             className="btn btn-primary"
@@ -109,6 +126,18 @@ function CardBody({ g, navigate }) {
           >
             Book now
           </button>
+        </div>
+      </>
+    )
+  }
+
+  if (g.status === 'waiting') {
+    return (
+      <>
+        <div style={{ height: 1, background: 'var(--border-default)', margin: '12px 0' }} />
+        <div style={{ display: 'flex', alignItems: 'center', gap: 6 }}>
+          <Icon name="group" size={14} style={{ color: 'var(--ink-muted)' }} />
+          <p className="text-xs text-muted">{g.responded} of {g.total} responded · Closes {g.closes}</p>
         </div>
       </>
     )
@@ -146,12 +175,12 @@ function CardBody({ g, navigate }) {
           </p>
           <p style={{ fontSize: 13, color: 'var(--ink-secondary)', marginTop: 4 }}>{g.lastHangout}</p>
         </div>
-        {g.nextNudge && (
+        {g.daysUntilNudge != null && (
           <div style={{ textAlign: 'right' }}>
             <p style={{ fontSize: 11, color: 'var(--ink-muted)', textTransform: 'uppercase', letterSpacing: '0.04em', fontWeight: 600 }}>
               Next nudge in
             </p>
-            <p style={{ fontSize: 13, color: 'var(--ink-secondary)', marginTop: 4 }}>{g.nextNudge}</p>
+            <p style={{ fontSize: 13, color: 'var(--ink-secondary)', marginTop: 4 }}>{g.daysUntilNudge} days</p>
           </div>
         )}
       </div>
@@ -191,7 +220,11 @@ export default function Home() {
             key={g.id}
             className="card card-interactive"
             style={groupCardStyle(g)}
-            onClick={() => g.status === 'respond' ? navigate('/respond') : navigate('/group-detail')}
+            onClick={() => {
+              if (g.status === 'respond') navigate('/respond')
+              else if (g.status === 'book') navigate('/booking-confirm')
+              else navigate('/group-detail')
+            }}
           >
             <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start' }}>
               <div style={{ flex: 1, minWidth: 0 }}>
@@ -202,7 +235,7 @@ export default function Home() {
                 </p>
               </div>
               <div style={{ marginLeft: 10, flexShrink: 0 }}>
-                <StatusBadge status={g.status} />
+                <StatusBadge g={g} />
               </div>
             </div>
 
