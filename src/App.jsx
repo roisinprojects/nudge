@@ -9,6 +9,7 @@ import DisplayName           from './screens/DisplayName'
 import CreateGroup           from './screens/CreateGroup'
 import InviteFriends         from './screens/InviteFriends'
 import Home                  from './screens/Home'
+import GroupDetail           from './screens/GroupDetail'
 import GroupSettings         from './screens/GroupSettings'
 import InviteLanding         from './screens/InviteLanding'
 import Profile               from './screens/Profile'
@@ -39,6 +40,7 @@ export const SCREENS = [
   { path: '/invite-friends',       label: 'Invite friends',        group: 'Onboarding' },
   // Home & Groups
   { path: '/home',                   label: 'Home (your groups)',        group: 'Home & Groups'  },
+  { path: '/group-detail',           label: 'Group detail',             group: 'Home & Groups'  },
   { path: '/group-settings',         label: 'Group settings',           group: 'Home & Groups'  },
   { path: '/invite-landing',         label: 'Invite landing',           group: 'Home & Groups'  },
   { path: '/profile',                label: 'Profile & settings',       group: 'Home & Groups'  },
@@ -273,6 +275,7 @@ export default function App() {
             <Route path="/create-group"        element={<CreateGroup />} />
             <Route path="/invite-friends"      element={<InviteFriends />} />
             <Route path="/home"                       element={<Home />} />
+            <Route path="/group-detail"               element={<GroupDetail />} />
             <Route path="/group-settings"             element={<GroupSettings />} />
             <Route path="/invite-landing"             element={<InviteLanding />} />
             <Route path="/profile"                    element={<Profile />} />
