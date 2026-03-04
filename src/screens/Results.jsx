@@ -1,7 +1,5 @@
 import { useNavigate } from 'react-router-dom'
 import Screen from '../components/Screen'
-import Button from '../components/Button'
-import SegmentedBar from '../components/SegmentedBar'
 import Icon from '../components/Icon'
 
 const GROUP_COLOUR = 'var(--group-lavender)'
@@ -19,36 +17,39 @@ const MATCH = {
 const VENUES = [
   {
     id: 1,
-    name:         'The Botanist',
-    price:        '££',
-    type:         'Cocktail Bar & Restaurant',
+    name:          'The Botanist',
+    price:         '££',
+    type:          'Cocktail Bar & Restaurant',
     neighbourhood: 'Deansgate',
-    distance:     '0.3 miles',
-    tags:         ['Drinks', 'Modern British'],
-    rating:       4.6,
-    address:      '98 Deansgate, Manchester M3 2GQ',
+    distance:      '0.3 miles',
+    tags:          ['Drinks', 'Modern British'],
+    rating:        4.6,
+    reviews:       1240,
+    address:       '98 Deansgate, Manchester M3 2GQ',
   },
   {
     id: 2,
-    name:         'Dishoom',
-    price:        '££',
-    type:         'Indian Restaurant & Bar',
+    name:          'Dishoom',
+    price:         '££',
+    type:          'Indian Restaurant & Bar',
     neighbourhood: 'Spinningfields',
-    distance:     '0.7 miles',
-    tags:         ['Dinner', 'Indian'],
-    rating:       4.8,
-    address:      '22 Bridge St, Manchester M3 3BT',
+    distance:      '0.7 miles',
+    tags:          ['Dinner', 'Indian'],
+    rating:        4.8,
+    reviews:       2810,
+    address:       '22 Bridge St, Manchester M3 3BT',
   },
   {
     id: 3,
-    name:         'Nightjar',
-    price:        '£££',
-    type:         'Speakeasy Cocktail Bar',
+    name:          'Nightjar',
+    price:         '$$$',
+    type:          'Speakeasy Cocktail Bar',
     neighbourhood: 'Northern Quarter',
-    distance:     '1.1 miles',
-    tags:         ['Drinks', 'Late night'],
-    rating:       4.7,
-    address:      '12 Stevenson Sq, Manchester M1 1FJ',
+    distance:      '1.1 miles',
+    tags:          ['Drinks', 'Late night'],
+    rating:        4.7,
+    reviews:       890,
+    address:       '12 Stevenson Sq, Manchester M1 1FJ',
   },
 ]
 
@@ -59,11 +60,11 @@ export default function Results() {
     navigate('/booking-confirm', {
       state: {
         provisionalVenue: {
-          name:         v.name,
-          address:      v.address,
-          type:         v.type,
+          name:          v.name,
+          address:       v.address,
+          type:          v.type,
           neighbourhood: v.neighbourhood,
-          url:          `https://www.opentable.com/s/?term=${encodeURIComponent(v.name)}`,
+          url:           `https://www.opentable.com/s/?term=${encodeURIComponent(v.name)}`,
         },
         match: {
           date:        MATCH.date,
@@ -80,10 +81,6 @@ export default function Results() {
   return (
     <Screen style={{ paddingBottom: 40 }}>
       <div style={{ paddingTop: 48 }}>
-        <SegmentedBar total={2} current={1} />
-      </div>
-
-      <div style={{ marginTop: 24 }}>
         <h1>We found a match</h1>
         <p className="text-sm text-muted" style={{ marginTop: 4 }}>
           {MATCH.date} · All {MATCH.total} available
@@ -93,7 +90,7 @@ export default function Results() {
       <div className="alert alert-success" style={{ marginTop: 20 }}>
         <Icon name="check_circle" size={16} style={{ color: 'var(--semantic-success)', flexShrink: 0 }} />
         <p style={{ fontSize: 13, fontWeight: 600 }}>
-          Everyone is free — time to pick a venue.
+          Everyone is free on {MATCH.date}
         </p>
       </div>
 
@@ -119,12 +116,28 @@ export default function Results() {
               ))}
             </div>
 
-            <div style={{ display: 'flex', alignItems: 'center', gap: 4, marginTop: 10 }}>
-              <Icon name="star" size={14} style={{ color: 'var(--semantic-warning)' }} />
-              <span style={{ fontSize: 12, color: 'var(--ink-muted)' }}>{v.rating} · {v.distance}</span>
-            </div>
-            <div style={{ marginTop: 12 }}>
-              <Button onClick={() => handleBook(v)}>Book on OpenTable</Button>
+            <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginTop: 12 }}>
+              <div style={{ display: 'flex', alignItems: 'center', gap: 4 }}>
+                <Icon name="star" size={14} style={{ color: 'var(--semantic-warning)' }} />
+                <span style={{ fontSize: 12, color: 'var(--ink-muted)' }}>
+                  {v.rating} ({v.reviews.toLocaleString()})
+                </span>
+              </div>
+              <button
+                onClick={() => handleBook(v)}
+                style={{
+                  padding: '7px 14px',
+                  borderRadius: 'var(--radius-md)',
+                  background: 'var(--ink-primary)',
+                  color: 'var(--bg-primary)',
+                  fontSize: 12,
+                  fontWeight: 700,
+                  border: 'none',
+                  cursor: 'pointer',
+                }}
+              >
+                Book →
+              </button>
             </div>
           </div>
         ))}

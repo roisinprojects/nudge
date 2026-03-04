@@ -2,7 +2,6 @@ import { useEffect, useRef } from 'react'
 import { useNavigate, useLocation } from 'react-router-dom'
 import Screen from '../components/Screen'
 import Button from '../components/Button'
-import Icon from '../components/Icon'
 
 const MEMBERS = ['Sarah', 'Tom', 'Jess', 'Mike', 'You']
 
@@ -65,87 +64,59 @@ export default function CalendarInvite() {
   const { state } = useLocation()
 
   const venueName     = state?.venueName     || 'The Botanist'
-  const venueAddress  = state?.venueAddress  || ''
   const confirmedTime = state?.confirmedTime || '7pm'
   const date          = state?.match?.date     || 'Saturday, 1 March 2026'
-  const activity      = state?.match?.activity || 'Food & Drinks'
-  const group         = state?.match?.group    || 'The Crew'
-
-  const locationLine  = venueAddress || venueName
 
   return (
     <Screen style={{ paddingBottom: 40, position: 'relative' }}>
       <ConfettiBurst />
 
-      {/* Success header */}
-      <div style={{ paddingTop: 56, textAlign: 'center' }}>
-        <div
-          style={{
-            width: 72,
-            height: 72,
-            borderRadius: '50%',
-            background: 'var(--semantic-success-bg)',
-            border: '2px solid var(--semantic-success)',
-            display: 'flex',
-            alignItems: 'center',
-            justifyContent: 'center',
-            margin: '0 auto',
-          }}
-        >
-          <Icon name="check_circle" size={40} style={{ color: 'var(--semantic-success)' }} />
-        </div>
-        <h1 style={{ color: 'var(--semantic-success)', marginTop: 16 }}>It's happening! 🎉</h1>
-        <p className="text-muted mt-8">
-          Calendar invites are on their way to everyone.
-        </p>
-      </div>
-
-      {/* Calendar invite card */}
-      <div className="card" style={{ marginTop: 32, padding: 0, overflow: 'hidden' }}>
-        <div style={{ background: 'var(--ink-primary)', padding: '16px' }}>
-          <p className="text-xs" style={{ color: 'var(--btn-primary-fg)', opacity: 0.7, marginBottom: 4 }}>
-            CALENDAR INVITE
-          </p>
-          <p className="bold" style={{ fontSize: 18, color: 'var(--btn-primary-fg)' }}>
-            {group} hangout 🎉
-          </p>
-        </div>
-
-        <div style={{ padding: 16, display: 'flex', flexDirection: 'column', gap: 12 }}>
-          <div style={{ display: 'flex', gap: 12, alignItems: 'center' }}>
-            <Icon name="event" size={18} style={{ color: 'var(--ink-muted)', flexShrink: 0 }} />
-            <div>
-              <p className="bold text-sm">{date}</p>
-              <p className="text-xs text-muted">{confirmedTime}</p>
-            </div>
-          </div>
-          <div style={{ display: 'flex', gap: 12, alignItems: 'center' }}>
-            <Icon name="location_on" size={18} style={{ color: 'var(--ink-muted)', flexShrink: 0 }} />
-            <div>
-              <p className="bold text-sm">{venueName}</p>
-              {venueAddress
-                ? <p className="text-xs text-muted">{venueAddress}</p>
-                : <p className="text-xs text-muted">{activity}</p>
-              }
-            </div>
-          </div>
-          <div style={{ display: 'flex', gap: 12, alignItems: 'flex-start' }}>
-            <Icon name="group" size={18} style={{ color: 'var(--ink-muted)', flexShrink: 0, marginTop: 2 }} />
-            <div>
-              <p className="bold text-sm">Guests</p>
-              <p className="text-xs text-muted mt-8">{MEMBERS.join(' · ')}</p>
-            </div>
-          </div>
+      {/* Booking confirmed alert — top of content */}
+      <div style={{ paddingTop: 24 }}>
+        <div className="alert alert-success">
+          <span>✓</span>
+          <span>Booking confirmed</span>
         </div>
       </div>
 
-      <div style={{ marginTop: 'auto', paddingTop: 32, display: 'flex', flexDirection: 'column', gap: 12 }}>
-        <Button onClick={() => navigate('/home')}>
-          Back to home
-        </Button>
-        <p className="text-center text-xs text-muted">
-          Your next nudge will be sent in 6 weeks.
+      {/* Heading block — centred */}
+      <div style={{ marginTop: 32, textAlign: 'center', marginBottom: 24 }}>
+        <h1 style={{ color: 'var(--ink-primary)' }}>It's happening! 🎉</h1>
+        <p className="text-muted mt-8">Calendar invites are on their way to everyone.</p>
+      </div>
+
+      {/* Hangout summary card */}
+      <div className="card">
+        <p style={{ fontSize: 11, fontWeight: 700, color: 'var(--ink-muted)', textTransform: 'uppercase', letterSpacing: '0.06em' }}>
+          Your hangout
         </p>
+
+        <div style={{ height: 1, background: 'var(--border-default)', margin: '10px 0' }} />
+
+        <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', padding: '10px 0', fontSize: 13 }}>
+          <span style={{ color: 'var(--ink-muted)' }}>Date</span>
+          <span style={{ fontWeight: 600 }}>{date} · {confirmedTime}</span>
+        </div>
+
+        <div style={{ height: 1, background: 'var(--border-default)' }} />
+
+        <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', padding: '10px 0', fontSize: 13 }}>
+          <span style={{ color: 'var(--ink-muted)' }}>Venue</span>
+          <span style={{ fontWeight: 600 }}>{venueName}</span>
+        </div>
+
+        <div style={{ height: 1, background: 'var(--border-default)' }} />
+
+        <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', padding: '10px 0', fontSize: 13 }}>
+          <span style={{ color: 'var(--ink-muted)' }}>Guests</span>
+          <span style={{ fontWeight: 600 }}>{MEMBERS.join(' · ')}</span>
+        </div>
+      </div>
+
+      {/* CTAs */}
+      <div style={{ marginTop: 24, display: 'flex', flexDirection: 'column', gap: 8 }}>
+        <Button onClick={() => {}}>Add to calendar</Button>
+        <Button variant="ghost" onClick={() => navigate('/home')}>Back to home</Button>
       </div>
     </Screen>
   )
