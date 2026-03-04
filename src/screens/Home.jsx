@@ -205,11 +205,7 @@ export default function Home() {
             key={g.id}
             className="card card-interactive"
             style={groupCardStyle(g)}
-            onClick={() => {
-              if (g.status === 'respond') navigate('/respond')
-              else if (g.status === 'book') navigate('/booking-confirm')
-              else navigate('/group-detail')
-            }}
+            onClick={() => navigate('/group-detail')}
           >
             <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start' }}>
               <div style={{ flex: 1, minWidth: 0 }}>

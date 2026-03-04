@@ -80,7 +80,7 @@ function StatsCard({ g }) {
     rows = [
       { label: 'Last hangout',  value: g.lastHangout },
       { label: 'Cycle',         value: `Every ${g.cycle} weeks` },
-      { label: 'Window closes', value: g.deadline },
+      { label: 'Status',        value: 'Nudge active' },
     ]
   } else if (g.status === 'book') {
     rows = [
@@ -97,8 +97,8 @@ function StatsCard({ g }) {
   } else if (g.status === 'booked') {
     rows = [
       { label: 'Date',  value: g.bookedDate },
-      { label: 'Time',  value: g.bookedTime },
       { label: 'Venue', value: g.venueName },
+      { label: 'Time',  value: g.bookedTime },
     ]
   } else {
     // idle
@@ -149,7 +149,7 @@ function CtaBlock({ g, navigate }) {
           style={{ '--group-color': g.colour }}
           onClick={() => navigate('/booking-confirm')}
         >
-          Choose a venue →
+          Book now →
         </Button>
         <Button variant="ghost" style={ghostOutlined} onClick={() => navigate('/group-settings')}>
           Group settings
@@ -175,7 +175,7 @@ function CtaBlock({ g, navigate }) {
     return (
       <div style={{ display: 'flex', flexDirection: 'column', gap: 10 }}>
         <Button variant="secondary" onClick={() => navigate('/booked-details')}>
-          View booking details
+          View booking
         </Button>
         <Button variant="ghost" style={ghostOutlined} onClick={() => navigate('/group-settings')}>
           Group settings
