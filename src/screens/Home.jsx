@@ -115,17 +115,8 @@ function CardBody({ g, navigate }) {
       <>
         <div style={{ height: 1, background: 'var(--border-default)', margin: '12px 0' }} />
         <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
-          <div>
-            <p className="text-xs text-muted">Match found</p>
-            <p className="text-sm" style={{ marginTop: 2, fontWeight: 600 }}>{g.matchedDate}</p>
-          </div>
-          <button
-            className="btn btn-primary"
-            style={{ height: 36, padding: '0 16px', fontSize: 13 }}
-            onClick={e => { e.stopPropagation(); navigate('/booking-confirm') }}
-          >
-            Book now
-          </button>
+          <p style={{ fontSize: 11, color: 'var(--ink-muted)' }}>Match found</p>
+          <p style={{ fontSize: 12, fontWeight: 600 }}>{g.matchedDate}</p>
         </div>
       </>
     )
@@ -152,13 +143,7 @@ function CardBody({ g, navigate }) {
             <p className="text-xs text-muted">{g.bookedDate}</p>
             <p className="text-sm" style={{ marginTop: 2, fontWeight: 600 }}>{g.venueName}</p>
           </div>
-          <button
-            className="btn btn-secondary"
-            style={{ height: 36, padding: '0 16px', fontSize: 13 }}
-            onClick={e => { e.stopPropagation(); navigate('/booked-details') }}
-          >
-            View details
-          </button>
+          <span style={{ fontSize: 12, fontWeight: 600, color: 'var(--ink-muted)' }}>View details →</span>
         </div>
       </>
     )
@@ -228,7 +213,7 @@ export default function Home() {
           >
             <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start' }}>
               <div style={{ flex: 1, minWidth: 0 }}>
-                <h3 style={{ fontSize: 15, fontWeight: 700, color: g.colour }}>{g.name}</h3>
+                <h3 style={{ fontSize: 15, fontWeight: 700, color: 'var(--ink-primary)' }}>{g.name}</h3>
                 <p className="text-sm text-muted" style={{ marginTop: 3 }}>
                   {g.members.slice(0, 3).join(', ')}
                   {g.members.length > 3 && ` +${g.members.length - 3} more`}
