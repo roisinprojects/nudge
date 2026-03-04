@@ -208,7 +208,7 @@ export default function Home() {
             onClick={() => {
               if (g.status === 'respond') navigate('/respond')
               else if (g.status === 'book') navigate('/booking-confirm')
-              else navigate('/group-detail')
+              else navigate('/group-settings')
             }}
           >
             <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start' }}>

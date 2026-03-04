@@ -81,7 +81,7 @@ export default function GroupSettings() {
   return (
     <Screen style={{ paddingBottom: 40 }}>
       <div style={{ paddingTop: 56 }}>
-        <BackButton to="/group-detail" />
+        <BackButton to="/home" />
       </div>
 
       <div style={{ marginTop: 20 }}>

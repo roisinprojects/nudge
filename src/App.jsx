@@ -9,7 +9,6 @@ import DisplayName           from './screens/DisplayName'
 import CreateGroup           from './screens/CreateGroup'
 import InviteFriends         from './screens/InviteFriends'
 import Home                  from './screens/Home'
-import GroupDetail           from './screens/GroupDetail'
 import GroupSettings         from './screens/GroupSettings'
 import InviteLanding         from './screens/InviteLanding'
 import Profile               from './screens/Profile'
@@ -27,8 +26,6 @@ import ErrorNoOverlap        from './screens/ErrorNoOverlap'
 import ErrorNoVenues         from './screens/ErrorNoVenues'
 import GenericError          from './screens/GenericError'
 import BookedCardDetails      from './screens/BookedCardDetails'
-import HomeLight              from './screens/HomeLight'
-import BookedCardDetailsLight from './screens/BookedCardDetailsLight'
 import DesignSystem           from './screens/DesignSystem'
 
 // ── Screen map used by the nav overlay ──────────────────────────────────────
@@ -42,13 +39,10 @@ export const SCREENS = [
   { path: '/invite-friends',       label: 'Invite friends',        group: 'Onboarding' },
   // Home & Groups
   { path: '/home',                   label: 'Home (your groups)',        group: 'Home & Groups'  },
-  { path: '/group-detail',           label: 'Group detail',             group: 'Home & Groups'  },
   { path: '/group-settings',         label: 'Group settings',           group: 'Home & Groups'  },
   { path: '/invite-landing',         label: 'Invite landing',           group: 'Home & Groups'  },
   { path: '/profile',                label: 'Profile & settings',       group: 'Home & Groups'  },
   { path: '/booked-details',         label: 'Booked event details',       group: 'Home & Groups'  },
-  { path: '/home-light',             label: 'Home – card states (light)', group: 'Home & Groups'  },
-  { path: '/booked-details-light',   label: 'Booked details (light)',     group: 'Home & Groups'  },
   // Response flow
   { path: '/respond',                label: 'Respond now',              group: 'Response flow'  },
   { path: '/calendar-picker',        label: 'Pick 3 dates',             group: 'Response flow'  },
@@ -130,8 +124,7 @@ function ViewToggle({ viewMode, setViewMode }) {
 function WebTopNav() {
   const path = window.location.pathname
   const links = [
-    { href: '/home',         label: 'Home'   },
-    { href: '/group-detail', label: 'Groups' },
+    { href: '/home', label: 'Home' },
   ]
   return (
     <div
@@ -280,7 +273,6 @@ export default function App() {
             <Route path="/create-group"        element={<CreateGroup />} />
             <Route path="/invite-friends"      element={<InviteFriends />} />
             <Route path="/home"                       element={<Home />} />
-            <Route path="/group-detail"               element={<GroupDetail />} />
             <Route path="/group-settings"             element={<GroupSettings />} />
             <Route path="/invite-landing"             element={<InviteLanding />} />
             <Route path="/profile"                    element={<Profile />} />
@@ -298,8 +290,6 @@ export default function App() {
             <Route path="/error-no-venues"            element={<ErrorNoVenues />} />
             <Route path="/error"                      element={<GenericError />} />
             <Route path="/booked-details"             element={<BookedCardDetails />} />
-            <Route path="/home-light"               element={<HomeLight />} />
-            <Route path="/booked-details-light"     element={<BookedCardDetailsLight />} />
             <Route path="/design-system"              element={<DesignSystem />} />
           </Routes>
         </div>

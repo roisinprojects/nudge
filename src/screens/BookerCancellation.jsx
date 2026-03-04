@@ -23,7 +23,7 @@ export default function BookerCancellation() {
   return (
     <Screen style={{ paddingBottom: 40 }}>
       <div style={{ paddingTop: 56 }}>
-        <BackButton to="/group-detail" />
+        <BackButton to="/home" />
       </div>
 
       <div style={{ marginTop: 24 }}>
@@ -57,7 +57,7 @@ export default function BookerCancellation() {
         <Button onClick={() => window.open(MOCK_EVENT.venuePhone, '_self')}>
           Contact the venue
         </Button>
-        <Button variant="ghost" onClick={() => navigate('/group-detail')}>
+        <Button variant="ghost" onClick={() => navigate('/home')}>
           Got it
         </Button>
       </div>
