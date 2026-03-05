@@ -26,7 +26,7 @@ export default function BookedCardDetails() {
       </div>
 
       <div style={{ marginTop: 20 }}>
-        <p style={{ fontSize: 11, fontWeight: 700, color: GROUP_COLOUR, textTransform: 'uppercase', letterSpacing: '0.06em' }}>
+        <p style={{ fontSize: 11, fontWeight: 700, color: 'var(--ink-muted)', textTransform: 'uppercase', letterSpacing: '0.06em' }}>
           {MOCK.groupName}
         </p>
         <h1 style={{ marginTop: 6 }}>Your upcoming hangout</h1>

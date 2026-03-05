@@ -114,7 +114,7 @@ export default function CalendarPicker() {
       </div>
 
       <div style={{ marginTop: 20 }}>
-        <p style={{ fontSize: 11, fontWeight: 700, color: GROUP_COLOUR, textTransform: 'uppercase', letterSpacing: '0.06em' }}>
+        <p style={{ fontSize: 11, fontWeight: 700, color: 'var(--ink-muted)', textTransform: 'uppercase', letterSpacing: '0.06em' }}>
           Uni Friends
         </p>
         <h1 style={{ marginTop: 6 }}>Pick your 3 best dates</h1>

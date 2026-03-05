@@ -47,7 +47,7 @@ export default function ResponseLocked() {
           style={{ marginTop: 32, width: '100%', textAlign: 'left' }}
         >
           {/* Group name */}
-          <p style={{ fontSize: 14, fontWeight: 500, color: GROUP_COLOUR, marginBottom: 10 }}>
+          <p style={{ fontSize: 14, fontWeight: 500, color: 'var(--ink-muted)', marginBottom: 10 }}>
             Uni Friends
           </p>
 
