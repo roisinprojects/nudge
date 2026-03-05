@@ -1,260 +1,340 @@
+import { useState } from 'react'
 import { useNavigate } from 'react-router-dom'
 import Screen from '../components/Screen'
 import Button from '../components/Button'
-import BackButton from '../components/BackButton'
 
-const GROUP_COLOUR = 'var(--group-lavender)'
-
-const MOCK_GROUP = {
-  name:       'Uni Friends',
-  isCreator:  true,
-  memberCount: 4,
-}
-
-const MOCK_MEMBERS = [
-  { name: 'Alex',   initial: 'A', role: 'Creator' },
-  { name: 'Jordan', initial: 'J', role: 'Member'  },
-  { name: 'Priya',  initial: 'P', role: 'Member'  },
-  { name: 'Róisín', initial: 'R', role: 'Member', isYou: true },
+// ── Mock data ────────────────────────────────────────────────────────────────
+// One group per state, sorted by urgency (mirrors Home order)
+const MOCK_GROUPS = [
+  {
+    id:          1,
+    name:        'Friday Fam',
+    colour:      'var(--group-peach)',
+    members:     ['Anna', 'Dev', 'Kezia'],
+    status:      'respond',
+    lastHangout: 'Never',
+    cycle:       6,
+    deadline:    'Friday',
+  },
+  {
+    id:          4,
+    name:        'Uni Friends',
+    colour:      'var(--group-sage)',
+    members:     ['Ben', 'Chloe', 'Marcus', 'Zoe'],
+    status:      'book',
+    matchedDate: 'Sat 15 Mar',
+    matchedTime: 'Evening · 7pm onwards',
+  },
+  {
+    id:          3,
+    name:        'Weekend Warriors',
+    colour:      'var(--group-lavender)',
+    members:     ['Chris', 'Lily', 'Ravi', 'Sam', 'Priya'],
+    status:      'waiting',
+    lastHangout: '3 months ago',
+    responded:   3,
+    total:       5,
+    closes:      'Friday',
+  },
+  {
+    id:         5,
+    name:       'Book Club',
+    colour:     'var(--group-rose)',
+    members:    ['Diana', 'Felix', 'Ingrid'],
+    status:     'booked',
+    bookedDate: 'Sat 22 Mar 2026',
+    bookedTime: '7:00pm',
+    venueName:  'The Ivy',
+  },
+  {
+    id:             2,
+    name:           'The Crew',
+    colour:         'var(--group-sky)',
+    members:        ['Sarah', 'Tom', 'Jess', 'Mike'],
+    status:         'idle',
+    lastHangout:    '6 weeks ago',
+    daysUntilNudge: 12,
+    cycle:          6,
+  },
 ]
 
-const MOCK_EVENT = {
-  scheduled: true,
-  day:  'Saturday, 15 March',
-  time: '7pm',
-  venue: 'The Ivy',
-  cuisine: 'Modern European',
+// ── Sub-components ────────────────────────────────────────────────────────────
+function StatsRow({ label, value, isLast }) {
+  return (
+    <div style={{
+      display: 'flex',
+      justifyContent: 'space-between',
+      alignItems: 'center',
+      padding: '14px 0',
+      borderBottom: isLast ? 'none' : '1px solid var(--border-default)',
+    }}>
+      <span style={{ fontSize: 13, color: 'var(--ink-muted)', fontWeight: 400 }}>{label}</span>
+      <span style={{ fontSize: 13, color: 'var(--ink-primary)', fontWeight: 600 }}>{value}</span>
+    </div>
+  )
 }
 
-const MOCK_HISTORY = [
-  { date: '28 Jan 2026', venue: 'The Botanist',  cuisine: 'Modern British' },
-  { date: '13 Dec 2025', venue: 'Dishoom',        cuisine: 'Indian'        },
-  { date: '4 Oct 2025',  venue: 'Hawksmoor',      cuisine: 'Steakhouse'    },
-]
-
-export default function GroupDetail() {
-  const navigate = useNavigate()
+function StatsCard({ g }) {
+  let rows = []
+  if (g.status === 'respond') {
+    rows = [
+      { label: 'Last hangout',  value: g.lastHangout },
+      { label: 'Cycle',         value: `Every ${g.cycle} weeks` },
+      { label: 'Status',        value: 'Nudge active' },
+    ]
+  } else if (g.status === 'book') {
+    rows = [
+      { label: 'Match found',  value: g.matchedDate },
+      { label: 'Time',         value: g.matchedTime },
+      { label: 'Assigned to',  value: 'You' },
+    ]
+  } else if (g.status === 'waiting') {
+    rows = [
+      { label: 'Last hangout', value: g.lastHangout },
+      { label: 'Responded',    value: `${g.responded} of ${g.total} members` },
+      { label: 'Closes',       value: g.closes },
+    ]
+  } else if (g.status === 'booked') {
+    rows = [
+      { label: 'Date',  value: g.bookedDate },
+      { label: 'Venue', value: g.venueName },
+      { label: 'Time',  value: g.bookedTime },
+    ]
+  } else {
+    // idle
+    rows = [
+      { label: 'Last hangout', value: g.lastHangout },
+      { label: 'Next nudge',   value: `In ${g.daysUntilNudge} days` },
+      { label: 'Cycle',        value: `Every ${g.cycle} weeks` },
+    ]
+  }
 
   return (
-    <Screen style={{ paddingBottom: 40 }}>
-      <div style={{ paddingTop: 48, display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
-        <BackButton to="/home" />
-        {MOCK_GROUP.isCreator && (
-          <button
-            onClick={() => navigate('/group-settings')}
-            style={{
-              background: 'transparent',
-              border: '1px solid var(--border-strong)',
-              borderRadius: 'var(--radius-md)',
-              padding: '6px 12px',
-              color: 'var(--ink-secondary)',
-              fontSize: 13,
-              fontWeight: 600,
-              cursor: 'pointer',
-              display: 'flex',
-              alignItems: 'center',
-              gap: 6,
-            }}
-          >
-            Settings
-          </button>
-        )}
-      </div>
+    <div
+      className="card"
+      style={{ borderLeft: `3px solid ${g.colour}`, padding: '0 16px' }}
+    >
+      {rows.map((row, i) => (
+        <StatsRow key={row.label} label={row.label} value={row.value} isLast={i === rows.length - 1} />
+      ))}
+    </div>
+  )
+}
 
-      {/* Header with group colour dot */}
-      <div style={{ marginTop: 20 }}>
-        <div style={{ display: 'flex', alignItems: 'center', gap: 8 }}>
-          <div style={{
-            width: 10, height: 10, borderRadius: '50%',
-            background: GROUP_COLOUR,
-            flexShrink: 0,
-          }} />
-          <h1>{MOCK_GROUP.name}</h1>
-        </div>
-        <p style={{ marginTop: 4, fontSize: 13, color: 'var(--ink-muted)' }}>
-          {MOCK_GROUP.memberCount} members
-          {MOCK_GROUP.isCreator && (
-            <span style={{ marginLeft: 8, color: 'var(--ink-secondary)', fontWeight: 600 }}>
-              · Creator
-            </span>
-          )}
-        </p>
-      </div>
+const ghostOutlined = { border: '1.5px solid var(--border-default)', color: 'var(--ink-muted)' }
 
-      {/* Upcoming hangout */}
-      <div style={{ marginTop: 24 }}>
-        <p style={{ fontSize: 11, fontWeight: 700, color: 'var(--ink-muted)', textTransform: 'uppercase', letterSpacing: '0.06em', marginBottom: 10 }}>
-          Upcoming hangout
-        </p>
-
-        {MOCK_EVENT.scheduled ? (
-          <div style={{
-            background: 'var(--bg-card)',
-            borderRadius: 'var(--radius-lg)',
-            borderLeft: `3px solid ${GROUP_COLOUR}`,
-            border: '1px solid var(--border-default)',
-            borderLeftWidth: 3,
-            borderLeftColor: GROUP_COLOUR,
-            padding: '14px 16px',
-            boxShadow: 'var(--shadow-sm)',
-          }}>
-            <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start' }}>
-              <div>
-                <p style={{ fontWeight: 700, fontSize: 15 }}>{MOCK_EVENT.venue}</p>
-                <p style={{ fontSize: 13, color: 'var(--ink-secondary)', marginTop: 4 }}>
-                  {MOCK_EVENT.day} · {MOCK_EVENT.time}
-                </p>
-                <span className="tag" style={{ marginTop: 8, display: 'inline-block' }}>{MOCK_EVENT.cuisine}</span>
-              </div>
-              <span className="badge badge-confirmed">Confirmed</span>
-            </div>
-            <div style={{ height: 1, background: 'var(--border-default)', margin: '12px 0' }} />
-            <div style={{ display: 'flex', gap: 8 }}>
-              <button
-                onClick={() => navigate('/cant-make-it')}
-                style={{
-                  flex: 1, height: 40, borderRadius: 'var(--radius-md)',
-                  background: 'transparent', border: 'none',
-                  color: 'var(--ink-muted)', fontSize: 13, fontWeight: 600,
-                  cursor: 'pointer',
-                }}
-              >
-                Can't make it
-              </button>
-              <button
-                onClick={() => navigate('/calendar-invite')}
-                style={{
-                  flex: 1, height: 40, borderRadius: 'var(--radius-md)',
-                  background: 'transparent',
-                  border: '1px solid var(--border-strong)',
-                  color: 'var(--ink-primary)', fontSize: 13, fontWeight: 600,
-                  cursor: 'pointer',
-                }}
-              >
-                Add to calendar
-              </button>
-            </div>
-          </div>
-        ) : (
-          <div style={{
-            background: 'var(--bg-ui)',
-            border: '1px solid var(--border-default)',
-            borderRadius: 'var(--radius-lg)',
-            padding: '14px 16px',
-            display: 'flex',
-            gap: 12,
-            alignItems: 'flex-start',
-          }}>
-            <span style={{ fontSize: 20 }}>📅</span>
-            <div>
-              <p style={{ fontSize: 14, fontWeight: 600, color: 'var(--ink-secondary)' }}>No upcoming hangout yet</p>
-              <p style={{ fontSize: 13, color: 'var(--ink-muted)', marginTop: 4 }}>
-                Next nudge on March 11 — we'll send everyone a reminder!
-              </p>
-            </div>
-          </div>
-        )}
-      </div>
-
-      {/* Members */}
-      <div style={{ height: 1, background: 'var(--border-default)', margin: '20px 0' }} />
-
-      <div>
-        <p style={{ fontSize: 11, fontWeight: 700, color: 'var(--ink-muted)', textTransform: 'uppercase', letterSpacing: '0.06em', marginBottom: 12 }}>
-          Members
-        </p>
-        <div style={{ display: 'flex', flexDirection: 'column', gap: 8 }}>
-          {MOCK_MEMBERS.map(m => (
-            <div
-              key={m.name}
-              style={{
-                display: 'flex',
-                alignItems: 'center',
-                gap: 12,
-                padding: '10px 14px',
-                background: 'var(--bg-card)',
-                borderRadius: 'var(--radius-lg)',
-                border: '1px solid var(--border-default)',
-                boxShadow: 'var(--shadow-xs)',
-              }}
-            >
-              <div style={{
-                width: 36, height: 36, borderRadius: '50%',
-                background: m.isYou ? GROUP_COLOUR : 'var(--bg-ui)',
-                border: `1.5px solid ${m.isYou ? 'transparent' : 'var(--border-strong)'}`,
-                display: 'flex', alignItems: 'center', justifyContent: 'center',
-                fontSize: 13, fontWeight: 700,
-                color: 'var(--ink-primary)',
-                flexShrink: 0,
-              }}>
-                {m.initial}
-              </div>
-              <div style={{ flex: 1 }}>
-                <p style={{ fontSize: 14, fontWeight: 600, color: 'var(--ink-primary)' }}>
-                  {m.name}{m.isYou && <span style={{ color: 'var(--ink-muted)', fontWeight: 400 }}> (You)</span>}
-                </p>
-                <p style={{ fontSize: 12, color: 'var(--ink-muted)', marginTop: 2 }}>{m.role}</p>
-              </div>
-            </div>
-          ))}
-        </div>
-      </div>
-
-      {/* Past hangouts */}
-      <div style={{ height: 1, background: 'var(--border-default)', margin: '20px 0' }} />
-
-      <div>
-        <p style={{ fontSize: 11, fontWeight: 700, color: 'var(--ink-muted)', textTransform: 'uppercase', letterSpacing: '0.06em', marginBottom: 12 }}>
-          Past hangouts
-        </p>
-        {MOCK_HISTORY.length > 0 ? (
-          <div style={{ display: 'flex', flexDirection: 'column', gap: 8 }}>
-            {MOCK_HISTORY.map((h, i) => (
-              <div
-                key={i}
-                style={{
-                  display: 'flex',
-                  justifyContent: 'space-between',
-                  alignItems: 'center',
-                  padding: '12px 16px',
-                  background: 'var(--bg-card)',
-                  borderRadius: 'var(--radius-lg)',
-                  border: '1px solid var(--border-default)',
-                  boxShadow: 'var(--shadow-xs)',
-                }}
-              >
-                <div>
-                  <p style={{ fontSize: 14, fontWeight: 600 }}>{h.venue}</p>
-                  <p style={{ fontSize: 12, color: 'var(--ink-muted)', marginTop: 3 }}>{h.date}</p>
-                </div>
-                <span className="tag">{h.cuisine}</span>
-              </div>
-            ))}
-          </div>
-        ) : (
-          <div style={{
-            background: 'var(--bg-ui)',
-            border: '1px solid var(--border-default)',
-            borderRadius: 'var(--radius-lg)',
-            padding: '14px 16px',
-            textAlign: 'center',
-          }}>
-            <p style={{ fontSize: 14, color: 'var(--ink-muted)' }}>No past hangouts yet</p>
-            <p style={{ fontSize: 13, color: 'var(--ink-muted)', marginTop: 4 }}>Your first is coming soon!</p>
-          </div>
-        )}
-      </div>
-
-      {/* Invite CTA */}
-      <div style={{ marginTop: 20 }}>
+function CtaBlock({ g, navigate }) {
+  if (g.status === 'respond') {
+    return (
+      <div style={{ display: 'flex', flexDirection: 'column', gap: 10 }}>
         <Button
           variant="group"
-          style={{ '--group-color': GROUP_COLOUR }}
-          onClick={() => navigate('/invite-friends')}
+          style={{ '--group-color': g.colour }}
+          onClick={() => navigate('/respond')}
         >
-          + Invite someone
+          Respond to nudge →
+        </Button>
+        <Button variant="ghost" style={ghostOutlined} onClick={() => navigate('/group-settings')}>
+          Group settings
         </Button>
       </div>
+    )
+  }
+
+  if (g.status === 'book') {
+    return (
+      <div style={{ display: 'flex', flexDirection: 'column', gap: 10 }}>
+        <Button
+          variant="group"
+          style={{ '--group-color': g.colour }}
+          onClick={() => navigate('/booking-confirm')}
+        >
+          Book now →
+        </Button>
+        <Button variant="ghost" style={ghostOutlined} onClick={() => navigate('/group-settings')}>
+          Group settings
+        </Button>
+      </div>
+    )
+  }
+
+  if (g.status === 'waiting') {
+    return (
+      <div style={{ display: 'flex', flexDirection: 'column' }}>
+        <p style={{ fontSize: 12, color: 'var(--ink-muted)', textAlign: 'center', marginBottom: 10 }}>
+          We'll notify you when everyone's responded.
+        </p>
+        <Button variant="ghost" style={ghostOutlined} onClick={() => navigate('/group-settings')}>
+          Group settings
+        </Button>
+      </div>
+    )
+  }
+
+  if (g.status === 'booked') {
+    return (
+      <div style={{ display: 'flex', flexDirection: 'column', gap: 10 }}>
+        <Button variant="secondary" onClick={() => navigate('/booked-details')}>
+          View booking
+        </Button>
+        <Button variant="ghost" style={ghostOutlined} onClick={() => navigate('/group-settings')}>
+          Group settings
+        </Button>
+      </div>
+    )
+  }
+
+  // idle
+  return (
+    <div style={{ display: 'flex', flexDirection: 'column' }}>
+      <p style={{ fontSize: 12, color: 'var(--ink-muted)', textAlign: 'center', marginBottom: 10 }}>
+        Your next nudge will go out in {g.daysUntilNudge} days.
+      </p>
+      <Button variant="ghost" style={ghostOutlined} onClick={() => navigate('/group-settings')}>
+        Group settings
+      </Button>
+    </div>
+  )
+}
+
+// ── Screen ────────────────────────────────────────────────────────────────────
+export default function GroupDetail() {
+  const navigate = useNavigate()
+  const [selectedId, setSelectedId] = useState(MOCK_GROUPS[0].id)
+  const g = MOCK_GROUPS.find(grp => grp.id === selectedId)
+
+  return (
+    <Screen style={{ paddingBottom: 40, padding: '0 16px 40px' }}>
+
+      {/* [1] Top navigation bar */}
+      <div style={{
+        display: 'flex',
+        justifyContent: 'space-between',
+        alignItems: 'center',
+        marginBottom: 28,
+        paddingTop: 16,
+      }}>
+        <button
+          onClick={() => navigate('/home')}
+          style={{
+            background: 'none',
+            border: 'none',
+            color: 'var(--ink-primary)',
+            fontSize: 20,
+            cursor: 'pointer',
+            padding: 0,
+            width: 44,
+            height: 44,
+            display: 'flex',
+            alignItems: 'center',
+            justifyContent: 'flex-start',
+            flexShrink: 0,
+          }}
+          aria-label="Back"
+        >
+          ←
+        </button>
+
+        <span style={{
+          fontSize: 15,
+          fontWeight: 600,
+          color: 'var(--ink-secondary)',
+          letterSpacing: '-0.01em',
+          flex: 1,
+          textAlign: 'center',
+        }}>
+          {g.name}
+        </span>
+
+        {/* Balancing spacer — same width as back arrow */}
+        <div style={{ width: 44, flexShrink: 0 }} />
+      </div>
+
+      {/* State switcher (prototype convenience) */}
+      <div style={{
+        display: 'flex',
+        gap: 8,
+        overflowX: 'auto',
+        paddingBottom: 4,
+        marginBottom: 24,
+        scrollbarWidth: 'none',
+      }}>
+        {MOCK_GROUPS.map(grp => (
+          <button
+            key={grp.id}
+            onClick={() => setSelectedId(grp.id)}
+            style={{
+              flexShrink: 0,
+              padding: '5px 12px',
+              borderRadius: 'var(--radius-full)',
+              border: `1px solid ${selectedId === grp.id ? grp.colour : 'var(--border-strong)'}`,
+              background: selectedId === grp.id ? grp.colour : 'transparent',
+              color: 'var(--ink-secondary)',
+              fontSize: 12,
+              fontWeight: 600,
+              cursor: 'pointer',
+              opacity: selectedId === grp.id ? 1 : 0.65,
+              transition: 'all 100ms',
+            }}
+          >
+            {grp.name}
+          </button>
+        ))}
+      </div>
+
+      {/* [2] Group identity block */}
+      <div style={{ display: 'flex', alignItems: 'center', gap: 10, marginBottom: 16 }}>
+        <div style={{
+          width: 10,
+          height: 10,
+          borderRadius: '50%',
+          background: g.colour,
+          flexShrink: 0,
+        }} />
+        <h1 style={{
+          fontSize: 26,
+          fontWeight: 700,
+          letterSpacing: '-0.025em',
+          color: 'var(--ink-primary)',
+          margin: 0,
+        }}>
+          {g.name}
+        </h1>
+      </div>
+
+      {/* [3] Member avatars */}
+      <div style={{ display: 'flex', gap: 8, flexWrap: 'wrap', marginBottom: 24 }}>
+        {g.members.map(name => (
+          <div
+            key={name}
+            style={{
+              width: 36,
+              height: 36,
+              borderRadius: '50%',
+              background: 'var(--ink-primary)',
+              color: 'var(--bg-primary)',
+              fontSize: 13,
+              fontWeight: 700,
+              display: 'flex',
+              alignItems: 'center',
+              justifyContent: 'center',
+              boxShadow: 'var(--shadow-xs)',
+              flexShrink: 0,
+            }}
+          >
+            {name.charAt(0)}
+          </div>
+        ))}
+      </div>
+
+      {/* [4] Stats card */}
+      <StatsCard g={g} />
+
+      {/* [5] CTA block */}
+      <div style={{ marginTop: 28 }}>
+        <CtaBlock g={g} navigate={navigate} />
+      </div>
+
     </Screen>
   )
 }

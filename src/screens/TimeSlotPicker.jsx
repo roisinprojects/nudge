@@ -3,7 +3,7 @@ import { useNavigate, useLocation } from 'react-router-dom'
 import Screen from '../components/Screen'
 import Button from '../components/Button'
 import BackButton from '../components/BackButton'
-import SegmentedBar from '../components/SegmentedBar'
+import Icon from '../components/Icon'
 
 const GROUP_COLOUR = 'var(--group-lavender)'
 
@@ -61,8 +61,11 @@ export default function TimeSlotPicker() {
         </p>
       </div>
 
-      <div style={{ marginTop: 16 }}>
-        <SegmentedBar total={2} current={2} counterText={`${selectedCount}/3 done`} />
+      <div style={{ marginTop: 16, display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
+        <p style={{ fontSize: 12, color: 'var(--ink-muted)', fontWeight: 600 }}>Step 2 of 2</p>
+        <p style={{ fontSize: 12, color: selectedCount === 3 ? 'var(--semantic-success)' : 'var(--ink-muted)', fontWeight: 600 }}>
+          {selectedCount}/3 times selected
+        </p>
       </div>
 
       {/* Accordion rows */}
@@ -125,15 +128,16 @@ export default function TimeSlotPicker() {
                   </div>
 
                   {/* Chevron */}
-                  <span style={{
-                    color: 'var(--ink-muted)',
-                    fontSize: 16,
-                    lineHeight: 1,
-                    transform: isOpen ? 'rotate(180deg)' : 'none',
-                    transition: 'transform var(--duration-normal) var(--ease-out)',
-                  }}>
-                    ▾
-                  </span>
+                  <Icon
+                    name="expand_more"
+                    size={20}
+                    style={{
+                      color: 'var(--ink-muted)',
+                      transform: isOpen ? 'rotate(180deg)' : 'none',
+                      transition: 'transform var(--duration-normal) var(--ease-out)',
+                      flexShrink: 0,
+                    }}
+                  />
                 </div>
 
                 {/* Expanded: time options */}
@@ -199,7 +203,7 @@ export default function TimeSlotPicker() {
             disabled={!allSelected}
             onClick={() => navigate('/response-locked', { state: { dates, times } })}
           >
-            Submit availability →
+            Submit availability
           </Button>
         </div>
       </div>

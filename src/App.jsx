@@ -1,4 +1,4 @@
-import { useState } from 'react'
+import { useState, useEffect } from 'react'
 import { Routes, Route, Navigate, Link, useLocation } from 'react-router-dom'
 import { ViewModeContext } from './context/viewMode'
 
@@ -16,13 +16,9 @@ import Profile               from './screens/Profile'
 import RespondNow            from './screens/RespondNow'
 import CalendarPicker        from './screens/CalendarPicker'
 import TimeSlotPicker        from './screens/TimeSlotPicker'
-import ActivityPreferences   from './screens/ActivityPreferences'
 import ResponseLocked        from './screens/ResponseLocked'
-import WaitingForOthers      from './screens/WaitingForOthers'
-import Matching              from './screens/Matching'
 import Results               from './screens/Results'
 import BookingConfirm        from './screens/BookingConfirm'
-import TimeConfirm           from './screens/TimeConfirm'
 import CalendarInvite        from './screens/CalendarInvite'
 import CantMakeIt            from './screens/CantMakeIt'
 import BookerCancellation    from './screens/BookerCancellation'
@@ -30,6 +26,8 @@ import MultipleCancellations from './screens/MultipleCancellations'
 import ErrorNoOverlap        from './screens/ErrorNoOverlap'
 import ErrorNoVenues         from './screens/ErrorNoVenues'
 import GenericError          from './screens/GenericError'
+import BookedCardDetails      from './screens/BookedCardDetails'
+import DesignSystem           from './screens/DesignSystem'
 
 // ── Screen map used by the nav overlay ──────────────────────────────────────
 export const SCREENS = [
@@ -46,18 +44,15 @@ export const SCREENS = [
   { path: '/group-settings',         label: 'Group settings',           group: 'Home & Groups'  },
   { path: '/invite-landing',         label: 'Invite landing',           group: 'Home & Groups'  },
   { path: '/profile',                label: 'Profile & settings',       group: 'Home & Groups'  },
+  { path: '/booked-details',         label: 'Booked event details',       group: 'Home & Groups'  },
   // Response flow
   { path: '/respond',                label: 'Respond now',              group: 'Response flow'  },
   { path: '/calendar-picker',        label: 'Pick 3 dates',             group: 'Response flow'  },
   { path: '/time-picker',            label: 'Pick times',               group: 'Response flow'  },
-  { path: '/activity-preferences',   label: 'Pick activity',            group: 'Response flow'  },
   { path: '/response-locked',        label: 'Response locked',          group: 'Response flow'  },
-  { path: '/waiting',                label: 'Waiting for others',       group: 'Response flow'  },
   // Matching & results
-  { path: '/matching',               label: 'Matching (loading)',        group: 'Results'        },
   { path: '/results',                label: 'Results',                  group: 'Results'        },
   { path: '/booking-confirm',        label: 'Booking confirm',          group: 'Results'        },
-  { path: '/time-confirm',           label: 'Confirm the time',         group: 'Results'        },
   { path: '/calendar-invite',        label: 'Calendar invite',          group: 'Results'        },
   // Cancellation
   { path: '/cant-make-it',           label: "Can't make it",            group: 'Cancellation'   },
@@ -67,7 +62,37 @@ export const SCREENS = [
   { path: '/error-no-overlap',       label: 'Error: no overlap',        group: 'Errors'         },
   { path: '/error-no-venues',        label: 'Error: no venues',         group: 'Errors'         },
   { path: '/error',                  label: 'Error: generic',           group: 'Errors'         },
+  // Reference
+  { path: '/design-system',          label: 'Design system',            group: 'Reference'      },
 ]
+
+// ── Theme toggle ─────────────────────────────────────────────────────────────
+function ThemeToggle({ dark, setDark }) {
+  return (
+    <button
+      onClick={() => setDark(d => !d)}
+      title={dark ? 'Switch to light mode' : 'Switch to dark mode'}
+      style={{
+        width: '100%',
+        height: 28,
+        borderRadius: 6,
+        border: '1px solid #333',
+        background: '#1a1a1a',
+        color: dark ? '#f0e68c' : '#aaa',
+        fontSize: 12,
+        fontWeight: 600,
+        cursor: 'pointer',
+        display: 'flex',
+        alignItems: 'center',
+        justifyContent: 'center',
+        gap: 6,
+        transition: 'color 0.15s',
+      }}
+    >
+      {dark ? '☀ Light mode' : '☾ Dark mode'}
+    </button>
+  )
+}
 
 // ── View mode toggle (inside prototype nav) ──────────────────────────────────
 function ViewToggle({ viewMode, setViewMode }) {
@@ -101,8 +126,7 @@ function ViewToggle({ viewMode, setViewMode }) {
 function WebTopNav() {
   const path = window.location.pathname
   const links = [
-    { href: '/home',         label: 'Home'   },
-    { href: '/group-detail', label: 'Groups' },
+    { href: '/home', label: 'Home' },
   ]
   return (
     <div
@@ -145,7 +169,7 @@ function WebTopNav() {
 }
 
 // ── Prototype nav sidebar ────────────────────────────────────────────────────
-function NavOverlay({ viewMode, setViewMode }) {
+function NavOverlay({ viewMode, setViewMode, dark, setDark }) {
   const groups = [...new Set(SCREENS.map(s => s.group))]
   const { pathname } = useLocation()
 
@@ -167,9 +191,12 @@ function NavOverlay({ viewMode, setViewMode }) {
       }}
     >
       <div style={{ padding: '0 16px 12px', borderBottom: '1px solid #222' }}>
-        <p style={{ color: 'var(--coral)', fontWeight: 700, fontSize: 16, fontFamily: 'Poppins, sans-serif' }}>nudge</p>
+        <p style={{ color: '#aaa', fontWeight: 700, fontSize: 16, fontFamily: 'Poppins, sans-serif' }}>nudge</p>
         <p style={{ color: '#555', fontSize: 11, marginTop: 2, marginBottom: 10 }}>prototype · all screens</p>
         <ViewToggle viewMode={viewMode} setViewMode={setViewMode} />
+        <div style={{ marginTop: 6 }}>
+          <ThemeToggle dark={dark} setDark={setDark} />
+        </div>
       </div>
       {groups.map(g => (
         <div key={g} style={{ marginTop: 16 }}>
@@ -203,6 +230,17 @@ export default function App() {
     () => localStorage.getItem('nudge-view-mode') || 'mobile'
   )
 
+  const [dark, setDark] = useState(() => {
+    const saved = localStorage.getItem('nudge-theme')
+    if (saved) return saved === 'dark'
+    return window.matchMedia('(prefers-color-scheme: dark)').matches
+  })
+
+  useEffect(() => {
+    document.documentElement.setAttribute('data-theme', dark ? 'dark' : 'light')
+    localStorage.setItem('nudge-theme', dark ? 'dark' : 'light')
+  }, [dark])
+
   const handleSetViewMode = (mode) => {
     setViewMode(mode)
     localStorage.setItem('nudge-view-mode', mode)
@@ -213,7 +251,7 @@ export default function App() {
   return (
     <ViewModeContext.Provider value={viewMode}>
       <div style={{ display: 'flex' }}>
-        <NavOverlay viewMode={viewMode} setViewMode={handleSetViewMode} />
+        <NavOverlay viewMode={viewMode} setViewMode={handleSetViewMode} dark={dark} setDark={setDark} />
         <div
           style={{
             marginLeft: 220,
@@ -244,13 +282,9 @@ export default function App() {
             <Route path="/respond"                    element={<RespondNow />} />
             <Route path="/calendar-picker"            element={<CalendarPicker />} />
             <Route path="/time-picker"                element={<TimeSlotPicker />} />
-            <Route path="/activity-preferences"       element={<ActivityPreferences />} />
             <Route path="/response-locked"            element={<ResponseLocked />} />
-            <Route path="/waiting"                    element={<WaitingForOthers />} />
-            <Route path="/matching"                   element={<Matching />} />
             <Route path="/results"                    element={<Results />} />
             <Route path="/booking-confirm"            element={<BookingConfirm />} />
-            <Route path="/time-confirm"              element={<TimeConfirm />} />
             <Route path="/calendar-invite"            element={<CalendarInvite />} />
             <Route path="/cant-make-it"               element={<CantMakeIt />} />
             <Route path="/booker-cancellation"        element={<BookerCancellation />} />
@@ -258,6 +292,8 @@ export default function App() {
             <Route path="/error-no-overlap"           element={<ErrorNoOverlap />} />
             <Route path="/error-no-venues"            element={<ErrorNoVenues />} />
             <Route path="/error"                      element={<GenericError />} />
+            <Route path="/booked-details"             element={<BookedCardDetails />} />
+            <Route path="/design-system"              element={<DesignSystem />} />
           </Routes>
         </div>
       </div>

@@ -1,18 +1,29 @@
 import { useNavigate, useLocation } from 'react-router-dom'
 import Screen from '../components/Screen'
 import Button from '../components/Button'
+import Icon from '../components/Icon'
 
-const TIME_LABELS    = { lunch: 'Lunch', evening: 'Evening', late: 'Late' }
+const TIME_LABELS    = { lunch: '11am – 3pm', evening: '5pm – 9pm', late: '9pm+' }
 const ACTIVITY_LABELS = { food: 'Food', food_drinks: 'Food + Drinks', drinks: 'Drinks', suggest: 'Flexible' }
+
+const GROUP_COLOUR = 'var(--group-lavender)'
 
 export default function ResponseLocked() {
   const navigate  = useNavigate()
   const { state } = useLocation()
 
-  // Build display rows from real state, or fall back to plausible mock data
+  // Build display rows from real state, or fall back to mock data
   const slots = state?.dates
-    ? state.dates.map(d => `${d.fmtDate} · ${TIME_LABELS[state.times?.[d.date]] ?? ''}`)
-    : ['Sat 1 Mar · Evening', 'Fri 7 Mar · Late', 'Sun 9 Mar · Lunch']
+    ? state.dates.map(d => {
+        const timeId = state.times?.[d.date]
+        const timeRange = timeId ? TIME_LABELS[timeId] : ''
+        return { label: d.fmtDate, time: timeRange }
+      })
+    : [
+        { label: 'Saturday, 1 March', time: '5pm – 9pm' },
+        { label: 'Friday, 7 March',   time: '9pm+' },
+        { label: 'Sunday, 9 March',   time: '11am – 3pm' },
+      ]
 
   const activityDisplay = state?.activities?.length
     ? state.activities.map(id => ACTIVITY_LABELS[id] ?? id).join(' · ')
@@ -20,65 +31,64 @@ export default function ResponseLocked() {
 
   return (
     <Screen>
-      <div style={{ flex: 1, display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center', textAlign: 'center', paddingTop: 40 }}>
-        <div
-          style={{
-            width: 80, height: 80,
-            borderRadius: '50%',
-            background: 'var(--color-success-bg)',
-            border: '2px solid var(--success)',
-            display: 'flex', alignItems: 'center', justifyContent: 'center',
-            fontSize: 36,
-            marginBottom: 24,
-          }}
-        >
-          ✓
+      <div style={{ flex: 1, display: 'flex', flexDirection: 'column', alignItems: 'center', textAlign: 'center', paddingTop: 24 }}>
+        <div className="alert alert-success" style={{ width: '100%', marginBottom: 8, textAlign: 'left' }}>
+          <span>✓</span>
+          <span>Your availability is saved</span>
         </div>
 
-        <h1 style={{ color: 'var(--success)' }}>You're locked in!</h1>
+        <h1 style={{ color: 'var(--semantic-success)' }}>You're locked in!</h1>
         <p className="text-muted mt-16">
           All saved. We'll match everyone up as responses come in and send you results within 48 hours.
         </p>
 
         <div
           className="card"
-          style={{ marginTop: 32, width: '100%', textAlign: 'left', border: '1px solid rgba(255, 255, 255, 0.06)' }}
+          style={{ marginTop: 32, width: '100%', textAlign: 'left' }}
         >
+          {/* Group name */}
+          <p style={{ fontSize: 14, fontWeight: 500, color: GROUP_COLOUR, marginBottom: 10 }}>
+            Uni Friends
+          </p>
+
           {/* Dates section */}
-          <p style={{ fontSize: 11, fontWeight: 700, color: 'var(--color-text-tertiary)', textTransform: 'uppercase', letterSpacing: '0.08em', marginBottom: 10 }}>
+          <p style={{ fontSize: 11, fontWeight: 700, color: 'var(--ink-muted)', textTransform: 'uppercase', letterSpacing: '0.06em', marginBottom: 10 }}>
             Your dates
           </p>
-          <div style={{ display: 'flex', flexDirection: 'column', gap: 8 }}>
+          <div style={{ display: 'flex', flexDirection: 'column', gap: 10 }}>
             {slots.map((slot, i) => (
-              <div key={i} style={{ display: 'flex', alignItems: 'center', gap: 10 }}>
-                <span>📅</span>
-                <span className="text-sm">{slot}</span>
+              <div key={i} style={{ display: 'flex', alignItems: 'flex-start', gap: 10 }}>
+                <Icon name="event" size={16} style={{ color: 'var(--ink-muted)', marginTop: 2, flexShrink: 0 }} />
+                <div>
+                  <p style={{ fontSize: 16, fontWeight: 600, color: 'var(--ink-primary)' }}>{slot.label}</p>
+                  <p style={{ fontSize: 16, color: 'var(--ink-secondary)', marginTop: 2 }}>{slot.time}</p>
+                </div>
               </div>
             ))}
           </div>
 
           {/* Divider */}
-          <div style={{ height: 1, background: 'var(--color-border-default)', margin: '14px 0' }} />
+          <div style={{ height: 1, background: 'var(--border-default)', margin: '14px 0' }} />
 
           {/* Vibe section */}
-          <p style={{ fontSize: 11, fontWeight: 700, color: 'var(--color-text-tertiary)', textTransform: 'uppercase', letterSpacing: '0.08em', marginBottom: 10 }}>
+          <p style={{ fontSize: 11, fontWeight: 700, color: 'var(--ink-muted)', textTransform: 'uppercase', letterSpacing: '0.06em', marginBottom: 10 }}>
             Your vibe
           </p>
           <div style={{ display: 'flex', alignItems: 'center', gap: 10 }}>
-            <span>🍸</span>
+            <Icon name="local_bar" size={16} style={{ color: 'var(--ink-muted)', flexShrink: 0 }} />
             <span className="text-sm">{activityDisplay}</span>
           </div>
         </div>
 
         <div className="alert alert-success" style={{ marginTop: 24, width: '100%' }}>
-          <span>🔒</span>
+          <Icon name="lock" size={16} style={{ color: 'var(--semantic-success)', flexShrink: 0 }} />
           <p className="text-sm">Responses are locked to keep it fair — no one can backtrack based on seeing others' picks.</p>
         </div>
       </div>
 
       <div style={{ paddingBottom: 40 }}>
-        <Button onClick={() => navigate('/waiting')}>
-          See who's responded
+        <Button onClick={() => navigate('/home')}>
+          Back to home
         </Button>
       </div>
     </Screen>

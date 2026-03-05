@@ -29,12 +29,12 @@ export default function WaitingForOthers() {
 
       <div style={{ marginTop: 32 }}>
         {/* Progress bar */}
-        <div style={{ height: 6, background: 'rgba(255, 255, 255, 0.06)', borderRadius: 3, overflow: 'hidden' }}>
+        <div style={{ height: 6, background: 'var(--border-strong)', borderRadius: 3, overflow: 'hidden' }}>
           <div
             style={{
               height: '100%',
               width: `${(responded / total) * 100}%`,
-              background: 'var(--coral)',
+              background: 'var(--ink-primary)',
               borderRadius: 3,
               transition: 'width 0.4s',
             }}

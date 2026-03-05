@@ -29,6 +29,10 @@
   --btn-primary-hover:  #2D2D2D;
   --btn-primary-active: #404040;
 
+  /* Disabled button — solid muted state */
+  --btn-disabled-bg: #D0CBC5;
+  --btn-disabled-fg: #8C8884;
+
   /* Semantic — success */
   --semantic-success:        #2D7D4F;
   --semantic-success-bg:     #EDF7F2;
@@ -177,6 +181,10 @@
     --btn-primary-hover:  #FFFFFF;
     --btn-primary-active: #F0EDE6;
 
+    /* Disabled button — dark mode */
+    --btn-disabled-bg: #2E2B28;
+    --btn-disabled-fg: #66625E;
+
     --semantic-success:        #6BCCA0;
     --semantic-success-bg:     #0A2E1A;
     --semantic-success-border: #1A5E3A;
@@ -210,6 +218,50 @@
     --shadow-md: 0 4px 12px rgba(0, 0, 0, 0.5), 0 2px 4px rgba(0, 0, 0, 0.4);
     --shadow-lg: 0 8px 24px rgba(0, 0, 0, 0.6), 0 4px 8px rgba(0, 0, 0, 0.5);
   }
+}
+
+/* ── Light mode (explicit override — beats prefers-color-scheme: dark) ── */
+[data-theme="light"] {
+  --bg-primary: #F8F5EE;
+  --bg-card:    #FFFFFF;
+  --bg-ui:      #ECEAE3;
+  --ink-primary:   #1A1A1A;
+  --ink-secondary: #5A5650;
+  --ink-muted:     #9A9488;
+  --ink-faint:     #C8C4BA;
+  --border-default: rgba(26, 26, 26, 0.08);
+  --border-strong:  rgba(26, 26, 26, 0.15);
+  --border-muted:   rgba(26, 26, 26, 0.04);
+  --btn-primary-bg:     #1A1A1A;
+  --btn-primary-fg:     #FFFFFF;
+  --btn-primary-hover:  #2D2D2D;
+  --btn-primary-active: #404040;
+  --semantic-success:        #2D7D4F;
+  --semantic-success-bg:     #EDF7F2;
+  --semantic-success-border: #A8D8BA;
+  --semantic-success-icon:   #3DAA70;
+  --semantic-warning:        #8A5A1A;
+  --semantic-warning-bg:     #FFF5E4;
+  --semantic-warning-border: #E8C890;
+  --semantic-error:        #9A2A1A;
+  --semantic-error-bg:     #FEF2F0;
+  --semantic-error-border: #F0A898;
+  --semantic-info:        #1A4A8A;
+  --semantic-info-bg:     #EEF4FF;
+  --semantic-info-border: #98BCEC;
+  --group-sage:     #C8D8C0;
+  --group-lavender: #C8C0D8;
+  --group-peach:    #E8C8B8;
+  --group-sky:      #B8D0E0;
+  --group-butter:   #E0D8B0;
+  --group-rose:     #E0C0C8;
+  --group-slate:    #C0C8D0;
+  --group-marigold: #E0D0A8;
+  --dot-color: rgba(26, 26, 26, 0.055);
+  --shadow-xs: 0 1px 2px rgba(0, 0, 0, 0.06);
+  --shadow-sm: 0 1px 4px rgba(0, 0, 0, 0.08), 0 1px 2px rgba(0, 0, 0, 0.04);
+  --shadow-md: 0 4px 12px rgba(0, 0, 0, 0.08), 0 2px 4px rgba(0, 0, 0, 0.06);
+  --shadow-lg: 0 8px 24px rgba(0, 0, 0, 0.10), 0 4px 8px rgba(0, 0, 0, 0.06);
 }
 
 /* ── Dark mode (manual toggle via data-theme attribute) ── */
@@ -459,10 +511,12 @@ h3 {
   background: var(--semantic-error-bg);
 }
 
-/* Disabled */
+/* Disabled — visible muted state (not invisible) */
 .btn-disabled,
 .btn[disabled] {
-  opacity: 0.35;
+  background: var(--btn-disabled-bg) !important;
+  color: var(--btn-disabled-fg) !important;
+  border-color: transparent !important;
   cursor: not-allowed;
   pointer-events: none;
 }
@@ -530,6 +584,16 @@ h3 {
   padding: 16px;
   border: 1px solid var(--border-default);
   box-shadow: var(--shadow-sm);
+  transition: box-shadow var(--duration-fast) var(--ease-out), background-color var(--duration-fast) var(--ease-out);
+}
+.card-interactive {
+  cursor: pointer;
+}
+@media (hover: hover) {
+  .card-interactive:hover {
+    box-shadow: var(--shadow-md);
+    background-color: rgba(26, 26, 26, 0.03);
+  }
 }
 
 /* ── Alert banners ── */
@@ -593,8 +657,8 @@ h3 {
   border-radius: 2px;
   transition: background var(--duration-normal) var(--ease-out);
 }
-.progress-seg.done    { background: var(--ink-primary); }
-.progress-seg.active  { background: rgba(26, 26, 26, 0.4); }
+.progress-seg.active  { background: var(--ink-primary); }
+.progress-seg.done    { background: var(--ink-secondary); }
 .progress-seg.todo    { background: var(--border-strong); }
 
 /* ── Pill / chip ── */
@@ -694,34 +758,59 @@ h3 {
 }
 
 /* ── Badge (status) ── */
+@keyframes nudge-pulse {
+  0%, 100% { opacity: 1; }
+  50%       { opacity: 0.4; }
+}
+
 .badge {
   display: inline-flex;
   align-items: center;
+  gap: 4px;
   font-size: 11px;
   font-weight: 700;
-  padding: 3px 10px;
-  border-radius: var(--radius-full);
-  letter-spacing: 0.02em;
+  padding: 4px 10px;
+  border-radius: 999px;
+  letter-spacing: 0.01em;
   white-space: nowrap;
 }
-.badge-respond {
-  background: var(--ink-primary);
-  color: var(--bg-primary);
+.badge-dot {
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  flex-shrink: 0;
 }
-.badge-waiting {
-  background: var(--semantic-warning-bg);
-  color: var(--semantic-warning);
-  border: 1px solid var(--semantic-warning-border);
-}
-.badge-idle {
-  background: var(--bg-ui);
-  color: var(--ink-muted);
-}
-.badge-confirmed {
-  background: var(--semantic-success-bg);
-  color: var(--semantic-success);
-  border: 1px solid var(--semantic-success-border);
-}
+
+/* 1. Respond now */
+.badge-respond              { background: #1A1A1A; color: #F8F5EE; }
+.badge-respond .badge-dot   { background: #F8F5EE; animation: nudge-pulse 1.5s ease-in-out infinite; }
+
+/* 2. Book now */
+.badge-book                 { background: #FEF4E0; color: #7A5010; border: 1px solid rgba(196,132,30,0.2); }
+.badge-book .badge-dot      { background: #C4841E; }
+
+/* 3. Waiting for others */
+.badge-waiting              { background: #ECEAE3; color: #9A9488; }
+.badge-waiting .badge-dot   { background: #C8C4BC; }
+
+/* 4. Booked */
+.badge-booked               { background: #EBF5EE; color: #1E5C35; }
+.badge-booked .badge-dot    { background: #3D8C5A; }
+
+/* 5. Idle */
+.badge-idle                 { background: #ECEAE3; color: #C8C4BC; }
+.badge-idle .badge-dot      { background: #C8C4BC; opacity: 0.5; }
+
+/* Existing variants — unchanged */
+.badge-matched   { background: var(--ink-primary); color: var(--btn-primary-fg); }
+.badge-confirmed { background: var(--semantic-success-bg); color: var(--semantic-success); border: 1px solid var(--semantic-success-border); }
+
+/* Dark mode overrides */
+.dark .badge-respond { background: #F0EAE0; color: #161412; }
+.dark .badge-book    { background: #2A2010; color: #D4A840; border-color: rgba(212,168,64,0.2); }
+.dark .badge-waiting { background: #2A2620; color: #706860; }
+.dark .badge-booked  { background: #1A2E20; color: #5ABE7A; }
+.dark .badge-idle    { background: #2A2620; color: #4A4640; }
 
 /* ── Utility classes ── */
 .gap-4  { gap: 4px;  }
@@ -775,4 +864,18 @@ h3 {
   background: var(--border-strong);
 }
 .dot.active { background: var(--ink-primary); }
+
+/* ── Confetti animation ── */
+@keyframes confetti-fall {
+  0%   { transform: translateY(-20px) rotate(0deg) scaleX(1);   opacity: 1; }
+  80%  { opacity: 1; }
+  100% { transform: translateY(110vh) rotate(720deg) scaleX(-1); opacity: 0; }
+}
+.confetti-piece {
+  position: absolute;
+  top: -20px;
+  border-radius: 2px;
+  animation: confetti-fall linear forwards;
+  pointer-events: none;
+}
 .dot.done   { background: var(--semantic-success-icon); }

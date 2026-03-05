@@ -5,59 +5,88 @@ import Button from '../components/Button'
 import Input from '../components/Input'
 import BackButton from '../components/BackButton'
 import SegmentedBar from '../components/SegmentedBar'
+import Icon from '../components/Icon'
+
+const MY_EMAIL = 'you@example.com'
 
 export default function InviteFriends() {
   const navigate = useNavigate()
   const [email, setEmail] = useState('')
   const [invited, setInvited] = useState([])
+  const [inputError, setInputError] = useState('')
 
   const addEmail = () => {
-    if (email.trim() && !invited.includes(email.trim())) {
-      setInvited(prev => [...prev, email.trim()])
-      setEmail('')
+    const trimmed = email.trim().toLowerCase()
+    if (!trimmed) return
+    if (trimmed === MY_EMAIL.toLowerCase()) {
+      setInputError("You can't invite yourself")
+      return
     }
+    if (invited.map(e => e.toLowerCase()).includes(trimmed)) {
+      setInputError('This email has already been added')
+      return
+    }
+    setInvited(prev => [...prev, email.trim()])
+    setEmail('')
+    setInputError('')
   }
 
   const remove = (e) => setInvited(prev => prev.filter(x => x !== e))
 
   return (
     <Screen>
-      <div style={{ paddingTop: 56 }}>
+
+      {/* ── Header: back left, Log in right ── */}
+      <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', paddingTop: 24 }}>
         <BackButton to="/create-group" />
+        <button
+          onClick={() => navigate('/login')}
+          style={{ background: 'none', border: 'none', cursor: 'pointer', fontSize: 14, fontWeight: 500, color: 'var(--ink-secondary)', padding: '4px 0' }}
+        >
+          Log in
+        </button>
       </div>
 
+      {/* ── Progress ── */}
       <div style={{ marginTop: 24 }}>
         <SegmentedBar total={5} current={5} />
       </div>
 
-      <div style={{ marginTop: 40, display: 'flex', flexDirection: 'column', gap: 24 }}>
+      {/* ── Form ── */}
+      <div style={{ marginTop: 32, display: 'flex', flexDirection: 'column', gap: 16 }}>
         <div>
-          <h1>Add your people</h1>
+          <h1>Invite your people</h1>
           <p className="text-muted mt-8">Invite friends by email. They'll get a link to join your group.</p>
         </div>
 
-        <div style={{ display: 'flex', gap: 8 }}>
-          <div style={{ flex: 1 }}>
-            <Input
-              type="email"
-              placeholder="friend@example.com"
-              value={email}
-              onChange={e => setEmail(e.target.value)}
-              onKeyDown={e => e.key === 'Enter' && addEmail()}
-            />
+        <div>
+          <div style={{ display: 'flex', gap: 8 }}>
+            <div style={{ flex: 1 }}>
+              <Input
+                type="email"
+                placeholder="friend@example.com"
+                value={email}
+                onChange={e => { setEmail(e.target.value); setInputError('') }}
+                onKeyDown={e => e.key === 'Enter' && addEmail()}
+              />
+            </div>
+            <button
+              onClick={addEmail}
+              style={{
+                height: 48, width: 48, flexShrink: 0,
+                background: 'var(--ink-primary)', border: 'none',
+                borderRadius: 'var(--radius-lg)', color: 'var(--btn-primary-fg)',
+                cursor: 'pointer',
+                display: 'flex', alignItems: 'center', justifyContent: 'center',
+              }}
+              aria-label="Add email"
+            >
+              <Icon name="add" size={22} />
+            </button>
           </div>
-          <button
-            onClick={addEmail}
-            style={{
-              height: 48, width: 48, flexShrink: 0,
-              background: 'var(--coral)', border: 'none',
-              borderRadius: 'var(--radius)', color: '#fff',
-              fontSize: 24, cursor: 'pointer',
-              display: 'flex', alignItems: 'center', justifyContent: 'center'
-            }}
-          >
-            +
-          </button>
+          {inputError && (
+            <p className="text-xs" style={{ color: 'var(--semantic-error)', marginTop: 6 }}>{inputError}</p>
+          )}
         </div>
 
         {invited.length > 0 && (
@@ -72,9 +101,10 @@ export default function InviteFriends() {
                 <span className="text-sm">{e}</span>
                 <button
                   onClick={() => remove(e)}
-                  style={{ background: 'none', border: 'none', color: 'var(--taupe)', cursor: 'pointer', fontSize: 18 }}
+                  style={{ background: 'none', border: 'none', color: 'var(--ink-muted)', cursor: 'pointer', display: 'flex', alignItems: 'center' }}
+                  aria-label={`Remove ${e}`}
                 >
-                  ×
+                  <Icon name="close" size={18} />
                 </button>
               </div>
             ))}
@@ -82,16 +112,19 @@ export default function InviteFriends() {
         )}
       </div>
 
+      {/* ── CTAs ── */}
       <div style={{ marginTop: 'auto', paddingBottom: 40, display: 'flex', flexDirection: 'column', gap: 12 }}>
         <Button onClick={() => navigate('/home')}>
-          {invited.length > 0 ? `Send ${invited.length} invite${invited.length > 1 ? 's' : ''}` : 'Continue'}
+          Continue
         </Button>
-        {invited.length === 0 && (
-          <Button variant="ghost" onClick={() => navigate('/home')}>
-            Skip for now
-          </Button>
-        )}
+        <Button variant="secondary" onClick={() => {}}>
+          Copy invite link
+        </Button>
+        <Button variant="ghost" onClick={() => navigate('/home')}>
+          Skip for now
+        </Button>
       </div>
+
     </Screen>
   )
 }

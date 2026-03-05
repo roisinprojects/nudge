@@ -3,7 +3,7 @@ import { useNavigate } from 'react-router-dom'
 import Screen from '../components/Screen'
 import Button from '../components/Button'
 import BackButton from '../components/BackButton'
-import SegmentedBar from '../components/SegmentedBar'
+import Icon from '../components/Icon'
 
 const GROUP_COLOUR = 'var(--group-lavender)'
 
@@ -11,9 +11,8 @@ const MONTH_NAMES = [
   'January','February','March','April','May','June',
   'July','August','September','October','November','December',
 ]
-const DAY_LABELS = ['Su','Mo','Tu','We','Th','Fr','Sa']
 
-// Activity/vibe tags merged into this screen from the old ActivityPreferences screen
+// Activity/vibe tags
 const ACTIVITY_OPTIONS = [
   { id: 'dinner',     label: 'Dinner out' },
   { id: 'drinks',     label: 'Drinks'     },
@@ -22,19 +21,46 @@ const ACTIVITY_OPTIONS = [
   { id: 'brunch',     label: 'Brunch'     },
 ]
 
-function buildMonthGrid(year, month) {
-  const firstDow = new Date(year, month, 1).getDay()
-  const daysInMonth = new Date(year, month + 1, 0).getDate()
-  const cells = []
-  for (let i = 0; i < firstDow; i++) cells.push(null)
-  for (let d = 1; d <= daysInMonth; d++) cells.push(d)
-  return cells
+// Return the upcoming Thursday on or after a given date
+function nextThursday(from) {
+  const d = new Date(from)
+  const dow = d.getDay() // 0=Sun, 4=Thu
+  const diff = (4 - dow + 7) % 7
+  d.setDate(d.getDate() + diff)
+  return d
 }
 
-function isWeekend(dow) { return dow === 0 || dow === 5 || dow === 6 }
+function toISO(date) {
+  const y = date.getFullYear()
+  const m = String(date.getMonth() + 1).padStart(2, '0')
+  const d = String(date.getDate()).padStart(2, '0')
+  return `${y}-${m}-${d}`
+}
 
-function toISO(year, month, day) {
-  return `${year}-${String(month + 1).padStart(2, '0')}-${String(day).padStart(2, '0')}`
+// Build array of weeks. Each week = { monthLabel (or null), days: [Thu, Fri, Sat, Sun] }
+function buildWeeks(today, numWeeks) {
+  const start = nextThursday(today)
+  const weeks = []
+  let prevMonth = -1
+
+  for (let w = 0; w < numWeeks; w++) {
+    const thu = new Date(start)
+    thu.setDate(start.getDate() + w * 7)
+
+    const days = [0, 1, 2, 3].map(offset => {
+      const d = new Date(thu)
+      d.setDate(thu.getDate() + offset)
+      return d
+    })
+
+    // Show month label when Thursday crosses into a new month
+    const thuMonth = thu.getMonth()
+    const monthLabel = thuMonth !== prevMonth ? MONTH_NAMES[thuMonth] + ' ' + thu.getFullYear() : null
+    prevMonth = thuMonth
+
+    weeks.push({ monthLabel, days })
+  }
+  return weeks
 }
 
 export default function CalendarPicker() {
@@ -43,14 +69,11 @@ export default function CalendarPicker() {
   today.setHours(0, 0, 0, 0)
 
   const [selected, setSelected] = useState([])      // ISO date strings (up to 3)
-  const [activities, setActivities] = useState([])   // up to 2 activity IDs
+  const [activities, setActivities] = useState([])  // up to 2 activity IDs
 
-  // 3 months from current
-  const months = []
-  for (let i = 0; i < 3; i++) {
-    const d = new Date(today.getFullYear(), today.getMonth() + i, 1)
-    months.push({ year: d.getFullYear(), month: d.getMonth() })
-  }
+  const weeks = buildWeeks(today, 8)  // 8 weeks shown
+  const eightWeeksOut = new Date(today)
+  eightWeeksOut.setDate(today.getDate() + 8 * 7)
 
   const toggle = (iso) => {
     setSelected(prev => {
@@ -91,117 +114,123 @@ export default function CalendarPicker() {
       </div>
 
       <div style={{ marginTop: 20 }}>
-        <p style={{ fontSize: 11, fontWeight: 700, color: 'var(--ink-muted)', textTransform: 'uppercase', letterSpacing: '0.06em' }}>
+        <p style={{ fontSize: 11, fontWeight: 700, color: GROUP_COLOUR, textTransform: 'uppercase', letterSpacing: '0.06em' }}>
           Uni Friends
         </p>
         <h1 style={{ marginTop: 6 }}>Pick your 3 best dates</h1>
         <p style={{ marginTop: 6, fontSize: 13, color: 'var(--ink-secondary)' }}>
-          Choose up to 3 weekend dates (Fri–Sun) — we'll find one that works for everyone.
+          Choose up to 3 dates (Thu–Sun) — we'll find one that works for everyone.
         </p>
       </div>
 
-      {/* Progress */}
-      <div style={{ marginTop: 16 }}>
-        <SegmentedBar total={2} current={1} counterText={`${dateCount}/3 dates`} />
+      {/* Step indicator */}
+      <div style={{ marginTop: 16, display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
+        <p style={{ fontSize: 12, color: 'var(--ink-muted)', fontWeight: 600 }}>Step 1 of 2</p>
+        <p style={{ fontSize: 12, color: dateCount === 3 ? 'var(--semantic-success)' : 'var(--ink-muted)', fontWeight: 600 }}>
+          {dateCount}/3 dates selected
+        </p>
       </div>
 
-      {/* Calendar months */}
-      <div style={{ marginTop: 24, display: 'flex', flexDirection: 'column', gap: 28, overflowY: 'auto' }}>
-        {months.map(({ year, month }) => {
-          const cells = buildMonthGrid(year, month)
-          return (
-            <div key={`${year}-${month}`}>
-              <p style={{
-                fontSize: 12,
+      {/* Calendar grid */}
+      <div style={{ marginTop: 20, display: 'flex', flexDirection: 'column', gap: 4 }}>
+        {/* Column headers — shown once, above all weeks */}
+        <div style={{ display: 'grid', gridTemplateColumns: 'repeat(4, 1fr)', gap: 4, marginBottom: 8 }}>
+          {['Thu', 'Fri', 'Sat', 'Sun'].map(d => (
+            <div
+              key={d}
+              style={{
+                textAlign: 'center',
+                fontSize: 11,
                 fontWeight: 700,
                 color: 'var(--ink-secondary)',
+                padding: '2px 0',
                 textTransform: 'uppercase',
-                letterSpacing: '0.05em',
-                marginBottom: 10,
-              }}>
-                {MONTH_NAMES[month]} {year}
-              </p>
+                letterSpacing: '0.04em',
+              }}
+            >
+              {d}
+            </div>
+          ))}
+        </div>
 
-              {/* Day-of-week headers — only Fri/Sat/Sun highlighted */}
-              <div style={{ display: 'grid', gridTemplateColumns: 'repeat(7, 1fr)', gap: 2, marginBottom: 4 }}>
-                {DAY_LABELS.map(d => (
+        {weeks.map((week, wi) => (
+          <div key={wi} style={{ marginBottom: 4 }}>
+            {week.monthLabel && (
+              <p style={{
+                fontSize: 11,
+                fontWeight: 700,
+                color: 'var(--ink-muted)',
+                textTransform: 'uppercase',
+                letterSpacing: '0.06em',
+                margin: '12px 0 6px',
+              }}>
+                {week.monthLabel}
+              </p>
+            )}
+            <div style={{ display: 'grid', gridTemplateColumns: 'repeat(4, 1fr)', gap: 4 }}>
+              {week.days.map((date, di) => {
+                const iso = toISO(date)
+                const isPast = date < today
+                const isBeyond = date >= eightWeeksOut
+                const isSelected = selected.includes(iso)
+                const isMaxed = !isSelected && dateCount >= 3
+                const disabled = isPast || isBeyond || isMaxed
+
+                let bg = 'transparent'
+                let color = 'var(--ink-primary)'
+                let opacity = 1
+                let border = '1px solid var(--border-default)'
+
+                if (isSelected) {
+                  bg = GROUP_COLOUR
+                  color = 'var(--btn-primary-fg)'
+                  border = 'none'
+                } else if (disabled) {
+                  color = 'var(--ink-faint)'
+                  opacity = 0.4
+                  border = '1px solid transparent'
+                }
+
+                return (
                   <div
-                    key={d}
+                    key={di}
+                    onClick={() => !disabled && toggle(iso)}
                     style={{
-                      textAlign: 'center',
-                      fontSize: 11,
-                      fontWeight: 700,
-                      color: (d === 'Fr' || d === 'Sa' || d === 'Su')
-                        ? 'var(--ink-secondary)'
-                        : 'var(--ink-faint)',
-                      padding: '2px 0',
+                      height: 44,
+                      borderRadius: 8,
+                      display: 'flex',
+                      flexDirection: 'column',
+                      alignItems: 'center',
+                      justifyContent: 'center',
+                      cursor: disabled ? 'default' : 'pointer',
+                      background: bg,
+                      color,
+                      opacity,
+                      border,
+                      transition: 'all var(--duration-fast) var(--ease-out)',
+                      userSelect: 'none',
                     }}
                   >
-                    {d}
+                    {isSelected
+                      ? <Icon name="check" size={16} style={{ color: 'var(--btn-primary-fg)' }} />
+                      : (
+                        <>
+                          <span style={{ fontSize: 14, fontWeight: 600, lineHeight: 1.2 }}>{date.getDate()}</span>
+                          <span style={{ fontSize: 10, color: 'var(--ink-muted)', lineHeight: 1.2 }}>
+                            {MONTH_NAMES[date.getMonth()].slice(0, 3)}
+                          </span>
+                        </>
+                      )
+                    }
                   </div>
-                ))}
-              </div>
-
-              {/* Day cells */}
-              <div style={{ display: 'grid', gridTemplateColumns: 'repeat(7, 1fr)', gap: 3 }}>
-                {cells.map((day, i) => {
-                  if (!day) return <div key={i} style={{ height: 38 }} />
-
-                  const dow = new Date(year, month, day).getDay()
-                  const isWknd = isWeekend(dow)
-                  const date = new Date(year, month, day)
-                  const isPast = date < today
-                  const iso = toISO(year, month, day)
-                  const isSelected = selected.includes(iso)
-                  const isMaxed = !isSelected && dateCount >= 3
-                  const disabled = isPast || !isWknd || isMaxed
-
-                  let bg = 'transparent'
-                  let color = 'var(--ink-faint)'
-                  let border = 'none'
-
-                  if (isSelected) {
-                    bg = GROUP_COLOUR
-                    color = 'var(--ink-primary)'
-                    border = 'none'
-                  } else if (!isPast && isWknd && !isMaxed) {
-                    color = 'var(--ink-primary)'
-                    bg = 'transparent'
-                  } else if (!isPast && isWknd && isMaxed) {
-                    color = 'var(--ink-muted)'
-                  }
-
-                  return (
-                    <div
-                      key={i}
-                      onClick={() => !disabled && toggle(iso)}
-                      style={{
-                        height: 38,
-                        borderRadius: 6,
-                        display: 'flex',
-                        alignItems: 'center',
-                        justifyContent: 'center',
-                        fontSize: 14,
-                        fontWeight: isWknd && !isPast ? 600 : 400,
-                        cursor: disabled ? 'default' : 'pointer',
-                        background: bg,
-                        color,
-                        border,
-                        transition: 'all var(--duration-fast) var(--ease-out)',
-                        userSelect: 'none',
-                      }}
-                    >
-                      {isSelected ? '✓' : day}
-                    </div>
-                  )
-                })}
-              </div>
+                )
+              })}
             </div>
-          )
-        })}
+          </div>
+        ))}
       </div>
 
-      {/* Activity / vibe tags — merged from old ActivityPreferences screen */}
+      {/* Activity / vibe tags */}
       <div style={{ marginTop: 28 }}>
         <p style={{ fontSize: 13, fontWeight: 700, color: 'var(--ink-primary)', marginBottom: 10 }}>
           What's your vibe? <span style={{ fontWeight: 400, color: 'var(--ink-muted)' }}>Pick up to 2</span>
@@ -211,24 +240,14 @@ export default function CalendarPicker() {
             const isSelected = activities.includes(a.id)
             const isMaxed = !isSelected && activities.length >= 2
             return (
-              <button
+              <span
                 key={a.id}
+                className={`chip ${isSelected ? 'chip-selected' : 'chip-outline'}`}
                 onClick={() => !isMaxed && toggleActivity(a.id)}
-                style={{
-                  height: 36,
-                  padding: '0 14px',
-                  borderRadius: 'var(--radius-full)',
-                  border: `1px solid ${isSelected ? 'transparent' : 'var(--border-strong)'}`,
-                  background: isSelected ? GROUP_COLOUR : 'transparent',
-                  color: isSelected ? 'var(--ink-primary)' : isMaxed ? 'var(--ink-faint)' : 'var(--ink-secondary)',
-                  fontSize: 13,
-                  fontWeight: 600,
-                  cursor: isMaxed ? 'default' : 'pointer',
-                  transition: 'all var(--duration-fast) var(--ease-out)',
-                }}
+                style={{ opacity: isMaxed ? 0.4 : 1, cursor: isMaxed ? 'default' : 'pointer' }}
               >
                 {a.label}
-              </button>
+              </span>
             )
           })}
         </div>
@@ -236,7 +255,7 @@ export default function CalendarPicker() {
 
       <div style={{ paddingTop: 20 }}>
         <Button disabled={!canContinue} onClick={handleContinue}>
-          Pick times →
+          Pick times
         </Button>
       </div>
     </Screen>

@@ -17,15 +17,7 @@ export default function InviteLanding() {
       </div>
 
       <div style={{ marginTop: 56, display: 'flex', flexDirection: 'column', gap: 24 }}>
-        <div
-          style={{
-            background: 'var(--surface)',
-            borderRadius: 'var(--radius)',
-            padding: '24px 20px',
-            textAlign: 'center',
-            border: '1px solid rgba(255, 255, 255, 0.06)',
-          }}
-        >
+        <div className="card" style={{ padding: '24px 20px', textAlign: 'center' }}>
           <div style={{ fontSize: 40, marginBottom: 12 }}>🎉</div>
           <h2>{inviter} invited you</h2>
           <p className="text-muted mt-8">

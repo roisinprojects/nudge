@@ -10,10 +10,10 @@ const MOCK_RESPONSES = [
 ]
 
 const BEST_MATCH = {
-  slot: 'Sat, 28 Feb · 7pm',
+  slot:  'Sat, 28 Feb · 7pm',
   count: 2,
   total: 4,
-  who: ['Sarah', 'Tom'],
+  who:   ['Sarah', 'Tom'],
 }
 
 export default function ErrorNoOverlap() {
@@ -21,57 +21,37 @@ export default function ErrorNoOverlap() {
 
   return (
     <Screen style={{ paddingBottom: 40 }}>
-      <div style={{ flex: 1, display: 'flex', flexDirection: 'column', gap: 24, paddingTop: 56 }}>
+      <div style={{ flex: 1, display: 'flex', flexDirection: 'column', gap: 24, paddingTop: 24 }}>
+        <div className="alert alert-warning">
+          <span>⚠</span>
+          <span>No date works for everyone this round</span>
+        </div>
         <div style={{ textAlign: 'center' }}>
-          <div style={{ fontSize: 52 }}>😬</div>
-          <h1 style={{ marginTop: 16 }}>No overlap found</h1>
+          <h1>No overlap found</h1>
           <p className="text-muted mt-8">
             Everyone's got different schedules this round. No single time works for all of{' '}
             <span className="bold">The Crew</span>.
           </p>
         </div>
 
-        {/* Warning box: best available */}
-        <div
-          style={{
-            background: 'var(--color-warning-bg)',
-            border: '1px solid var(--color-warning-border)',
-            borderRadius: 'var(--radius)',
-            padding: '14px 16px',
-          }}
-        >
-          <p className="text-sm bold" style={{ color: 'var(--warning)' }}>Best available time</p>
-          <p
-            className="bold mt-8"
-            style={{ color: 'var(--text)', fontSize: 18 }}
-          >
-            {BEST_MATCH.slot}
-          </p>
-          <p className="text-sm mt-8" style={{ color: 'var(--warning)' }}>
+        {/* Best available time */}
+        <div className="alert alert-warning" style={{ flexDirection: 'column', alignItems: 'flex-start' }}>
+          <p className="text-sm bold">Best available time</p>
+          <p className="bold mt-8" style={{ fontSize: 18 }}>{BEST_MATCH.slot}</p>
+          <p className="text-sm mt-8">
             {BEST_MATCH.count} of {BEST_MATCH.total} people free ({BEST_MATCH.who.join(' & ')})
           </p>
         </div>
 
-        {/* Who responded with what */}
-        <div className="card" style={{ border: '1px solid rgba(255, 255, 255, 0.06)' }}>
+        {/* Responses */}
+        <div className="card">
           <p className="text-sm text-muted mb-12">Responses this round</p>
           <div style={{ display: 'flex', flexDirection: 'column', gap: 10 }}>
             {MOCK_RESPONSES.map(r => (
               <div key={r.name} style={{ display: 'flex', gap: 10, alignItems: 'flex-start' }}>
                 <div
-                  style={{
-                    width: 28,
-                    height: 28,
-                    borderRadius: '50%',
-                    background: 'var(--surface2)',
-                    display: 'flex',
-                    alignItems: 'center',
-                    justifyContent: 'center',
-                    fontSize: 12,
-                    fontWeight: 700,
-                    color: 'var(--taupe)',
-                    flexShrink: 0,
-                  }}
+                  className="avatar"
+                  style={{ width: 28, height: 28, fontSize: 11, flexShrink: 0 }}
                 >
                   {r.name[0]}
                 </div>
@@ -89,16 +69,12 @@ export default function ErrorNoOverlap() {
             Match with available members
           </Button>
           <Button variant="secondary" onClick={() => navigate('/results')}>
-            Pick closest match
+            Pick the closest match
           </Button>
           <Button variant="ghost" onClick={() => navigate('/home')}>
-            Wait for the next nudge
+            Wait for next nudge in 2 weeks
           </Button>
         </div>
-
-        <p className="text-center text-xs text-muted" style={{ marginTop: -8 }}>
-          Next nudge: in 2 weeks
-        </p>
       </div>
     </Screen>
   )

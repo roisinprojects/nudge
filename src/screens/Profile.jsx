@@ -3,6 +3,7 @@ import { useNavigate } from 'react-router-dom'
 import Screen from '../components/Screen'
 import Button from '../components/Button'
 import BackButton from '../components/BackButton'
+import Icon from '../components/Icon'
 
 export default function Profile() {
   const navigate = useNavigate()
@@ -57,7 +58,7 @@ export default function Profile() {
           flex: 1, display: 'flex', flexDirection: 'column',
           alignItems: 'center', justifyContent: 'center', textAlign: 'center', gap: 16, paddingBottom: 60,
         }}>
-          <div style={{ fontSize: 48 }}>👋</div>
+          <Icon name="waving_hand" size={48} style={{ color: 'var(--ink-muted)' }} />
           <div>
             <h2>Account deleted</h2>
             <p className="text-muted mt-8" style={{ maxWidth: 280, margin: '8px auto 0' }}>
@@ -83,10 +84,10 @@ export default function Profile() {
         }}>
           <div style={{
             width: 72, height: 72, borderRadius: '50%',
-            background: 'var(--color-error-bg)', border: '1px solid var(--color-error-border)',
-            display: 'flex', alignItems: 'center', justifyContent: 'center', fontSize: 32,
+            background: 'var(--semantic-error-bg)', border: '1px solid var(--semantic-error-border)',
+            display: 'flex', alignItems: 'center', justifyContent: 'center',
           }}>
-            ⚠️
+            <Icon name="warning" size={36} style={{ color: 'var(--semantic-error)' }} />
           </div>
           <div style={{ textAlign: 'center' }}>
             <h2>Delete your account?</h2>
@@ -95,7 +96,7 @@ export default function Profile() {
             </p>
           </div>
           <div style={{ width: '100%', textAlign: 'left' }}>
-            <p style={{ fontSize: 13, fontWeight: 600, color: 'var(--text-muted)', marginBottom: 8 }}>
+            <p style={{ fontSize: 13, fontWeight: 600, color: 'var(--ink-secondary)', marginBottom: 8 }}>
               When you delete your account:
             </p>
             {[
@@ -104,22 +105,15 @@ export default function Profile() {
               "You won't be able to recover it",
             ].map((item, i) => (
               <div key={i} style={{ display: 'flex', gap: 10, marginBottom: 8, alignItems: 'flex-start' }}>
-                <span style={{ color: 'var(--error)', fontWeight: 700, flexShrink: 0 }}>✕</span>
-                <p style={{ fontSize: 14, color: 'var(--text-muted)' }}>{item}</p>
+                <Icon name="close" size={16} style={{ color: 'var(--semantic-error)', flexShrink: 0 }} />
+                <p style={{ fontSize: 14, color: 'var(--ink-secondary)' }}>{item}</p>
               </div>
             ))}
           </div>
           <div style={{ width: '100%', display: 'flex', flexDirection: 'column', gap: 12 }}>
-            <button
-              onClick={() => setDeleted(true)}
-              style={{
-                width: '100%', height: 48, borderRadius: 'var(--radius)',
-                background: 'var(--error)', border: 'none',
-                color: '#fff', fontSize: 16, fontWeight: 600, cursor: 'pointer',
-              }}
-            >
+            <Button variant="destructive" onClick={() => setDeleted(true)}>
               Yes, delete account
-            </button>
+            </Button>
             <Button variant="ghost" onClick={() => setDeleteModal(false)}>
               Cancel
             </Button>
@@ -142,7 +136,7 @@ export default function Profile() {
 
       {/* Section: Photo */}
       <div style={{ marginTop: 24 }}>
-        <p style={{ fontSize: 12, fontWeight: 700, color: 'var(--taupe)', textTransform: 'uppercase', letterSpacing: 0.8, marginBottom: 12 }}>
+        <p style={{ fontSize: 12, fontWeight: 700, color: 'var(--ink-muted)', textTransform: 'uppercase', letterSpacing: 0.8, marginBottom: 12 }}>
           Profile photo
         </p>
         <div style={{ display: 'flex', alignItems: 'center', gap: 20 }}>
@@ -160,7 +154,7 @@ export default function Profile() {
             <span style={{
               display: 'inline-block', padding: '8px 16px',
               background: 'transparent', border: '1px solid var(--coral)',
-              borderRadius: 'var(--radius)', color: 'var(--coral)',
+              borderRadius: 'var(--radius-lg)', color: 'var(--coral)',
               fontSize: 14, fontWeight: 600,
             }}>
               Upload photo
@@ -173,7 +167,7 @@ export default function Profile() {
 
       {/* Section: Name */}
       <div>
-        <p style={{ fontSize: 12, fontWeight: 700, color: 'var(--taupe)', textTransform: 'uppercase', letterSpacing: 0.8, marginBottom: 12 }}>
+        <p style={{ fontSize: 12, fontWeight: 700, color: 'var(--ink-muted)', textTransform: 'uppercase', letterSpacing: 0.8, marginBottom: 12 }}>
           Display name
         </p>
         {editingName ? (
@@ -196,8 +190,8 @@ export default function Profile() {
         ) : (
           <div style={{
             display: 'flex', alignItems: 'center', justifyContent: 'space-between',
-            background: 'var(--surface)', borderRadius: 'var(--radius)',
-            padding: '14px 16px', border: '1px solid rgba(255, 255, 255, 0.06)',
+            background: 'var(--bg-card)', borderRadius: 'var(--radius-lg)',
+            padding: '14px 16px', border: '1px solid var(--border-default)',
           }}>
             <p style={{ fontWeight: 600 }}>{firstName} {lastName}</p>
             <button
@@ -214,16 +208,16 @@ export default function Profile() {
 
       {/* Section: Email */}
       <div>
-        <p style={{ fontSize: 12, fontWeight: 700, color: 'var(--taupe)', textTransform: 'uppercase', letterSpacing: 0.8, marginBottom: 12 }}>
+        <p style={{ fontSize: 12, fontWeight: 700, color: 'var(--ink-muted)', textTransform: 'uppercase', letterSpacing: 0.8, marginBottom: 12 }}>
           Email
         </p>
         <div style={{
-          background: 'var(--surface)', borderRadius: 'var(--radius)',
-          padding: '14px 16px', border: '1px solid rgba(255, 255, 255, 0.06)',
+          background: 'var(--bg-card)', borderRadius: 'var(--radius-lg)',
+          padding: '14px 16px', border: '1px solid var(--border-default)',
         }}>
-          <p style={{ fontWeight: 600, color: 'var(--text-muted)' }}>róisín@example.com</p>
+          <p style={{ fontWeight: 600, color: 'var(--ink-secondary)' }}>róisín@example.com</p>
         </div>
-        <p style={{ fontSize: 12, color: 'var(--color-text-tertiary)', marginTop: 8, lineHeight: 1.6 }}>
+        <p style={{ fontSize: 12, color: 'var(--ink-muted)', marginTop: 8, lineHeight: 1.6 }}>
           Your email is used for notifications and account recovery. To change your email, contact support.
         </p>
       </div>
@@ -232,12 +226,12 @@ export default function Profile() {
 
       {/* Section: Password */}
       <div>
-        <p style={{ fontSize: 12, fontWeight: 700, color: 'var(--taupe)', textTransform: 'uppercase', letterSpacing: 0.8, marginBottom: 12 }}>
+        <p style={{ fontSize: 12, fontWeight: 700, color: 'var(--ink-muted)', textTransform: 'uppercase', letterSpacing: 0.8, marginBottom: 12 }}>
           Password
         </p>
         {pwSaved && (
           <div className="alert alert-success" style={{ marginBottom: 12 }}>
-            <span>✓</span>
+            <Icon name="check_circle" size={16} style={{ color: 'var(--semantic-success)', flexShrink: 0 }} />
             <p style={{ fontSize: 13 }}>Password updated successfully.</p>
           </div>
         )}
@@ -245,7 +239,7 @@ export default function Profile() {
           <div style={{ display: 'flex', flexDirection: 'column', gap: 10 }}>
             {pwError && (
               <div className="alert alert-error">
-                <span>⚠️</span>
+                <Icon name="warning" size={16} style={{ color: 'var(--semantic-error)', flexShrink: 0 }} />
                 <p style={{ fontSize: 13 }}>{pwError}</p>
               </div>
             )}
@@ -256,7 +250,7 @@ export default function Profile() {
             <div style={{ display: 'flex', flexDirection: 'column', gap: 6 }}>
               <label className="input-label">New password</label>
               <input className="input" type="password" value={newPw} onChange={e => setNewPw(e.target.value)} />
-              <p style={{ fontSize: 12, color: newPw.length >= 8 ? 'var(--color-success-text)' : 'var(--color-text-tertiary)' }}>
+              <p style={{ fontSize: 12, color: newPw.length >= 8 ? 'var(--semantic-success)' : 'var(--ink-muted)' }}>
                 At least 8 characters {newPw.length >= 8 ? '✓' : ''}
               </p>
             </div>
@@ -275,8 +269,8 @@ export default function Profile() {
           <button
             onClick={() => setEditingPw(true)}
             style={{
-              width: '100%', height: 48, borderRadius: 'var(--radius)',
-              background: 'var(--surface)', border: '1px solid rgba(255, 255, 255, 0.06)',
+              width: '100%', height: 48, borderRadius: 'var(--radius-lg)',
+              background: 'var(--bg-card)', border: '1px solid var(--border-default)',
               color: 'var(--coral)', fontSize: 14, fontWeight: 600, cursor: 'pointer',
               textAlign: 'left', paddingLeft: 16,
             }}
@@ -290,28 +284,28 @@ export default function Profile() {
 
       {/* Section: Notifications */}
       <div>
-        <p style={{ fontSize: 12, fontWeight: 700, color: 'var(--taupe)', textTransform: 'uppercase', letterSpacing: 0.8, marginBottom: 4 }}>
+        <p style={{ fontSize: 12, fontWeight: 700, color: 'var(--ink-muted)', textTransform: 'uppercase', letterSpacing: 0.8, marginBottom: 4 }}>
           Notifications
         </p>
-        <p style={{ fontSize: 13, color: 'var(--color-text-tertiary)', marginBottom: 14 }}>Control how we reach you</p>
+        <p style={{ fontSize: 13, color: 'var(--ink-muted)', marginBottom: 14 }}>Control how we reach you</p>
 
         {[
           {
-            icon: '🔔',
+            icon: 'notifications',
             label: 'Push notifications',
             desc: 'Nudge reminders, match found, cancellations',
             value: pushOn,
             set: setPushOn,
           },
           {
-            icon: '📧',
+            icon: 'email',
             label: 'Email reminders',
             desc: 'Nudge reminder, match found',
             value: emailOn,
             set: setEmailOn,
           },
           {
-            icon: '⏰',
+            icon: 'alarm',
             label: 'Response reminder',
             desc: 'Alert 2 hours before 48hr deadline closes',
             value: reminderOn,
@@ -322,22 +316,22 @@ export default function Profile() {
             key={n.label}
             style={{
               display: 'flex', alignItems: 'center', gap: 14,
-              padding: '14px 16px', background: 'var(--surface)',
-              borderRadius: 'var(--radius)', border: '1px solid rgba(255, 255, 255, 0.06)',
+              padding: '14px 16px', background: 'var(--bg-card)',
+              borderRadius: 'var(--radius-lg)', border: '1px solid var(--border-default)',
               marginBottom: 8,
             }}
           >
-            <span style={{ fontSize: 20, flexShrink: 0 }}>{n.icon}</span>
+            <Icon name={n.icon} size={20} style={{ color: 'var(--ink-muted)', flexShrink: 0 }} />
             <div style={{ flex: 1 }}>
               <p style={{ fontSize: 14, fontWeight: 600 }}>{n.label}</p>
-              <p style={{ fontSize: 12, color: 'var(--taupe)', marginTop: 3 }}>{n.desc}</p>
+              <p style={{ fontSize: 12, color: 'var(--ink-muted)', marginTop: 3 }}>{n.desc}</p>
             </div>
             {/* Toggle */}
             <div
               onClick={() => n.set(v => !v)}
               style={{
                 width: 46, height: 26, borderRadius: 13,
-                background: n.value ? 'var(--coral)' : '#333',
+                background: n.value ? 'var(--ink-primary)' : 'var(--border-strong)',
                 position: 'relative', cursor: 'pointer',
                 transition: 'background 0.2s', flexShrink: 0,
               }}
@@ -357,19 +351,12 @@ export default function Profile() {
 
       {/* Section: Delete account */}
       <div>
-        <p style={{ fontSize: 12, fontWeight: 700, color: 'var(--error)', textTransform: 'uppercase', letterSpacing: 0.8, marginBottom: 12 }}>
+        <p style={{ fontSize: 12, fontWeight: 700, color: 'var(--semantic-error)', textTransform: 'uppercase', letterSpacing: 0.8, marginBottom: 12 }}>
           Danger zone
         </p>
-        <button
-          onClick={() => setDeleteModal(true)}
-          style={{
-            width: '100%', height: 48, borderRadius: 'var(--radius)',
-            background: 'var(--color-error-bg)', border: '1px solid var(--color-error-border)',
-            color: 'var(--error)', fontSize: 16, fontWeight: 600, cursor: 'pointer',
-          }}
-        >
+        <Button variant="destructive" onClick={() => setDeleteModal(true)}>
           Delete account
-        </button>
+        </Button>
       </div>
     </Screen>
   )

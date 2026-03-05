@@ -14,17 +14,27 @@ export default function CreateGroup() {
 
   return (
     <Screen>
-      <div style={{ paddingTop: 56 }}>
+
+      {/* ── Header: back left, Log in right ── */}
+      <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', paddingTop: 24 }}>
         <BackButton to="/display-name" />
+        <button
+          onClick={() => navigate('/login')}
+          style={{ background: 'none', border: 'none', cursor: 'pointer', fontSize: 14, fontWeight: 500, color: 'var(--ink-secondary)', padding: '4px 0' }}
+        >
+          Log in
+        </button>
       </div>
 
+      {/* ── Progress ── */}
       <div style={{ marginTop: 24 }}>
         <SegmentedBar total={5} current={4} />
       </div>
 
-      <div style={{ marginTop: 40, display: 'flex', flexDirection: 'column', gap: 24 }}>
+      {/* ── Form ── */}
+      <div style={{ marginTop: 32, display: 'flex', flexDirection: 'column', gap: 16 }}>
         <div>
-          <h1>Name your group</h1>
+          <h1>Name your first group</h1>
           <p className="text-muted mt-8">Give your friend group a name. You can always change it later.</p>
         </div>
 
@@ -57,6 +67,7 @@ export default function CreateGroup() {
           Continue
         </Button>
       </div>
+
     </Screen>
   )
 }
