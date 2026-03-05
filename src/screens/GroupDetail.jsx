@@ -250,38 +250,6 @@ export default function GroupDetail() {
         <div style={{ width: 44, flexShrink: 0 }} />
       </div>
 
-      {/* State switcher (prototype convenience) */}
-      <div style={{
-        display: 'flex',
-        gap: 8,
-        overflowX: 'auto',
-        paddingBottom: 4,
-        marginBottom: 24,
-        scrollbarWidth: 'none',
-      }}>
-        {MOCK_GROUPS.map(grp => (
-          <button
-            key={grp.id}
-            onClick={() => setSelectedId(grp.id)}
-            style={{
-              flexShrink: 0,
-              padding: '5px 12px',
-              borderRadius: 'var(--radius-full)',
-              border: `1px solid ${selectedId === grp.id ? grp.colour : 'var(--border-strong)'}`,
-              background: selectedId === grp.id ? grp.colour : 'transparent',
-              color: 'var(--ink-secondary)',
-              fontSize: 12,
-              fontWeight: 600,
-              cursor: 'pointer',
-              opacity: selectedId === grp.id ? 1 : 0.65,
-              transition: 'all 100ms',
-            }}
-          >
-            {grp.name}
-          </button>
-        ))}
-      </div>
-
       {/* [2] Group identity block */}
       <div style={{ display: 'flex', alignItems: 'center', gap: 10, marginBottom: 16 }}>
         <div style={{
