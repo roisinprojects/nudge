@@ -25,7 +25,6 @@ export default function RespondNow() {
         >
           <div style={{ display: 'flex', flexDirection: 'column', gap: 12 }}>
             <div style={{ display: 'flex', alignItems: 'center', gap: 12 }}>
-              <Icon name="event" size={20} style={{ color: 'var(--ink-muted)', flexShrink: 0 }} />
               <p className="text-sm">Pick <span className="bold">3 dates</span> you're free (Thu–Sun)</p>
             </div>
             <div style={{ display: 'flex', alignItems: 'center', gap: 12 }}>
@@ -40,7 +39,6 @@ export default function RespondNow() {
         </div>
 
         <div style={{ marginTop: 24, display: 'flex', alignItems: 'center', gap: 8 }}>
-          <Icon name="schedule" size={16} style={{ color: 'var(--ink-muted)' }} />
           <p className="text-sm text-muted">Respond by Friday</p>
         </div>
       </div>

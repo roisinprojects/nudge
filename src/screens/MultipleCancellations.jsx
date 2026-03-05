@@ -2,7 +2,6 @@ import { useNavigate } from 'react-router-dom'
 import Screen from '../components/Screen'
 import Button from '../components/Button'
 import BackButton from '../components/BackButton'
-import Icon from '../components/Icon'
 
 const MOCK_EVENT = {
   day:        'Saturday, 15 March',
@@ -52,7 +51,6 @@ export default function MultipleCancellations() {
       <div style={{ marginTop: 16, display: 'flex', flexDirection: 'column', gap: 8 }}>
         {MOCK_CANCELLATIONS.map(name => (
           <div key={name} style={{ display: 'flex', alignItems: 'center', gap: 10 }}>
-            <Icon name="person_off" size={16} style={{ color: 'var(--semantic-error)', flexShrink: 0 }} />
             <p className="text-sm"><strong>{name}</strong> can't attend</p>
           </div>
         ))}
