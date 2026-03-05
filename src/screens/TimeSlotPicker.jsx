@@ -99,12 +99,16 @@ export default function TimeSlotPicker() {
                     background: isCompleted
                       ? 'var(--semantic-success)'
                       : isOpen
-                        ? GROUP_COLOUR
+                        ? 'var(--ink-primary)'
                         : 'var(--bg-ui)',
                     border: isCompleted || isOpen ? 'none' : '1.5px solid var(--border-strong)',
                     display: 'flex', alignItems: 'center', justifyContent: 'center',
                     fontSize: 11, fontWeight: 700,
-                    color: isCompleted ? '#fff' : 'var(--ink-primary)',
+                    color: isCompleted
+                      ? '#fff'
+                      : isOpen
+                        ? 'var(--bg-primary)'
+                        : 'var(--ink-muted)',
                     flexShrink: 0,
                     transition: 'background var(--duration-normal) var(--ease-out)',
                   }}>
