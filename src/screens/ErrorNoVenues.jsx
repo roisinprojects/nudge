@@ -2,7 +2,6 @@ import { useState } from 'react'
 import { useNavigate } from 'react-router-dom'
 import Screen from '../components/Screen'
 import Button from '../components/Button'
-import Icon from '../components/Icon'
 
 const MATCH = {
   date:     'Saturday, 1 March',
@@ -18,18 +17,13 @@ export default function ErrorNoVenues() {
 
   return (
     <Screen style={{ paddingBottom: 40 }}>
-      <div style={{ flex: 1, display: 'flex', flexDirection: 'column', gap: 24, paddingTop: 56 }}>
+      <div style={{ flex: 1, display: 'flex', flexDirection: 'column', gap: 24, paddingTop: 24 }}>
+        <div className="alert alert-error">
+          <span>✕</span>
+          <span>No venues available for your matched slot</span>
+        </div>
         <div style={{ textAlign: 'center' }}>
-          <div style={{
-            width: 72, height: 72, borderRadius: '50%',
-            background: 'var(--semantic-error-bg)',
-            border: '1px solid var(--semantic-error-border)',
-            display: 'flex', alignItems: 'center', justifyContent: 'center',
-            margin: '0 auto',
-          }}>
-            <Icon name="search_off" size={36} style={{ color: 'var(--semantic-error)' }} />
-          </div>
-          <h1 style={{ marginTop: 16 }}>We found a time but…</h1>
+          <h1>We found a time but…</h1>
           <p className="text-muted mt-8">
             No restaurants are available on OpenTable for your matched slot.
           </p>

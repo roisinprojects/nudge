@@ -31,18 +31,10 @@ export default function ResponseLocked() {
 
   return (
     <Screen>
-      <div style={{ flex: 1, display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center', textAlign: 'center', paddingTop: 40 }}>
-        <div
-          style={{
-            width: 80, height: 80,
-            borderRadius: '50%',
-            background: 'var(--semantic-success-bg)',
-            border: '2px solid var(--semantic-success)',
-            display: 'flex', alignItems: 'center', justifyContent: 'center',
-            marginBottom: 24,
-          }}
-        >
-          <Icon name="check_circle" size={48} style={{ color: 'var(--semantic-success)' }} />
+      <div style={{ flex: 1, display: 'flex', flexDirection: 'column', alignItems: 'center', textAlign: 'center', paddingTop: 24 }}>
+        <div className="alert alert-success" style={{ width: '100%', marginBottom: 8, textAlign: 'left' }}>
+          <span>✓</span>
+          <span>Your availability is saved</span>
         </div>
 
         <h1 style={{ color: 'var(--semantic-success)' }}>You're locked in!</h1>

@@ -1,7 +1,6 @@
 import { useNavigate } from 'react-router-dom'
 import Screen from '../components/Screen'
 import Button from '../components/Button'
-import Icon from '../components/Icon'
 
 const MOCK_RESPONSES = [
   { name: 'Sarah', slots: ['Sat 28 Feb · 7pm', 'Sun 1 Mar · 3pm'] },
@@ -22,18 +21,13 @@ export default function ErrorNoOverlap() {
 
   return (
     <Screen style={{ paddingBottom: 40 }}>
-      <div style={{ flex: 1, display: 'flex', flexDirection: 'column', gap: 24, paddingTop: 56 }}>
+      <div style={{ flex: 1, display: 'flex', flexDirection: 'column', gap: 24, paddingTop: 24 }}>
+        <div className="alert alert-warning">
+          <span>⚠</span>
+          <span>No date works for everyone this round</span>
+        </div>
         <div style={{ textAlign: 'center' }}>
-          <div style={{
-            width: 72, height: 72, borderRadius: '50%',
-            background: 'var(--semantic-warning-bg)',
-            border: '1px solid var(--semantic-warning-border)',
-            display: 'flex', alignItems: 'center', justifyContent: 'center',
-            margin: '0 auto',
-          }}>
-            <Icon name="event_busy" size={36} style={{ color: 'var(--semantic-warning)' }} />
-          </div>
-          <h1 style={{ marginTop: 16 }}>No overlap found</h1>
+          <h1>No overlap found</h1>
           <p className="text-muted mt-8">
             Everyone's got different schedules this round. No single time works for all of{' '}
             <span className="bold">The Crew</span>.
