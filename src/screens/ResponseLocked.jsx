@@ -32,11 +32,6 @@ export default function ResponseLocked() {
   return (
     <Screen>
       <div style={{ flex: 1, display: 'flex', flexDirection: 'column', alignItems: 'center', textAlign: 'center', paddingTop: 24 }}>
-        <div className="alert alert-success" style={{ width: '100%', marginBottom: 8, textAlign: 'left' }}>
-          <span>✓</span>
-          <span>Your availability is saved</span>
-        </div>
-
         <h1>You're locked in!</h1>
         <p className="text-muted mt-16">
           All saved. We'll match everyone up as responses come in and send you results within 48 hours.
