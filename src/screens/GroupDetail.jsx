@@ -1,5 +1,4 @@
-import { useState } from 'react'
-import { useNavigate } from 'react-router-dom'
+import { useNavigate, useLocation } from 'react-router-dom'
 import Screen from '../components/Screen'
 import Button from '../components/Button'
 import BackButton from '../components/BackButton'
@@ -201,8 +200,9 @@ function CtaBlock({ g, navigate }) {
 // ── Screen ────────────────────────────────────────────────────────────────────
 export default function GroupDetail() {
   const navigate = useNavigate()
-  const [selectedId, setSelectedId] = useState(MOCK_GROUPS[0].id)
-  const g = MOCK_GROUPS.find(grp => grp.id === selectedId)
+  const { state } = useLocation()
+  const groupId = state?.groupId ?? MOCK_GROUPS[0].id
+  const g = MOCK_GROUPS.find(grp => grp.id === groupId) ?? MOCK_GROUPS[0]
 
   return (
     <Screen style={{ paddingBottom: 40, padding: '0 16px 40px' }}>

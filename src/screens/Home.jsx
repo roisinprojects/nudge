@@ -205,7 +205,7 @@ export default function Home() {
             key={g.id}
             className="card card-interactive"
             style={groupCardStyle(g)}
-            onClick={() => navigate('/group-detail')}
+            onClick={() => navigate('/group-detail', { state: { groupId: g.id } })}
           >
             <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start' }}>
               <div style={{ flex: 1, minWidth: 0 }}>
