@@ -94,82 +94,9 @@ function ThemeToggle({ dark, setDark }) {
   )
 }
 
-// ── View mode toggle (inside prototype nav) ──────────────────────────────────
-function ViewToggle({ viewMode, setViewMode }) {
-  return (
-    <div style={{ display: 'flex', background: '#1a1a1a', borderRadius: 8, padding: 3, gap: 2 }}>
-      {['mobile', 'web'].map(m => (
-        <button
-          key={m}
-          onClick={() => setViewMode(m)}
-          style={{
-            flex: 1,
-            height: 28,
-            borderRadius: 6,
-            border: 'none',
-            background: viewMode === m ? '#2d2d2d' : 'transparent',
-            color: viewMode === m ? 'var(--coral)' : '#555',
-            fontSize: 11,
-            fontWeight: 600,
-            cursor: 'pointer',
-            transition: 'color 0.15s, background 0.15s',
-          }}
-        >
-          {m === 'mobile' ? '📱 Mobile' : '🖥 Web'}
-        </button>
-      ))}
-    </div>
-  )
-}
-
-// ── Web app top navigation bar ───────────────────────────────────────────────
-function WebTopNav() {
-  const path = window.location.pathname
-  const links = [
-    { href: '/home', label: 'Home' },
-  ]
-  return (
-    <div
-      style={{
-        height: 60,
-        background: 'var(--surface)',
-        borderBottom: '1px solid #2a2a2a',
-        display: 'flex',
-        alignItems: 'center',
-        padding: '0 40px',
-        justifyContent: 'space-between',
-        position: 'sticky',
-        top: 0,
-        zIndex: 100,
-        flexShrink: 0,
-      }}
-    >
-      <span className="logo" style={{ fontSize: 22 }}>nudge</span>
-      <nav style={{ display: 'flex', gap: 32 }}>
-        {links.map(l => (
-          <a
-            key={l.href}
-            href={l.href}
-            style={{
-              color: path === l.href ? 'var(--coral)' : 'var(--text-muted)',
-              textDecoration: 'none',
-              fontSize: 14,
-              fontWeight: 600,
-            }}
-          >
-            {l.label}
-          </a>
-        ))}
-      </nav>
-      <a href="/profile" style={{ textDecoration: 'none' }}>
-        <div className="avatar" style={{ fontSize: 16, cursor: 'pointer' }}>Y</div>
-      </a>
-    </div>
-  )
-}
 
 // ── Prototype nav sidebar ────────────────────────────────────────────────────
-function NavOverlay({ viewMode, setViewMode, dark, setDark }) {
+function NavOverlay({ collapsed, setCollapsed, dark, setDark }) {
   const groups = [...new Set(SCREENS.map(s => s.group))]
   const { pathname } = useLocation()
 
@@ -179,56 +106,79 @@ function NavOverlay({ viewMode, setViewMode, dark, setDark }) {
         position: 'fixed',
         top: 0, left: 0,
         height: '100dvh',
-        width: '220px',
+        width: collapsed ? '40px' : '220px',
         background: '#111',
         borderRight: '1px solid #222',
-        overflowY: 'auto',
+        overflowY: collapsed ? 'hidden' : 'auto',
+        overflowX: 'hidden',
         zIndex: 1000,
-        padding: '16px 0',
         display: 'flex',
         flexDirection: 'column',
-        gap: 0,
+        transition: 'width 0.2s ease',
       }}
     >
-      <div style={{ padding: '0 16px 12px', borderBottom: '1px solid #222' }}>
-        <p style={{ color: '#aaa', fontWeight: 700, fontSize: 16, fontFamily: 'Poppins, sans-serif' }}>nudge</p>
-        <p style={{ color: '#555', fontSize: 11, marginTop: 2, marginBottom: 10 }}>prototype · all screens</p>
-        <ViewToggle viewMode={viewMode} setViewMode={setViewMode} />
-        <div style={{ marginTop: 6 }}>
-          <ThemeToggle dark={dark} setDark={setDark} />
-        </div>
-      </div>
-      {groups.map(g => (
-        <div key={g} style={{ marginTop: 16 }}>
-          <p style={{ color: '#555', fontSize: 10, fontWeight: 700, textTransform: 'uppercase', letterSpacing: 1, padding: '0 16px 6px' }}>{g}</p>
-          {SCREENS.filter(s => s.group === g).map(s => (
-            <Link
-              key={s.path}
-              to={s.path}
-              style={{
-                display: 'block',
-                padding: '7px 16px',
-                color: pathname === s.path ? 'var(--coral)' : '#aaa',
-                fontSize: 13,
-                textDecoration: 'none',
-                background: pathname === s.path ? 'rgba(232,93,77,0.08)' : 'transparent',
-                borderLeft: pathname === s.path ? '2px solid var(--coral)' : '2px solid transparent',
-              }}
-            >
-              {s.label}
-            </Link>
+      {/* Toggle button — always visible */}
+      <button
+        onClick={() => setCollapsed(c => !c)}
+        title={collapsed ? 'Expand nav' : 'Collapse nav'}
+        style={{
+          flexShrink: 0,
+          width: '100%',
+          height: 40,
+          background: 'none',
+          border: 'none',
+          borderBottom: '1px solid #222',
+          color: '#555',
+          fontSize: 16,
+          cursor: 'pointer',
+          display: 'flex',
+          alignItems: 'center',
+          justifyContent: collapsed ? 'center' : 'flex-end',
+          padding: collapsed ? 0 : '0 14px',
+        }}
+      >
+        {collapsed ? '›' : '‹'}
+      </button>
+
+      {/* Expanded content */}
+      {!collapsed && (
+        <>
+          <div style={{ padding: '12px 16px', borderBottom: '1px solid #222' }}>
+            <p style={{ color: '#aaa', fontWeight: 700, fontSize: 16, fontFamily: 'Poppins, sans-serif' }}>nudge</p>
+            <p style={{ color: '#555', fontSize: 11, marginTop: 2, marginBottom: 10 }}>prototype · all screens</p>
+            <ThemeToggle dark={dark} setDark={setDark} />
+          </div>
+          {groups.map(g => (
+            <div key={g} style={{ marginTop: 16 }}>
+              <p style={{ color: '#555', fontSize: 10, fontWeight: 700, textTransform: 'uppercase', letterSpacing: 1, padding: '0 16px 6px' }}>{g}</p>
+              {SCREENS.filter(s => s.group === g).map(s => (
+                <Link
+                  key={s.path}
+                  to={s.path}
+                  style={{
+                    display: 'block',
+                    padding: '7px 16px',
+                    color: pathname === s.path ? 'var(--coral)' : '#aaa',
+                    fontSize: 13,
+                    textDecoration: 'none',
+                    background: pathname === s.path ? 'rgba(232,93,77,0.08)' : 'transparent',
+                    borderLeft: pathname === s.path ? '2px solid var(--coral)' : '2px solid transparent',
+                  }}
+                >
+                  {s.label}
+                </Link>
+              ))}
+            </div>
           ))}
-        </div>
-      ))}
+        </>
+      )}
     </div>
   )
 }
 
 // ── App root ─────────────────────────────────────────────────────────────────
 export default function App() {
-  const [viewMode, setViewMode] = useState(
-    () => localStorage.getItem('nudge-view-mode') || 'mobile'
-  )
+  const [collapsed, setCollapsed] = useState(false)
 
   const [dark, setDark] = useState(() => {
     const saved = localStorage.getItem('nudge-theme')
@@ -241,31 +191,23 @@ export default function App() {
     localStorage.setItem('nudge-theme', dark ? 'dark' : 'light')
   }, [dark])
 
-  const handleSetViewMode = (mode) => {
-    setViewMode(mode)
-    localStorage.setItem('nudge-view-mode', mode)
-  }
-
-  const isMobile = viewMode === 'mobile'
-
   return (
-    <ViewModeContext.Provider value={viewMode}>
+    <ViewModeContext.Provider value="mobile">
       <div style={{ display: 'flex' }}>
-        <NavOverlay viewMode={viewMode} setViewMode={handleSetViewMode} dark={dark} setDark={setDark} />
+        <NavOverlay collapsed={collapsed} setCollapsed={setCollapsed} dark={dark} setDark={setDark} />
         <div
           style={{
-            marginLeft: 220,
+            marginLeft: collapsed ? 40 : 220,
             flex: 1,
             minHeight: '100dvh',
             background: '#080808',
             display: 'flex',
-            ...(isMobile
-              ? { alignItems: 'flex-start', justifyContent: 'center', padding: '24px 0' }
-              : { flexDirection: 'column' }
-            ),
+            alignItems: 'flex-start',
+            justifyContent: 'center',
+            padding: '24px 0',
+            transition: 'margin-left 0.2s ease',
           }}
         >
-          {!isMobile && <WebTopNav />}
           <Routes>
             <Route path="/"                    element={<Navigate to="/signup" replace />} />
             <Route path="/signup"              element={<SignUp />} />
