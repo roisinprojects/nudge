@@ -234,11 +234,9 @@ export default function GroupSettings() {
       {/* ── Section: Danger zone ── */}
       <div style={{ marginTop: 32 }}>
         <SectionLabel>Danger zone</SectionLabel>
-        <div className="card" style={{ padding: '4px 16px' }}>
-          <Button variant="destructive" onClick={() => openSheet('leave')}>
-            Leave group
-          </Button>
-        </div>
+        <Button variant="destructive" onClick={() => openSheet('leave')}>
+          Leave group
+        </Button>
       </div>
 
       {/* ── Bottom sheets ── */}
