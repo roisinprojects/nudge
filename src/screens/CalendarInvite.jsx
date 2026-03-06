@@ -71,14 +71,6 @@ export default function CalendarInvite() {
     <Screen style={{ paddingBottom: 40, position: 'relative' }}>
       <ConfettiBurst />
 
-      {/* Booking confirmed alert — top of content */}
-      <div style={{ paddingTop: 24 }}>
-        <div className="alert alert-success">
-          <span>✓</span>
-          <span>Booking confirmed</span>
-        </div>
-      </div>
-
       {/* Heading block — centred */}
       <div style={{ marginTop: 32, textAlign: 'center', marginBottom: 24 }}>
         <h1 style={{ color: 'var(--ink-primary)' }}>It's happening! 🎉</h1>
