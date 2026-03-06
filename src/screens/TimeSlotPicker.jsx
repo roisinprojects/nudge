@@ -61,8 +61,7 @@ export default function TimeSlotPicker() {
         </p>
       </div>
 
-      <div style={{ marginTop: 16, display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
-        <p style={{ fontSize: 12, color: 'var(--ink-muted)', fontWeight: 600 }}>Step 2 of 2</p>
+      <div style={{ marginTop: 16, display: 'flex', justifyContent: 'flex-end', alignItems: 'center' }}>
         <p style={{ fontSize: 12, color: selectedCount === 3 ? 'var(--semantic-success)' : 'var(--ink-muted)', fontWeight: 600 }}>
           {selectedCount}/3 times selected
         </p>
@@ -99,12 +98,16 @@ export default function TimeSlotPicker() {
                     background: isCompleted
                       ? 'var(--semantic-success)'
                       : isOpen
-                        ? GROUP_COLOUR
+                        ? 'var(--ink-primary)'
                         : 'var(--bg-ui)',
                     border: isCompleted || isOpen ? 'none' : '1.5px solid var(--border-strong)',
                     display: 'flex', alignItems: 'center', justifyContent: 'center',
                     fontSize: 11, fontWeight: 700,
-                    color: isCompleted ? '#fff' : 'var(--ink-primary)',
+                    color: isCompleted
+                      ? '#fff'
+                      : isOpen
+                        ? 'var(--bg-primary)'
+                        : 'var(--ink-muted)',
                     flexShrink: 0,
                     transition: 'background var(--duration-normal) var(--ease-out)',
                   }}>

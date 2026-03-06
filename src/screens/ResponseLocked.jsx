@@ -37,7 +37,7 @@ export default function ResponseLocked() {
           <span>Your availability is saved</span>
         </div>
 
-        <h1 style={{ color: 'var(--semantic-success)' }}>You're locked in!</h1>
+        <h1>You're locked in!</h1>
         <p className="text-muted mt-16">
           All saved. We'll match everyone up as responses come in and send you results within 48 hours.
         </p>
@@ -47,7 +47,7 @@ export default function ResponseLocked() {
           style={{ marginTop: 32, width: '100%', textAlign: 'left' }}
         >
           {/* Group name */}
-          <p style={{ fontSize: 14, fontWeight: 500, color: GROUP_COLOUR, marginBottom: 10 }}>
+          <p style={{ fontSize: 14, fontWeight: 500, color: 'var(--ink-muted)', marginBottom: 10 }}>
             Uni Friends
           </p>
 
@@ -58,7 +58,6 @@ export default function ResponseLocked() {
           <div style={{ display: 'flex', flexDirection: 'column', gap: 10 }}>
             {slots.map((slot, i) => (
               <div key={i} style={{ display: 'flex', alignItems: 'flex-start', gap: 10 }}>
-                <Icon name="event" size={16} style={{ color: 'var(--ink-muted)', marginTop: 2, flexShrink: 0 }} />
                 <div>
                   <p style={{ fontSize: 16, fontWeight: 600, color: 'var(--ink-primary)' }}>{slot.label}</p>
                   <p style={{ fontSize: 16, color: 'var(--ink-secondary)', marginTop: 2 }}>{slot.time}</p>
@@ -75,7 +74,6 @@ export default function ResponseLocked() {
             Your vibe
           </p>
           <div style={{ display: 'flex', alignItems: 'center', gap: 10 }}>
-            <Icon name="local_bar" size={16} style={{ color: 'var(--ink-muted)', flexShrink: 0 }} />
             <span className="text-sm">{activityDisplay}</span>
           </div>
         </div>

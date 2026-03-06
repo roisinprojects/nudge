@@ -2,7 +2,6 @@ import { useNavigate } from 'react-router-dom'
 import Screen from '../components/Screen'
 import Button from '../components/Button'
 import BackButton from '../components/BackButton'
-import Icon from '../components/Icon'
 
 const GROUP_COLOUR = 'var(--group-rose)'
 
@@ -26,7 +25,7 @@ export default function BookedCardDetails() {
       </div>
 
       <div style={{ marginTop: 20 }}>
-        <p style={{ fontSize: 11, fontWeight: 700, color: GROUP_COLOUR, textTransform: 'uppercase', letterSpacing: '0.06em' }}>
+        <p style={{ fontSize: 11, fontWeight: 700, color: 'var(--ink-muted)', textTransform: 'uppercase', letterSpacing: '0.06em' }}>
           {MOCK.groupName}
         </p>
         <h1 style={{ marginTop: 6 }}>Your upcoming hangout</h1>
@@ -36,7 +35,6 @@ export default function BookedCardDetails() {
       <div className="card" style={{ marginTop: 24, borderLeft: `3px solid ${GROUP_COLOUR}` }}>
         {/* Date & time */}
         <div style={{ display: 'flex', alignItems: 'center', gap: 12 }}>
-          <Icon name="event" size={20} style={{ color: 'var(--ink-muted)', flexShrink: 0 }} />
           <div>
             <p style={{ fontSize: 16, fontWeight: 600, color: 'var(--ink-primary)' }}>{MOCK.bookedDate}</p>
             <p style={{ fontSize: 14, color: 'var(--ink-secondary)', marginTop: 2 }}>{MOCK.bookedTime}</p>
@@ -47,7 +45,6 @@ export default function BookedCardDetails() {
 
         {/* Venue */}
         <div style={{ display: 'flex', alignItems: 'flex-start', gap: 12 }}>
-          <Icon name="location_on" size={20} style={{ color: 'var(--ink-muted)', flexShrink: 0, marginTop: 2 }} />
           <div>
             <p style={{ fontSize: 16, fontWeight: 600, color: 'var(--ink-primary)' }}>{MOCK.venueName}</p>
             <p style={{ fontSize: 13, color: 'var(--ink-muted)', marginTop: 2 }}>{MOCK.venueAddress}</p>
@@ -58,7 +55,6 @@ export default function BookedCardDetails() {
 
         {/* Activity */}
         <div style={{ display: 'flex', alignItems: 'center', gap: 12 }}>
-          <Icon name="local_bar" size={20} style={{ color: 'var(--ink-muted)', flexShrink: 0 }} />
           <p style={{ fontSize: 14, color: 'var(--ink-secondary)' }}>{MOCK.activity}</p>
         </div>
 
@@ -66,7 +62,6 @@ export default function BookedCardDetails() {
 
         {/* Members */}
         <div style={{ display: 'flex', alignItems: 'flex-start', gap: 12 }}>
-          <Icon name="group" size={20} style={{ color: 'var(--ink-muted)', flexShrink: 0, marginTop: 4 }} />
           <div>
             <p style={{ fontSize: 11, fontWeight: 700, color: 'var(--ink-muted)', textTransform: 'uppercase', letterSpacing: '0.06em', marginBottom: 8 }}>
               Attendees

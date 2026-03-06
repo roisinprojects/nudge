@@ -82,9 +82,12 @@ export default function CantMakeIt() {
         </p>
       </div>
 
-      <div style={{ marginTop: 'auto', paddingTop: 32 }}>
+      <div style={{ marginTop: 24, display: 'flex', flexDirection: 'column', gap: 12 }}>
         <Button variant="destructive" onClick={handleCancel}>
           Confirm
+        </Button>
+        <Button variant="ghost" onClick={() => navigate(-1)}>
+          Go back
         </Button>
       </div>
     </Screen>

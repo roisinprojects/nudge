@@ -35,10 +35,10 @@ export default function ErrorNoOverlap() {
         </div>
 
         {/* Best available time */}
-        <div className="alert alert-warning" style={{ flexDirection: 'column', alignItems: 'flex-start' }}>
-          <p className="text-sm bold">Best available time</p>
-          <p className="bold mt-8" style={{ fontSize: 18 }}>{BEST_MATCH.slot}</p>
-          <p className="text-sm mt-8">
+        <div className="card" style={{ display: 'flex', flexDirection: 'column', gap: 4 }}>
+          <p className="text-sm" style={{ color: 'var(--ink-muted)' }}>Best available time</p>
+          <p style={{ fontSize: 18, fontWeight: 700, color: 'var(--ink-primary)' }}>{BEST_MATCH.slot}</p>
+          <p className="text-sm" style={{ color: 'var(--ink-muted)' }}>
             {BEST_MATCH.count} of {BEST_MATCH.total} people free ({BEST_MATCH.who.join(' & ')})
           </p>
         </div>
@@ -51,7 +51,7 @@ export default function ErrorNoOverlap() {
               <div key={r.name} style={{ display: 'flex', gap: 10, alignItems: 'flex-start' }}>
                 <div
                   className="avatar"
-                  style={{ width: 28, height: 28, fontSize: 11, flexShrink: 0 }}
+                  style={{ width: 28, height: 28, fontSize: 11, flexShrink: 0, background: 'var(--ink-primary)', color: 'var(--bg-primary)' }}
                 >
                   {r.name[0]}
                 </div>

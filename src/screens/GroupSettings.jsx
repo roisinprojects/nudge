@@ -2,6 +2,7 @@ import { useState } from 'react'
 import { useNavigate } from 'react-router-dom'
 import Screen from '../components/Screen'
 import Button from '../components/Button'
+import BackButton from '../components/BackButton'
 
 const GROUP_COLOURS = [
   { name: 'Sage',     token: 'var(--group-sage)'     },
@@ -147,20 +148,7 @@ export default function GroupSettings() {
         paddingTop: 16,
         marginBottom: 28,
       }}>
-        <button
-          onClick={() => navigate('/group-detail')}
-          style={{
-            background: 'none', border: 'none',
-            color: 'var(--ink-primary)', fontSize: 20,
-            cursor: 'pointer', padding: 0,
-            width: 44, height: 44,
-            display: 'flex', alignItems: 'center', justifyContent: 'flex-start',
-            flexShrink: 0,
-          }}
-          aria-label="Back"
-        >
-          ←
-        </button>
+        <BackButton to="/group-detail" />
         <span style={{
           fontSize: 15, fontWeight: 600,
           color: 'var(--ink-secondary)',

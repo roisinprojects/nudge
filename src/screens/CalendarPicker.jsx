@@ -114,7 +114,7 @@ export default function CalendarPicker() {
       </div>
 
       <div style={{ marginTop: 20 }}>
-        <p style={{ fontSize: 11, fontWeight: 700, color: GROUP_COLOUR, textTransform: 'uppercase', letterSpacing: '0.06em' }}>
+        <p style={{ fontSize: 11, fontWeight: 700, color: 'var(--ink-muted)', textTransform: 'uppercase', letterSpacing: '0.06em' }}>
           Uni Friends
         </p>
         <h1 style={{ marginTop: 6 }}>Pick your 3 best dates</h1>
@@ -124,8 +124,7 @@ export default function CalendarPicker() {
       </div>
 
       {/* Step indicator */}
-      <div style={{ marginTop: 16, display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
-        <p style={{ fontSize: 12, color: 'var(--ink-muted)', fontWeight: 600 }}>Step 1 of 2</p>
+      <div style={{ marginTop: 16, display: 'flex', justifyContent: 'flex-end', alignItems: 'center' }}>
         <p style={{ fontSize: 12, color: dateCount === 3 ? 'var(--semantic-success)' : 'var(--ink-muted)', fontWeight: 600 }}>
           {dateCount}/3 dates selected
         </p>

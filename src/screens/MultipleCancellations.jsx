@@ -2,7 +2,6 @@ import { useNavigate } from 'react-router-dom'
 import Screen from '../components/Screen'
 import Button from '../components/Button'
 import BackButton from '../components/BackButton'
-import Icon from '../components/Icon'
 
 const MOCK_EVENT = {
   day:        'Saturday, 15 March',
@@ -49,14 +48,11 @@ export default function MultipleCancellations() {
       </div>
 
       {/* Who cancelled */}
-      <div style={{ marginTop: 16, display: 'flex', flexDirection: 'column', gap: 8 }}>
-        {MOCK_CANCELLATIONS.map(name => (
-          <div key={name} style={{ display: 'flex', alignItems: 'center', gap: 10 }}>
-            <Icon name="person_off" size={16} style={{ color: 'var(--semantic-error)', flexShrink: 0 }} />
-            <p className="text-sm"><strong>{name}</strong> can't attend</p>
-          </div>
-        ))}
+      <div className="alert alert-warning" style={{ marginTop: 16 }}>
+        <span>⚠</span>
+        <span>{MOCK_CANCELLATIONS.length} members can't make it — you may want to update the reservation.</span>
       </div>
+      <p className="text-sm text-muted" style={{ marginTop: 8 }}>{MOCK_CANCELLATIONS.join(', ')}</p>
 
       <div style={{ marginTop: 'auto', paddingTop: 32, display: 'flex', flexDirection: 'column', gap: 12 }}>
         <Button onClick={() => window.open(MOCK_EVENT.venuePhone, '_self')}>

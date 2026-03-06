@@ -2,6 +2,7 @@ import { useState } from 'react'
 import { useNavigate } from 'react-router-dom'
 import Screen from '../components/Screen'
 import Button from '../components/Button'
+import BackButton from '../components/BackButton'
 
 // ── Mock data ────────────────────────────────────────────────────────────────
 // One group per state, sorted by urgency (mirrors Home order)
@@ -214,26 +215,7 @@ export default function GroupDetail() {
         marginBottom: 28,
         paddingTop: 16,
       }}>
-        <button
-          onClick={() => navigate('/home')}
-          style={{
-            background: 'none',
-            border: 'none',
-            color: 'var(--ink-primary)',
-            fontSize: 20,
-            cursor: 'pointer',
-            padding: 0,
-            width: 44,
-            height: 44,
-            display: 'flex',
-            alignItems: 'center',
-            justifyContent: 'flex-start',
-            flexShrink: 0,
-          }}
-          aria-label="Back"
-        >
-          ←
-        </button>
+        <BackButton to="/home" />
 
         <span style={{
           fontSize: 15,
@@ -248,38 +230,6 @@ export default function GroupDetail() {
 
         {/* Balancing spacer — same width as back arrow */}
         <div style={{ width: 44, flexShrink: 0 }} />
-      </div>
-
-      {/* State switcher (prototype convenience) */}
-      <div style={{
-        display: 'flex',
-        gap: 8,
-        overflowX: 'auto',
-        paddingBottom: 4,
-        marginBottom: 24,
-        scrollbarWidth: 'none',
-      }}>
-        {MOCK_GROUPS.map(grp => (
-          <button
-            key={grp.id}
-            onClick={() => setSelectedId(grp.id)}
-            style={{
-              flexShrink: 0,
-              padding: '5px 12px',
-              borderRadius: 'var(--radius-full)',
-              border: `1px solid ${selectedId === grp.id ? grp.colour : 'var(--border-strong)'}`,
-              background: selectedId === grp.id ? grp.colour : 'transparent',
-              color: 'var(--ink-secondary)',
-              fontSize: 12,
-              fontWeight: 600,
-              cursor: 'pointer',
-              opacity: selectedId === grp.id ? 1 : 0.65,
-              transition: 'all 100ms',
-            }}
-          >
-            {grp.name}
-          </button>
-        ))}
       </div>
 
       {/* [2] Group identity block */}

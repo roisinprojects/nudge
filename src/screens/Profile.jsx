@@ -291,21 +291,18 @@ export default function Profile() {
 
         {[
           {
-            icon: 'notifications',
             label: 'Push notifications',
             desc: 'Nudge reminders, match found, cancellations',
             value: pushOn,
             set: setPushOn,
           },
           {
-            icon: 'email',
             label: 'Email reminders',
             desc: 'Nudge reminder, match found',
             value: emailOn,
             set: setEmailOn,
           },
           {
-            icon: 'alarm',
             label: 'Response reminder',
             desc: 'Alert 2 hours before 48hr deadline closes',
             value: reminderOn,
@@ -321,7 +318,6 @@ export default function Profile() {
               marginBottom: 8,
             }}
           >
-            <Icon name={n.icon} size={20} style={{ color: 'var(--ink-muted)', flexShrink: 0 }} />
             <div style={{ flex: 1 }}>
               <p style={{ fontSize: 14, fontWeight: 600 }}>{n.label}</p>
               <p style={{ fontSize: 12, color: 'var(--ink-muted)', marginTop: 3 }}>{n.desc}</p>
