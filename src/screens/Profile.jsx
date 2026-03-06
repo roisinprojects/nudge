@@ -291,21 +291,18 @@ export default function Profile() {
 
         {[
           {
-            icon: 'notifications',
             label: 'Push notifications',
             desc: 'Nudge reminders, match found, cancellations',
             value: pushOn,
             set: setPushOn,
           },
           {
-            icon: 'email',
             label: 'Email reminders',
             desc: 'Nudge reminder, match found',
             value: emailOn,
             set: setEmailOn,
           },
           {
-            icon: 'alarm',
             label: 'Response reminder',
             desc: 'Alert 2 hours before 48hr deadline closes',
             value: reminderOn,
