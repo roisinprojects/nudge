@@ -3,7 +3,7 @@ import { useNavigate } from 'react-router-dom'
 import Screen from '../components/Screen'
 import Button from '../components/Button'
 import Input from '../components/Input'
-import BackButton from '../components/BackButton'
+import Logo from '../components/Logo'
 
 function GoogleIcon() {
   return (
@@ -42,9 +42,9 @@ export default function Login() {
   return (
     <Screen>
 
-      {/* ── Back button ── */}
+      {/* ── Header ── */}
       <div style={{ paddingTop: 24 }}>
-        <BackButton to="/signup" />
+        <Logo />
       </div>
 
       {/* ── Heading ── */}
