@@ -176,6 +176,8 @@ function NavOverlay({ collapsed, setCollapsed, dark, setDark }) {
   )
 }
 
+const IS_DEV = import.meta.env.DEV
+
 // ── App root ─────────────────────────────────────────────────────────────────
 export default function App() {
   const [collapsed, setCollapsed] = useState(false)
@@ -191,13 +193,17 @@ export default function App() {
     localStorage.setItem('nudge-theme', dark ? 'dark' : 'light')
   }, [dark])
 
+  const sidebarWidth = collapsed ? 40 : 220
+
   return (
     <ViewModeContext.Provider value="mobile">
       <div style={{ display: 'flex' }}>
-        <NavOverlay collapsed={collapsed} setCollapsed={setCollapsed} dark={dark} setDark={setDark} />
+        {IS_DEV && (
+          <NavOverlay collapsed={collapsed} setCollapsed={setCollapsed} dark={dark} setDark={setDark} />
+        )}
         <div
           style={{
-            marginLeft: collapsed ? 40 : 220,
+            marginLeft: IS_DEV ? sidebarWidth : 0,
             flex: 1,
             minHeight: '100dvh',
             background: '#080808',
