@@ -136,7 +136,7 @@ export default function Results() {
                   cursor: 'pointer',
                 }}
               >
-                Book →
+                Book
               </button>
             </div>
           </div>

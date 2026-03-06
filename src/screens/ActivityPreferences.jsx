@@ -106,7 +106,7 @@ export default function ActivityPreferences() {
             disabled={count === 0}
             onClick={() => navigate('/response-locked', { state: { ...state, activities } })}
           >
-            Lock in →
+            Lock in
           </Button>
         </div>
       </div>

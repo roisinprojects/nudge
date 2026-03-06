@@ -18,10 +18,6 @@ export default function ErrorNoVenues() {
   return (
     <Screen style={{ paddingBottom: 40 }}>
       <div style={{ flex: 1, display: 'flex', flexDirection: 'column', gap: 24, paddingTop: 24 }}>
-        <div className="alert alert-error">
-          <span>✕</span>
-          <span>No venues available for your matched slot</span>
-        </div>
         <div style={{ textAlign: 'center' }}>
           <h1>We found a time but…</h1>
           <p className="text-muted mt-8">
