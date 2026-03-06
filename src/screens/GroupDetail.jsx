@@ -2,6 +2,7 @@ import { useState } from 'react'
 import { useNavigate } from 'react-router-dom'
 import Screen from '../components/Screen'
 import Button from '../components/Button'
+import BackButton from '../components/BackButton'
 
 // ── Mock data ────────────────────────────────────────────────────────────────
 // One group per state, sorted by urgency (mirrors Home order)
@@ -214,26 +215,7 @@ export default function GroupDetail() {
         marginBottom: 28,
         paddingTop: 16,
       }}>
-        <button
-          onClick={() => navigate('/home')}
-          style={{
-            background: 'none',
-            border: 'none',
-            color: 'var(--ink-primary)',
-            fontSize: 20,
-            cursor: 'pointer',
-            padding: 0,
-            width: 44,
-            height: 44,
-            display: 'flex',
-            alignItems: 'center',
-            justifyContent: 'flex-start',
-            flexShrink: 0,
-          }}
-          aria-label="Back"
-        >
-          ←
-        </button>
+        <BackButton to="/home" />
 
         <span style={{
           fontSize: 15,
