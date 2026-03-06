@@ -47,8 +47,9 @@ export default function BookerCancellation() {
       </div>
 
       {/* Who cancelled */}
-      <div style={{ marginTop: 16, display: 'flex', alignItems: 'center', gap: 10 }}>
-        <p className="text-sm"><strong>{MOCK_CANCELLATION.name}</strong> can't attend</p>
+      <div className="alert alert-warning" style={{ marginTop: 16 }}>
+        <span>⚠</span>
+        <span>1 member can't make it — you may want to update the reservation.</span>
       </div>
 
       <div style={{ marginTop: 'auto', paddingTop: 32, display: 'flex', flexDirection: 'column', gap: 12 }}>

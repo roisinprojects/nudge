@@ -124,8 +124,7 @@ export default function CalendarPicker() {
       </div>
 
       {/* Step indicator */}
-      <div style={{ marginTop: 16, display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
-        <p style={{ fontSize: 12, color: 'var(--ink-muted)', fontWeight: 600 }}>Step 1 of 2</p>
+      <div style={{ marginTop: 16, display: 'flex', justifyContent: 'flex-end', alignItems: 'center' }}>
         <p style={{ fontSize: 12, color: dateCount === 3 ? 'var(--semantic-success)' : 'var(--ink-muted)', fontWeight: 600 }}>
           {dateCount}/3 dates selected
         </p>

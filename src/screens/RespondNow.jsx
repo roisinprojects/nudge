@@ -15,7 +15,7 @@ export default function RespondNow() {
           <h1>Time to catch up</h1>
           <p className="text-muted">
             It's been 6 weeks since <span className="bold">The Crew</span> last caught up.
-            Everyone gets the same nudge — no one has to chase. <span className="bold">Takes 2 minutes.</span>
+            Everyone gets the same nudge — no one has to chase. <span className="bold" style={{ color: 'var(--ink-primary)' }}>Takes 2 minutes.</span>
           </p>
         </div>
 

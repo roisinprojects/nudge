@@ -184,7 +184,7 @@ export default function Home() {
           <span className="logo">nudge</span>
           <div
             className="avatar"
-            style={{ cursor: 'pointer' }}
+            style={{ cursor: 'pointer', background: 'var(--ink-primary)', color: 'var(--bg-primary)' }}
             onClick={() => navigate('/profile')}
           >
             R

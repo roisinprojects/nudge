@@ -37,7 +37,7 @@ export default function ResponseLocked() {
           <span>Your availability is saved</span>
         </div>
 
-        <h1 style={{ color: 'var(--semantic-success)' }}>You're locked in!</h1>
+        <h1>You're locked in!</h1>
         <p className="text-muted mt-16">
           All saved. We'll match everyone up as responses come in and send you results within 48 hours.
         </p>
