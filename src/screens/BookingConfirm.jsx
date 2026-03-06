@@ -2,7 +2,6 @@ import { useState } from 'react'
 import { useNavigate, useLocation } from 'react-router-dom'
 import Screen from '../components/Screen'
 import Button from '../components/Button'
-import SegmentedBar from '../components/SegmentedBar'
 import Icon from '../components/Icon'
 
 const GROUP_COLOUR = 'var(--group-peach)'
@@ -74,11 +73,6 @@ export default function BookingConfirm() {
 
   return (
     <Screen style={{ paddingBottom: 40 }}>
-      {/* Stepper */}
-      <div style={{ paddingTop: 48 }}>
-        <SegmentedBar total={2} current={2} />
-      </div>
-
       {/* Title */}
       <div style={{ marginTop: 24 }}>
         <h1>Confirm booking</h1>
