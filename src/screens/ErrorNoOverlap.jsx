@@ -22,10 +22,6 @@ export default function ErrorNoOverlap() {
   return (
     <Screen style={{ paddingBottom: 40 }}>
       <div style={{ flex: 1, display: 'flex', flexDirection: 'column', gap: 24, paddingTop: 24 }}>
-        <div className="alert alert-warning">
-          <span>⚠</span>
-          <span>No date works for everyone this round</span>
-        </div>
         <div style={{ textAlign: 'center' }}>
           <h1>No overlap found</h1>
           <p className="text-muted mt-8">
