@@ -18,11 +18,6 @@ export default function GenericError() {
           paddingTop: 24,
         }}
       >
-        <div className="alert alert-error" style={{ width: '100%', textAlign: 'left' }}>
-          <span>✕</span>
-          <span>Something went wrong — it's not you</span>
-        </div>
-
         <div>
           <h1>Something went wrong</h1>
           <p className="text-muted mt-8">
