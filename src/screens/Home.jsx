@@ -143,7 +143,7 @@ function CardBody({ g, navigate }) {
             <p className="text-xs text-muted">{g.bookedDate}</p>
             <p className="text-sm" style={{ marginTop: 2, fontWeight: 600 }}>{g.venueName}</p>
           </div>
-          <span style={{ fontSize: 12, fontWeight: 600, color: 'var(--ink-muted)' }}>View details →</span>
+          <span style={{ fontSize: 12, fontWeight: 600, color: 'var(--ink-muted)' }}>View details</span>
         </div>
       </>
     )

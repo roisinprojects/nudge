@@ -275,7 +275,7 @@ export default function Profile() {
               textAlign: 'left', paddingLeft: 16,
             }}
           >
-            Change password →
+            Change password
           </button>
         )}
       </div>

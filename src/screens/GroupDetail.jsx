@@ -133,7 +133,7 @@ function CtaBlock({ g, navigate }) {
           style={{ '--group-color': g.colour }}
           onClick={() => navigate('/respond')}
         >
-          Respond to nudge →
+          Respond to nudge
         </Button>
         <Button variant="ghost" style={ghostOutlined} onClick={() => navigate('/group-settings')}>
           Group settings
@@ -150,7 +150,7 @@ function CtaBlock({ g, navigate }) {
           style={{ '--group-color': g.colour }}
           onClick={() => navigate('/booking-confirm')}
         >
-          Book now →
+          Book now
         </Button>
         <Button variant="ghost" style={ghostOutlined} onClick={() => navigate('/group-settings')}>
           Group settings
