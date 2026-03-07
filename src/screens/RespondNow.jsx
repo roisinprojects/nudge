@@ -1,7 +1,6 @@
 import { useNavigate } from 'react-router-dom'
 import Screen from '../components/Screen'
 import Button from '../components/Button'
-import Icon from '../components/Icon'
 
 export default function RespondNow() {
   const navigate = useNavigate()
@@ -15,31 +14,21 @@ export default function RespondNow() {
           <h1>Time to catch up</h1>
           <p className="text-muted">
             It's been 6 weeks since <span className="bold">The Crew</span> last caught up.
-            Everyone gets the same nudge — no one has to chase. <span className="bold" style={{ color: 'var(--ink-primary)' }}>Takes 2 minutes.</span>
+            Everyone gets the same nudge — no one has to chase. Takes 2 minutes.
           </p>
         </div>
 
+        <p className="text-sm" style={{ fontWeight: 600, color: 'var(--ink-primary)', marginTop: 16, marginBottom: 8 }}>Respond by Friday</p>
+
         <div
           className="card"
-          style={{ marginTop: 32, width: '100%' }}
+          style={{ width: '100%' }}
         >
           <div style={{ display: 'flex', flexDirection: 'column', gap: 12 }}>
-            <div style={{ display: 'flex', alignItems: 'center', gap: 12 }}>
-              <p className="text-sm">Pick <span className="bold">3 dates</span> you're free (Thu–Sun)</p>
-            </div>
-            <div style={{ display: 'flex', alignItems: 'center', gap: 12 }}>
-              <Icon name="schedule" size={20} style={{ color: 'var(--ink-muted)', flexShrink: 0 }} />
-              <p className="text-sm">Choose a <span className="bold">time of day</span> for each</p>
-            </div>
-            <div style={{ display: 'flex', alignItems: 'center', gap: 12 }}>
-              <Icon name="local_bar" size={20} style={{ color: 'var(--ink-muted)', flexShrink: 0 }} />
-              <p className="text-sm">Select <span className="bold">2 activity preferences</span></p>
-            </div>
+            <p className="text-sm"><strong>Pick</strong> 3 dates you're free (Thu–Sun)</p>
+            <p className="text-sm"><strong>Choose</strong> a time of day for each</p>
+            <p className="text-sm"><strong>Select</strong> 2 activity preferences</p>
           </div>
-        </div>
-
-        <div style={{ marginTop: 24, display: 'flex', alignItems: 'center', gap: 8 }}>
-          <p className="text-sm text-muted">Respond by Friday</p>
         </div>
       </div>
 
