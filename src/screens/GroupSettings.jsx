@@ -142,11 +142,15 @@ export default function GroupSettings() {
 
       {/* Top nav */}
       <div style={{
+        position: 'sticky',
+        top: 0,
+        zIndex: 10,
+        background: 'var(--bg-primary)',
+        padding: '12px 16px 8px 16px',
+        margin: '0 -16px',
         display: 'flex',
         justifyContent: 'space-between',
         alignItems: 'center',
-        paddingTop: 16,
-        marginBottom: 28,
       }}>
         <BackButton to="/group-detail" />
         <span style={{
@@ -161,6 +165,7 @@ export default function GroupSettings() {
       </div>
 
       {/* ── Section: Group ── */}
+      <div style={{ marginTop: 16 }} />
       <SectionLabel>Group</SectionLabel>
       <div className="card" style={{ padding: '0 16px', marginBottom: 24 }}>
         <SettingsRow

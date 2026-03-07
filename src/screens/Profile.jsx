@@ -126,11 +126,18 @@ export default function Profile() {
   // ── Main profile screen ────────────────────────────────────────────────────
   return (
     <Screen style={{ paddingBottom: 40 }}>
-      <div style={{ paddingTop: 56 }}>
+      <div style={{
+        position: 'sticky',
+        top: 0,
+        zIndex: 10,
+        background: 'var(--bg-primary)',
+        padding: '12px 16px 8px 16px',
+        margin: '0 -16px',
+      }}>
         <BackButton to="/home" />
       </div>
 
-      <div style={{ marginTop: 20 }}>
+      <div style={{ marginTop: 12 }}>
         <h1>Your profile</h1>
       </div>
 

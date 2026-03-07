@@ -108,11 +108,18 @@ export default function CalendarPicker() {
 
   return (
     <Screen>
-      <div style={{ paddingTop: 48 }}>
+      <div style={{
+        position: 'sticky',
+        top: 0,
+        zIndex: 10,
+        background: 'var(--bg-primary)',
+        padding: '12px 16px 8px 16px',
+        margin: '0 -16px',
+      }}>
         <BackButton to="/respond" />
       </div>
 
-      <div style={{ marginTop: 20 }}>
+      <div style={{ marginTop: 12 }}>
         <p style={{ fontSize: 11, fontWeight: 700, color: 'var(--ink-muted)', textTransform: 'uppercase', letterSpacing: '0.06em' }}>
           Uni Friends
         </p>
