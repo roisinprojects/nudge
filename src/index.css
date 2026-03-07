@@ -328,6 +328,9 @@ html, body {
   min-height: 100dvh;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
+  overscroll-behavior: none;
+  -webkit-overflow-scrolling: touch;
+  scroll-behavior: smooth;
 }
 
 /* ── Mobile frame — with dot texture ── */
@@ -338,10 +341,14 @@ html, body {
   background-color: var(--bg-primary);
   background-image: radial-gradient(circle, var(--dot-color) 1px, transparent 1px);
   background-size: var(--dot-size) var(--dot-size);
+  background-attachment: local;
   display: flex;
   flex-direction: column;
   position: relative;
   overflow-y: auto;
+  -webkit-overflow-scrolling: touch;
+  will-change: transform;
+  transform: translateZ(0);
 }
 
 /* ── Screen padding ── */
@@ -350,6 +357,11 @@ html, body {
   display: flex;
   flex-direction: column;
   padding: 0 16px;
+}
+
+/* ── Sticky footer: compositor layer to prevent full-screen repaints ── */
+.screen > div:last-child {
+  transform: translateZ(0);
 }
 
 /* ── Typography ── */
