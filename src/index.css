@@ -351,6 +351,18 @@ html, body {
   transform: translateZ(0);
 }
 
+/* ── Production: frame fills the viewport, page scrolls naturally ── */
+.app-root .frame {
+  width: 100%;
+  max-width: 100%;
+  height: auto;
+  min-height: 100dvh;
+  overflow-y: visible;
+  -webkit-overflow-scrolling: auto;
+  will-change: auto;
+  transform: none;
+}
+
 /* ── Screen padding ── */
 .screen {
   flex: 1;
