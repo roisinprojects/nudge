@@ -6,8 +6,6 @@ import Icon from '../components/Icon'
 const TIME_LABELS    = { lunch: '11am – 3pm', evening: '5pm – 9pm', late: '9pm+' }
 const ACTIVITY_LABELS = { food: 'Food', food_drinks: 'Food + Drinks', drinks: 'Drinks', suggest: 'Flexible' }
 
-const GROUP_COLOUR = 'var(--group-lavender)'
-
 export default function ResponseLocked() {
   const navigate  = useNavigate()
   const { state } = useLocation()
