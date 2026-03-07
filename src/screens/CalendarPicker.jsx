@@ -11,15 +11,6 @@ const MONTH_NAMES = [
   'July','August','September','October','November','December',
 ]
 
-// Activity/vibe tags
-const ACTIVITY_OPTIONS = [
-  { id: 'dinner',     label: 'Dinner out' },
-  { id: 'drinks',     label: 'Drinks'     },
-  { id: 'casual',     label: 'Casual'     },
-  { id: 'activities', label: 'Activities' },
-  { id: 'brunch',     label: 'Brunch'     },
-]
-
 // Return the upcoming Thursday on or after a given date
 function nextThursday(from) {
   const d = new Date(from)
@@ -68,7 +59,6 @@ export default function CalendarPicker() {
   today.setHours(0, 0, 0, 0)
 
   const [selected, setSelected] = useState([])      // ISO date strings (up to 3)
-  const [activities, setActivities] = useState([])  // up to 2 activity IDs
 
   const weeks = buildWeeks(today, 8)  // 8 weeks shown
   const eightWeeksOut = new Date(today)
@@ -82,16 +72,8 @@ export default function CalendarPicker() {
     })
   }
 
-  const toggleActivity = (id) => {
-    setActivities(prev => {
-      if (prev.includes(id)) return prev.filter(a => a !== id)
-      if (prev.length >= 2) return prev
-      return [...prev, id]
-    })
-  }
-
   const dateCount = selected.length
-  const canContinue = dateCount >= 3 && activities.length >= 1
+  const canContinue = dateCount >= 3
 
   const handleContinue = () => {
     const dates = selected.map(iso => {
@@ -103,7 +85,7 @@ export default function CalendarPicker() {
         fmtDate: date.toLocaleDateString('en-GB', { weekday: 'long', day: 'numeric', month: 'long' }),
       }
     })
-    navigate('/time-picker', { state: { dates, activities } })
+    navigate('/time-picker', { state: { dates } })
   }
 
   return (
@@ -230,29 +212,6 @@ export default function CalendarPicker() {
             </div>
           </div>
         ))}
-      </div>
-
-      {/* Activity / vibe tags */}
-      <div style={{ marginTop: 28 }}>
-        <p style={{ fontSize: 13, fontWeight: 700, color: 'var(--ink-primary)', marginBottom: 10 }}>
-          What's your vibe? <span style={{ fontWeight: 400, color: 'var(--ink-muted)' }}>Pick up to 2</span>
-        </p>
-        <div style={{ display: 'flex', flexWrap: 'wrap', gap: 8 }}>
-          {ACTIVITY_OPTIONS.map(a => {
-            const isSelected = activities.includes(a.id)
-            const isMaxed = !isSelected && activities.length >= 2
-            return (
-              <span
-                key={a.id}
-                className={`chip ${isSelected ? 'chip-selected' : 'chip-outline'}`}
-                onClick={() => !isMaxed && toggleActivity(a.id)}
-                style={{ opacity: isMaxed ? 0.4 : 1, cursor: isMaxed ? 'default' : 'pointer' }}
-              >
-                {a.label}
-              </span>
-            )
-          })}
-        </div>
       </div>
 
       {/* ── Sticky footer ── */}
