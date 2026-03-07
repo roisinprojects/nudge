@@ -5,7 +5,6 @@ import Button from '../components/Button'
 import BackButton from '../components/BackButton'
 import Icon from '../components/Icon'
 
-const GROUP_COLOUR = 'var(--group-lavender)'
 
 const MONTH_NAMES = [
   'January','February','March','April','May','June',
@@ -177,16 +176,14 @@ export default function CalendarPicker() {
 
                 let bg = 'transparent'
                 let color = 'var(--ink-primary)'
-                let opacity = 1
                 let border = '1px solid var(--border-default)'
 
                 if (isSelected) {
-                  bg = GROUP_COLOUR
+                  bg = 'var(--btn-primary-bg)'
                   color = 'var(--btn-primary-fg)'
                   border = 'none'
                 } else if (disabled) {
                   color = 'var(--ink-faint)'
-                  opacity = 0.4
                   border = '1px solid transparent'
                 }
 
@@ -204,7 +201,6 @@ export default function CalendarPicker() {
                       cursor: disabled ? 'default' : 'pointer',
                       background: bg,
                       color,
-                      opacity,
                       border,
                       transition: 'all var(--duration-fast) var(--ease-out)',
                       userSelect: 'none',
