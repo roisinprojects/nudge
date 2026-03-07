@@ -3,6 +3,8 @@ import Screen from '../components/Screen'
 import Button from '../components/Button'
 import { useViewMode } from '../context/viewMode'
 
+const STATUS_ORDER = { respond: 0, book: 1, waiting: 2, booked: 3, idle: 4 }
+
 // Sorted by urgency: respond → book → waiting → booked → idle
 const MOCK_GROUPS = [
   {
@@ -51,8 +53,6 @@ const MOCK_GROUPS = [
     status:         'idle',
   },
 ]
-
-const UP_NEXT_STATUSES = ['respond', 'book', 'waiting', 'booked']
 
 function StatusBadge({ g }) {
   if (g.status === 'respond') return (
@@ -191,10 +191,14 @@ const sectionHeading = (isFirst) => ({
 })
 
 export default function Home() {
-  const navigate   = useNavigate()
-  const mode       = useViewMode()
-  const upNext     = MOCK_GROUPS.filter(g => UP_NEXT_STATUSES.includes(g.status))
-  const idleGroups = MOCK_GROUPS.filter(g => g.status === 'idle')
+  const navigate = useNavigate()
+  const mode     = useViewMode()
+
+  // Soonest booked group goes into "Next hangout"; prototype uses first booked in array
+  const nextHangout = MOCK_GROUPS.find(g => g.status === 'booked') ?? null
+  const yourGroups  = MOCK_GROUPS
+    .filter(g => g !== nextHangout)
+    .sort((a, b) => STATUS_ORDER[a.status] - STATUS_ORDER[b.status])
 
   return (
     <Screen style={{ paddingBottom: 40 }}>
@@ -212,27 +216,25 @@ export default function Home() {
       )}
 
       <div style={{ marginTop: 28 }}>
-        <h1>Your groups</h1>
+        <h1>Hangouts</h1>
         <p className="text-sm text-muted" style={{ marginTop: 4 }}>
           Your crew, on repeat.
         </p>
       </div>
 
       <div style={{ marginTop: 20 }}>
-        {upNext.length > 0 && (
+        {nextHangout && (
           <>
-            <p style={sectionHeading(true)}>Up next</p>
-            <div style={{ display: 'flex', flexDirection: 'column', gap: 10 }}>
-              {upNext.map(g => <GroupCard key={g.id} g={g} navigate={navigate} />)}
-            </div>
+            <p style={sectionHeading(true)}>Next hangout</p>
+            <GroupCard g={nextHangout} navigate={navigate} />
           </>
         )}
 
-        {idleGroups.length > 0 && (
+        {yourGroups.length > 0 && (
           <>
-            <p style={sectionHeading(upNext.length === 0)}>Your groups</p>
+            <p style={sectionHeading(!nextHangout)}>Your groups</p>
             <div style={{ display: 'flex', flexDirection: 'column', gap: 10 }}>
-              {idleGroups.map(g => <GroupCard key={g.id} g={g} navigate={navigate} />)}
+              {yourGroups.map(g => <GroupCard key={g.id} g={g} navigate={navigate} />)}
             </div>
           </>
         )}
