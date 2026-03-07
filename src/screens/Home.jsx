@@ -5,7 +5,6 @@ import { useViewMode } from '../context/viewMode'
 
 const STATUS_ORDER = { respond: 0, book: 1, waiting: 2, booked: 3, idle: 4 }
 
-// Sorted by urgency: respond → book → waiting → booked → idle
 const MOCK_GROUPS = [
   {
     id: 1,
@@ -20,7 +19,6 @@ const MOCK_GROUPS = [
     name:        'Uni Friends',
     colour:      'var(--group-sage)',
     members:     ['Ben', 'Chloe', 'Marcus', 'Zoe'],
-    matchedDate: 'Sat 15 Mar',
     isBooker:    true,
     status:      'book',
   },
@@ -54,40 +52,6 @@ const MOCK_GROUPS = [
   },
 ]
 
-function StatusBadge({ g }) {
-  if (g.status === 'respond') return (
-    <span className="badge badge-respond">
-      <span className="badge-dot" />
-      Respond now!
-    </span>
-  )
-  if (g.status === 'book') return (
-    <span className="badge badge-book">
-      <span className="badge-dot" />
-      Book now
-    </span>
-  )
-  if (g.status === 'waiting') return (
-    <span className="badge badge-waiting">
-      <span className="badge-dot" />
-      Waiting
-    </span>
-  )
-  if (g.status === 'booked') return (
-    <span className="badge badge-booked">
-      <span className="badge-dot" />
-      Booked ✓
-    </span>
-  )
-  // idle
-  return (
-    <span className="badge badge-idle">
-      <span className="badge-dot" />
-      Nudge in {g.daysUntilNudge} days
-    </span>
-  )
-}
-
 function groupCardStyle(g) {
   const actionBorder = { border: `1.5px solid ${g.colour}`, borderLeftWidth: '3px' }
   return {
@@ -101,16 +65,16 @@ function CardBottomRow({ g }) {
   if (g.status === 'respond') {
     return (
       <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
-        <p style={{ fontSize: 12, color: 'var(--ink-muted)' }}>Deadline</p>
-        <p style={{ fontSize: 12, fontWeight: 700, color: 'var(--ink-primary)' }}>{g.deadline}</p>
+        <p style={{ fontSize: 12, color: 'var(--ink-muted)' }}>Deadline: {g.deadline}</p>
+        <p style={{ fontSize: 12, fontWeight: 700, color: 'var(--ink-primary)' }}>Respond →</p>
       </div>
     )
   }
   if (g.status === 'book') {
     return (
       <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
-        <p style={{ fontSize: 12, color: 'var(--ink-muted)' }}>Match found</p>
-        <p style={{ fontSize: 12, fontWeight: 700, color: 'var(--ink-primary)' }}>{g.matchedDate}</p>
+        <p style={{ fontSize: 12, color: 'var(--ink-muted)' }}>Dates matched</p>
+        <p style={{ fontSize: 12, fontWeight: 700, color: 'var(--ink-primary)' }}>Book hangout →</p>
       </div>
     )
   }
@@ -132,19 +96,23 @@ function CardBottomRow({ g }) {
       </div>
     )
   }
-  return null
+  // idle
+  return (
+    <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
+      <p style={{ fontSize: 12, color: 'var(--ink-muted)' }}>Next nudge</p>
+      <p style={{ fontSize: 12, color: 'var(--ink-muted)' }}>In {g.daysUntilNudge} days</p>
+    </div>
+  )
 }
 
 function GroupCard({ g, navigate }) {
-  const hasBottomRow = g.status !== 'idle'
-
   return (
     <div
       className="card card-interactive"
       style={groupCardStyle(g)}
       onClick={() => navigate('/group-detail', { state: { groupId: g.id } })}
     >
-      {/* Row 1: name + pill */}
+      {/* Row 1: name (+ booked pill only) */}
       <div style={{ display: 'flex', alignItems: 'center', gap: 10 }}>
         <h3 style={{
           fontSize: 15,
@@ -158,9 +126,12 @@ function GroupCard({ g, navigate }) {
         }}>
           {g.name}
         </h3>
-        <div style={{ flexShrink: 0 }}>
-          <StatusBadge g={g} />
-        </div>
+        {g.status === 'booked' && (
+          <span className="badge badge-booked" style={{ flexShrink: 0 }}>
+            <span className="badge-dot" />
+            Booked ✓
+          </span>
+        )}
       </div>
 
       {/* Row 2: members */}
@@ -170,12 +141,8 @@ function GroupCard({ g, navigate }) {
       </p>
 
       {/* Divider + Row 3 */}
-      {hasBottomRow && (
-        <>
-          <div style={{ height: 1, background: 'var(--border-default)', margin: '10px 0' }} />
-          <CardBottomRow g={g} />
-        </>
-      )}
+      <div style={{ height: 1, background: 'var(--border-default)', margin: '10px 0' }} />
+      <CardBottomRow g={g} />
     </div>
   )
 }
