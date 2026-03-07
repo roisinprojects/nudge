@@ -333,7 +333,7 @@ html, body {
 /* ── Mobile frame — with dot texture ── */
 .frame {
   width: 390px;
-  min-height: 844px;
+  height: 844px;
   margin: 0 auto;
   background-color: var(--bg-primary);
   background-image: radial-gradient(circle, var(--dot-color) 1px, transparent 1px);
@@ -341,7 +341,7 @@ html, body {
   display: flex;
   flex-direction: column;
   position: relative;
-  overflow: hidden;
+  overflow-y: auto;
 }
 
 /* ── Screen padding ── */

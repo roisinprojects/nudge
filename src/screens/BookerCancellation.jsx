@@ -20,7 +20,7 @@ export default function BookerCancellation() {
   const remaining = MOCK_EVENT.partySize - 1
 
   return (
-    <Screen style={{ paddingBottom: 40 }}>
+    <Screen>
       <div style={{ paddingTop: 56 }}>
         <BackButton to="/home" />
       </div>
@@ -52,7 +52,16 @@ export default function BookerCancellation() {
         <span>1 member can't make it — you may want to update the reservation.</span>
       </div>
 
-      <div style={{ marginTop: 'auto', paddingTop: 32, display: 'flex', flexDirection: 'column', gap: 12 }}>
+      {/* ── Sticky footer ── */}
+      <div style={{
+        position: 'sticky', bottom: 0,
+        background: 'var(--bg-primary)',
+        padding: '16px 16px 32px',
+        margin: '0 -16px',
+        borderTop: '1px solid var(--border-default)',
+        display: 'flex', flexDirection: 'column', gap: 12,
+        marginTop: 16,
+      }}>
         <Button onClick={() => window.open(MOCK_EVENT.venuePhone, '_self')}>
           Contact the venue
         </Button>

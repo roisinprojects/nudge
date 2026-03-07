@@ -20,8 +20,8 @@ export default function ErrorNoOverlap() {
   const navigate = useNavigate()
 
   return (
-    <Screen style={{ paddingBottom: 40 }}>
-      <div style={{ flex: 1, display: 'flex', flexDirection: 'column', gap: 24, paddingTop: 24 }}>
+    <Screen>
+      <div style={{ display: 'flex', flexDirection: 'column', gap: 24, paddingTop: 24 }}>
         <div style={{ textAlign: 'center' }}>
           <h1>No overlap found</h1>
           <p className="text-muted mt-8">
@@ -59,18 +59,27 @@ export default function ErrorNoOverlap() {
             ))}
           </div>
         </div>
+      </div>
 
-        <div style={{ display: 'flex', flexDirection: 'column', gap: 12 }}>
-          <Button onClick={() => navigate('/results')}>
-            Match with available members
-          </Button>
-          <Button variant="secondary" onClick={() => navigate('/results')}>
-            Pick the closest match
-          </Button>
-          <Button variant="ghost" onClick={() => navigate('/home')}>
-            Wait for next nudge in 2 weeks
-          </Button>
-        </div>
+      {/* ── Sticky footer ── */}
+      <div style={{
+        position: 'sticky', bottom: 0,
+        background: 'var(--bg-primary)',
+        padding: '16px 16px 32px',
+        margin: '0 -16px',
+        borderTop: '1px solid var(--border-default)',
+        display: 'flex', flexDirection: 'column', gap: 12,
+        marginTop: 24,
+      }}>
+        <Button onClick={() => navigate('/results')}>
+          Match with available members
+        </Button>
+        <Button variant="secondary" onClick={() => navigate('/results')}>
+          Pick the closest match
+        </Button>
+        <Button variant="ghost" onClick={() => navigate('/home')}>
+          Wait for next nudge in 2 weeks
+        </Button>
       </div>
     </Screen>
   )

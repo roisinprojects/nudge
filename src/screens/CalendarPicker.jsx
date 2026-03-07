@@ -108,7 +108,7 @@ export default function CalendarPicker() {
   }
 
   return (
-    <Screen style={{ paddingBottom: 40 }}>
+    <Screen>
       <div style={{ paddingTop: 48 }}>
         <BackButton to="/respond" />
       </div>
@@ -252,7 +252,15 @@ export default function CalendarPicker() {
         </div>
       </div>
 
-      <div style={{ paddingTop: 20 }}>
+      {/* ── Sticky footer ── */}
+      <div style={{
+        position: 'sticky', bottom: 0,
+        background: 'var(--bg-primary)',
+        padding: '16px 16px 32px',
+        margin: '0 -16px',
+        borderTop: '1px solid var(--border-default)',
+        marginTop: 16,
+      }}>
         <Button disabled={!canContinue} onClick={handleContinue}>
           Pick times
         </Button>

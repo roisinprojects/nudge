@@ -72,7 +72,7 @@ export default function BookingConfirm() {
   const metaRows = META_ROWS(match)
 
   return (
-    <Screen style={{ paddingBottom: 40 }}>
+    <Screen>
       {/* Title */}
       <div style={{ marginTop: 24 }}>
         <h1>Confirm booking</h1>
@@ -144,8 +144,15 @@ export default function BookingConfirm() {
         </div>
       )}
 
-      {/* I've booked it CTA — disabled until time selected */}
-      <div style={{ marginTop: 24 }}>
+      {/* ── Sticky footer ── */}
+      <div style={{
+        position: 'sticky', bottom: 0,
+        background: 'var(--bg-primary)',
+        padding: '16px 16px 32px',
+        margin: '0 -16px',
+        borderTop: '1px solid var(--border-default)',
+        marginTop: 24,
+      }}>
         <Button variant="ghost" disabled={!selectedTime} onClick={handleBooked}>
           I've booked it
         </Button>
