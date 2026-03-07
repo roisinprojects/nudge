@@ -1,5 +1,15 @@
 import { useState, useEffect } from 'react'
 import { Routes, Route, Navigate, Link, useLocation } from 'react-router-dom'
+
+function ScrollToTop() {
+  const { pathname } = useLocation()
+  useEffect(() => {
+    const frame = document.querySelector('.frame')
+    if (frame) frame.scrollTop = 0
+    window.scrollTo(0, 0)
+  }, [pathname])
+  return null
+}
 import { ViewModeContext } from './context/viewMode'
 
 import SignUp                from './screens/SignUp'
@@ -202,8 +212,9 @@ export default function App() {
           <NavOverlay collapsed={collapsed} setCollapsed={setCollapsed} dark={dark} setDark={setDark} />
         )}
         <div
-          style={{
-            marginLeft: IS_DEV ? sidebarWidth : 0,
+          className={IS_DEV ? undefined : 'app-root'}
+          style={IS_DEV ? {
+            marginLeft: sidebarWidth,
             flex: 1,
             minHeight: '100dvh',
             background: '#080808',
@@ -212,8 +223,13 @@ export default function App() {
             justifyContent: 'center',
             padding: '24px 0',
             transition: 'margin-left 0.2s ease',
+          } : {
+            flex: 1,
+            display: 'flex',
+            flexDirection: 'column',
           }}
         >
+          <ScrollToTop />
           <Routes>
             <Route path="/"                    element={<Navigate to="/signup" replace />} />
             <Route path="/signup"              element={<SignUp />} />
