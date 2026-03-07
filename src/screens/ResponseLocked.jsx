@@ -3,8 +3,7 @@ import Screen from '../components/Screen'
 import Button from '../components/Button'
 import Icon from '../components/Icon'
 
-const TIME_LABELS    = { lunch: '11am – 3pm', evening: '5pm – 9pm', late: '9pm+' }
-const ACTIVITY_LABELS = { food: 'Food', food_drinks: 'Food + Drinks', drinks: 'Drinks', suggest: 'Flexible' }
+const TIME_LABELS = { lunch: '11am – 3pm', evening: '5pm – 9pm', late: '9pm+' }
 
 export default function ResponseLocked() {
   const navigate  = useNavigate()
@@ -22,10 +21,6 @@ export default function ResponseLocked() {
         { label: 'Friday, 7 March',   time: '9pm+' },
         { label: 'Sunday, 9 March',   time: '11am – 3pm' },
       ]
-
-  const activityDisplay = state?.activities?.length
-    ? state.activities.map(id => ACTIVITY_LABELS[id] ?? id).join(' · ')
-    : 'Drinks · Food + Drinks'
 
   return (
     <Screen>
@@ -59,16 +54,6 @@ export default function ResponseLocked() {
             ))}
           </div>
 
-          {/* Divider */}
-          <div style={{ height: 1, background: 'var(--border-default)', margin: '14px 0' }} />
-
-          {/* Vibe section */}
-          <p style={{ fontSize: 11, fontWeight: 700, color: 'var(--ink-muted)', textTransform: 'uppercase', letterSpacing: '0.06em', marginBottom: 10 }}>
-            Your vibe
-          </p>
-          <div style={{ display: 'flex', alignItems: 'center', gap: 10 }}>
-            <span className="text-sm">{activityDisplay}</span>
-          </div>
         </div>
 
         <div className="alert alert-success" style={{ marginTop: 24, width: '100%' }}>
