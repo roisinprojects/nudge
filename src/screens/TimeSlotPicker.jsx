@@ -201,7 +201,6 @@ export default function TimeSlotPicker() {
           })}
         </div>
 
-        </div>
       </div>
 
       {/* ── Sticky footer ── */}
