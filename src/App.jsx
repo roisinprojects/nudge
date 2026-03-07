@@ -1,5 +1,15 @@
 import { useState, useEffect } from 'react'
 import { Routes, Route, Navigate, Link, useLocation } from 'react-router-dom'
+
+function ScrollToTop() {
+  const { pathname } = useLocation()
+  useEffect(() => {
+    const frame = document.querySelector('.frame')
+    if (frame) frame.scrollTop = 0
+    else window.scrollTo(0, 0)
+  }, [pathname])
+  return null
+}
 import { ViewModeContext } from './context/viewMode'
 
 import SignUp                from './screens/SignUp'
@@ -214,6 +224,7 @@ export default function App() {
             transition: 'margin-left 0.2s ease',
           }}
         >
+          <ScrollToTop />
           <Routes>
             <Route path="/"                    element={<Navigate to="/signup" replace />} />
             <Route path="/signup"              element={<SignUp />} />
