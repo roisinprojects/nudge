@@ -18,6 +18,9 @@ export default function Screen({ children, style }) {
           backgroundColor: 'var(--bg-primary)',
           backgroundImage: 'radial-gradient(circle, var(--dot-color) 1px, transparent 1px)',
           backgroundSize: 'var(--dot-size) var(--dot-size)',
+          backgroundAttachment: 'local',
+          willChange: 'transform',
+          transform: 'translateZ(0)',
           ...style,
         }}
       >
