@@ -9,7 +9,6 @@ export default function GenericError() {
     <Screen>
       <div
         style={{
-          flex: 1,
           display: 'flex',
           flexDirection: 'column',
           alignItems: 'center',
@@ -31,19 +30,28 @@ export default function GenericError() {
             Could not save your response. Please try again.
           </p>
         </div>
+      </div>
 
-        <div style={{ width: '100%', display: 'flex', flexDirection: 'column', gap: 12 }}>
-          <Button onClick={() => navigate(-1)}>
-            Try again
-          </Button>
-          <Button variant="ghost" onClick={() => navigate(-1)}>
-            Go back
-          </Button>
-          <p className="text-xs text-muted">
-            Still stuck? Email us at{' '}
-            <span style={{ color: 'var(--coral)' }}>help@nudge.app</span>
-          </p>
-        </div>
+      {/* ── Sticky footer ── */}
+      <div style={{
+        position: 'sticky', bottom: 0,
+        background: 'var(--bg-primary)',
+        padding: '16px 16px 32px',
+        margin: '0 -16px',
+        borderTop: '1px solid var(--border-default)',
+        display: 'flex', flexDirection: 'column', gap: 12,
+        marginTop: 24,
+      }}>
+        <Button onClick={() => navigate(-1)}>
+          Try again
+        </Button>
+        <Button variant="ghost" onClick={() => navigate(-1)}>
+          Go back
+        </Button>
+        <p className="text-xs text-muted" style={{ textAlign: 'center' }}>
+          Still stuck? Email us at{' '}
+          <span style={{ color: 'var(--coral)' }}>help@nudge.app</span>
+        </p>
       </div>
     </Screen>
   )

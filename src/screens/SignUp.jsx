@@ -72,7 +72,18 @@ export default function SignUp() {
           value={email}
           onChange={e => setEmail(e.target.value)}
         />
+      </div>
 
+      {/* ── Sticky footer: CTAs + terms ── */}
+      <div style={{
+        position: 'sticky', bottom: 0,
+        background: 'var(--bg-primary)',
+        padding: '16px 16px 32px',
+        margin: '0 -16px',
+        borderTop: '1px solid var(--border-default)',
+        display: 'flex', flexDirection: 'column', gap: 12,
+        marginTop: 16,
+      }}>
         <Button onClick={() => navigate('/set-password')}>
           Continue
         </Button>
@@ -88,11 +99,8 @@ export default function SignUp() {
           <AppleIcon />
           Sign up with Apple
         </Button>
-      </div>
 
-      {/* ── Terms footer ── */}
-      <div style={{ marginTop: 'auto', paddingBottom: 40, paddingTop: 24 }}>
-        <p className="text-center text-xs text-muted">
+        <p className="text-center text-xs text-muted" style={{ paddingTop: 4 }}>
           By continuing you agree to our{' '}
           <a href="#" style={{ color: 'var(--ink-primary)', textDecoration: 'underline' }}>Terms of Service</a>
           {' '}and{' '}

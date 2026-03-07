@@ -138,7 +138,7 @@ export default function GroupSettings() {
   }
 
   return (
-    <Screen style={{ paddingBottom: 40 }}>
+    <Screen>
 
       {/* Top nav */}
       <div style={{
@@ -227,12 +227,19 @@ export default function GroupSettings() {
           </div>
         ))}
       </div>
-      <Button variant="secondary" onClick={() => navigate('/invite-friends')}>
-        + Invite someone
-      </Button>
-
-      {/* ── Section: Danger zone ── */}
-      <div style={{ marginTop: 32 }}>
+      {/* ── Sticky footer: invite + danger zone ── */}
+      <div style={{
+        position: 'sticky', bottom: 0,
+        background: 'var(--bg-primary)',
+        padding: '16px 16px 32px',
+        margin: '0 -16px',
+        borderTop: '1px solid var(--border-default)',
+        display: 'flex', flexDirection: 'column', gap: 12,
+        marginTop: 12,
+      }}>
+        <Button variant="secondary" onClick={() => navigate('/invite-friends')}>
+          + Invite someone
+        </Button>
         <SectionLabel>Danger zone</SectionLabel>
         <Button variant="destructive" onClick={() => openSheet('leave')}>
           Leave group

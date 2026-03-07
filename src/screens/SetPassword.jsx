@@ -73,7 +73,17 @@ export default function SetPassword() {
             <p className="text-xs" style={{ color: 'var(--semantic-error)' }}>Passwords don't match</p>
           )}
         </div>
+      </div>
 
+      {/* ── Sticky footer ── */}
+      <div style={{
+        position: 'sticky', bottom: 0,
+        background: 'var(--bg-primary)',
+        padding: '16px 16px 32px',
+        margin: '0 -16px',
+        borderTop: '1px solid var(--border-default)',
+        marginTop: 16,
+      }}>
         <Button
           disabled={!(strong && matches)}
           onClick={() => navigate('/display-name')}

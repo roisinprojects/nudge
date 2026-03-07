@@ -49,7 +49,7 @@ export default function TimeSlotPicker() {
   }
 
   return (
-    <Screen style={{ paddingBottom: 40 }}>
+    <Screen>
       <div style={{ paddingTop: 48 }}>
         <BackButton to="/calendar-picker" />
       </div>
@@ -201,14 +201,24 @@ export default function TimeSlotPicker() {
           })}
         </div>
 
-        <div style={{ marginTop: 'auto', paddingTop: 24 }}>
-          <Button
-            disabled={!allSelected}
-            onClick={() => navigate('/response-locked', { state: { dates, times } })}
-          >
-            Submit availability
-          </Button>
         </div>
+      </div>
+
+      {/* ── Sticky footer ── */}
+      <div style={{
+        position: 'sticky', bottom: 0,
+        background: 'var(--bg-primary)',
+        padding: '16px 16px 32px',
+        margin: '0 -16px',
+        borderTop: '1px solid var(--border-default)',
+        marginTop: 16,
+      }}>
+        <Button
+          disabled={!allSelected}
+          onClick={() => navigate('/response-locked', { state: { dates, times } })}
+        >
+          Submit availability
+        </Button>
       </div>
     </Screen>
   )

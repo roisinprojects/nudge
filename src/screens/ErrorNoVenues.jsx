@@ -16,8 +16,8 @@ export default function ErrorNoVenues() {
   const [showManual, setShowManual] = useState(false)
 
   return (
-    <Screen style={{ paddingBottom: 40 }}>
-      <div style={{ flex: 1, display: 'flex', flexDirection: 'column', gap: 24, paddingTop: 24 }}>
+    <Screen>
+      <div style={{ display: 'flex', flexDirection: 'column', gap: 24, paddingTop: 24 }}>
         <div style={{ textAlign: 'center' }}>
           <h1>We found a time but…</h1>
           <p className="text-muted mt-8">
@@ -65,18 +65,27 @@ export default function ErrorNoVenues() {
             </div>
           </div>
         )}
+      </div>
 
-        <div style={{ display: 'flex', flexDirection: 'column', gap: 12 }}>
-          <Button onClick={() => navigate('/results')}>
-            Try a different time
-          </Button>
-          <Button variant="secondary" onClick={() => navigate('/results')}>
-            Expand search radius to 5 miles
-          </Button>
-          <Button variant="ghost" onClick={() => setShowManual(v => !v)}>
-            {showManual ? 'Hide manual booking' : 'Book manually'}
-          </Button>
-        </div>
+      {/* ── Sticky footer ── */}
+      <div style={{
+        position: 'sticky', bottom: 0,
+        background: 'var(--bg-primary)',
+        padding: '16px 16px 32px',
+        margin: '0 -16px',
+        borderTop: '1px solid var(--border-default)',
+        display: 'flex', flexDirection: 'column', gap: 12,
+        marginTop: 24,
+      }}>
+        <Button onClick={() => navigate('/results')}>
+          Try a different time
+        </Button>
+        <Button variant="secondary" onClick={() => navigate('/results')}>
+          Expand search radius to 5 miles
+        </Button>
+        <Button variant="ghost" onClick={() => setShowManual(v => !v)}>
+          {showManual ? 'Hide manual booking' : 'Book manually'}
+        </Button>
       </div>
     </Screen>
   )

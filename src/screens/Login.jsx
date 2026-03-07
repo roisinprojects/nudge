@@ -70,7 +70,18 @@ export default function Login() {
           value={password}
           onChange={e => setPassword(e.target.value)}
         />
+      </div>
 
+      {/* ── Sticky footer: CTAs + sign up link ── */}
+      <div style={{
+        position: 'sticky', bottom: 0,
+        background: 'var(--bg-primary)',
+        padding: '16px 16px 32px',
+        margin: '0 -16px',
+        borderTop: '1px solid var(--border-default)',
+        display: 'flex', flexDirection: 'column', gap: 12,
+        marginTop: 16,
+      }}>
         <Button onClick={() => navigate('/home')}>
           Continue
         </Button>
@@ -86,11 +97,8 @@ export default function Login() {
           <AppleIcon />
           Sign in with Apple
         </Button>
-      </div>
 
-      {/* ── Footer: sign up link ── */}
-      <div style={{ marginTop: 'auto', paddingBottom: 40, paddingTop: 24 }}>
-        <p className="text-center text-sm text-muted">
+        <p className="text-center text-sm text-muted" style={{ paddingTop: 4 }}>
           Don't have an account?{' '}
           <span
             style={{ color: 'var(--ink-primary)', fontWeight: 600, cursor: 'pointer' }}

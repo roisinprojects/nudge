@@ -68,7 +68,7 @@ export default function CalendarInvite() {
   const date          = state?.match?.date     || 'Saturday, 1 March 2026'
 
   return (
-    <Screen style={{ paddingBottom: 40, position: 'relative' }}>
+    <Screen style={{ position: 'relative' }}>
       <ConfettiBurst />
 
       {/* Heading block — centred */}
@@ -105,8 +105,16 @@ export default function CalendarInvite() {
         </div>
       </div>
 
-      {/* CTAs */}
-      <div style={{ marginTop: 24, display: 'flex', flexDirection: 'column', gap: 8 }}>
+      {/* ── Sticky footer ── */}
+      <div style={{
+        position: 'sticky', bottom: 0,
+        background: 'var(--bg-primary)',
+        padding: '16px 16px 32px',
+        margin: '0 -16px',
+        borderTop: '1px solid var(--border-default)',
+        display: 'flex', flexDirection: 'column', gap: 8,
+        marginTop: 24,
+      }}>
         <Button onClick={() => {}}>Add to calendar</Button>
         <Button variant="ghost" onClick={() => navigate('/home')}>Back to home</Button>
       </div>

@@ -205,7 +205,7 @@ export default function GroupDetail() {
   const g = MOCK_GROUPS.find(grp => grp.id === groupId) ?? MOCK_GROUPS[0]
 
   return (
-    <Screen style={{ paddingBottom: 40, padding: '0 16px 40px' }}>
+    <Screen style={{ padding: '0 16px 0' }}>
 
       {/* [1] Top navigation bar */}
       <div style={{
@@ -280,8 +280,15 @@ export default function GroupDetail() {
       {/* [4] Stats card */}
       <StatsCard g={g} />
 
-      {/* [5] CTA block */}
-      <div style={{ marginTop: 28 }}>
+      {/* [5] Sticky footer: CTA block */}
+      <div style={{
+        position: 'sticky', bottom: 0,
+        background: 'var(--bg-primary)',
+        padding: '16px 16px 32px',
+        margin: '0 -16px',
+        borderTop: '1px solid var(--border-default)',
+        marginTop: 28,
+      }}>
         <CtaBlock g={g} navigate={navigate} />
       </div>
 

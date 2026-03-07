@@ -43,7 +43,16 @@ export default function RespondNow() {
         </div>
       </div>
 
-      <div style={{ marginTop: 'auto', paddingBottom: 40, display: 'flex', flexDirection: 'column', gap: 12 }}>
+      {/* ── Sticky footer ── */}
+      <div style={{
+        position: 'sticky', bottom: 0,
+        background: 'var(--bg-primary)',
+        padding: '16px 16px 32px',
+        margin: '0 -16px',
+        borderTop: '1px solid var(--border-default)',
+        display: 'flex', flexDirection: 'column', gap: 12,
+        marginTop: 16,
+      }}>
         <Button onClick={() => navigate('/calendar-picker')}>
           Continue to dates
         </Button>

@@ -21,7 +21,7 @@ export default function CantMakeIt() {
 
   if (cancelled) {
     return (
-      <Screen style={{ paddingBottom: 40 }}>
+      <Screen>
         <div style={{ paddingTop: 56 }}>
           <BackButton to="/home" />
         </div>
@@ -34,7 +34,6 @@ export default function CantMakeIt() {
           justifyContent: 'center',
           textAlign: 'center',
           gap: 16,
-          paddingBottom: 40,
         }}>
           <div style={{
             width: 72, height: 72, borderRadius: '50%',
@@ -50,7 +49,18 @@ export default function CantMakeIt() {
               The booker has been notified. Hopefully we can catch you next time!
             </p>
           </div>
-          <Button onClick={() => navigate('/home')} style={{ marginTop: 8 }}>
+        </div>
+
+        {/* ── Sticky footer ── */}
+        <div style={{
+          position: 'sticky', bottom: 0,
+          background: 'var(--bg-primary)',
+          padding: '16px 16px 32px',
+          margin: '0 -16px',
+          borderTop: '1px solid var(--border-default)',
+          marginTop: 16,
+        }}>
+          <Button onClick={() => navigate('/home')}>
             Back to home
           </Button>
         </div>
@@ -59,7 +69,7 @@ export default function CantMakeIt() {
   }
 
   return (
-    <Screen style={{ paddingBottom: 40 }}>
+    <Screen>
       <div style={{ paddingTop: 56 }}>
         <BackButton to="/home" />
       </div>
@@ -82,7 +92,16 @@ export default function CantMakeIt() {
         </p>
       </div>
 
-      <div style={{ marginTop: 24, display: 'flex', flexDirection: 'column', gap: 12 }}>
+      {/* ── Sticky footer ── */}
+      <div style={{
+        position: 'sticky', bottom: 0,
+        background: 'var(--bg-primary)',
+        padding: '16px 16px 32px',
+        margin: '0 -16px',
+        borderTop: '1px solid var(--border-default)',
+        display: 'flex', flexDirection: 'column', gap: 12,
+        marginTop: 24,
+      }}>
         <Button variant="destructive" onClick={handleCancel}>
           Confirm
         </Button>

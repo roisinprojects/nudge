@@ -42,7 +42,17 @@ export default function DisplayName() {
           value={name}
           onChange={e => setName(e.target.value)}
         />
+      </div>
 
+      {/* ── Sticky footer ── */}
+      <div style={{
+        position: 'sticky', bottom: 0,
+        background: 'var(--bg-primary)',
+        padding: '16px 16px 32px',
+        margin: '0 -16px',
+        borderTop: '1px solid var(--border-default)',
+        marginTop: 16,
+      }}>
         <Button disabled={!name.trim()} onClick={() => navigate('/create-group')}>
           Continue
         </Button>
