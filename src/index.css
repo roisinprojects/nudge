@@ -570,7 +570,7 @@ h3 {
   border: 1px solid var(--border-strong);
   border-radius: var(--radius-lg);
   color: var(--ink-primary);
-  font-size: 15px;
+  font-size: 16px;
   padding: 0 16px;
   outline: none;
   transition:
