@@ -182,9 +182,11 @@ export default function InviteFriends() {
         display: 'flex', flexDirection: 'column', gap: 12,
         marginTop: 24,
       }}>
-        <Button onClick={() => navigate('/home')}>
-          Create group
-        </Button>
+        {tab === 'email' && (
+          <Button onClick={() => navigate('/home')}>
+            Create group
+          </Button>
+        )}
         <Button variant="ghost" onClick={() => navigate('/home')}>
           Skip for now
         </Button>
