@@ -1,4 +1,5 @@
-import { useNavigate } from 'react-router-dom'
+import { useState } from 'react'
+import { useNavigate, useLocation } from 'react-router-dom'
 import Screen from '../components/Screen'
 import Button from '../components/Button'
 import { useViewMode } from '../context/viewMode'
@@ -256,12 +257,22 @@ const sectionHeading = (isFirst) => ({
 
 export default function Home() {
   const navigate  = useNavigate()
+  const location  = useLocation()
   const mode      = useViewMode()
-  const isEmpty   = MOCK_GROUPS.length === 0
+
+  // Prepend any newly created group passed back from the Create Group flow
+  const [groups, setGroups] = useState(() => {
+    if (location.state?.newGroup) {
+      return [location.state.newGroup, ...MOCK_GROUPS]
+    }
+    return MOCK_GROUPS
+  })
+
+  const isEmpty     = groups.length === 0
 
   // Soonest booked group goes into "Next hangout"; prototype uses first booked in array
-  const nextHangout = MOCK_GROUPS.find(g => g.status === 'booked') ?? null
-  const yourGroups  = MOCK_GROUPS
+  const nextHangout = groups.find(g => g.status === 'booked') ?? null
+  const yourGroups  = groups
     .filter(g => g !== nextHangout)
     .sort((a, b) => STATUS_ORDER[a.status] - STATUS_ORDER[b.status])
 
