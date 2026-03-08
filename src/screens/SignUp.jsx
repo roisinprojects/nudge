@@ -55,7 +55,7 @@ export default function SignUp() {
 
       {/* ── Progress ── */}
       <div style={{ marginTop: 24 }}>
-        <SegmentedBar total={5} current={1} />
+        <SegmentedBar total={3} current={1} />
       </div>
 
       {/* ── Form ── */}
