@@ -37,6 +37,7 @@ import ErrorNoOverlap        from './screens/ErrorNoOverlap'
 import ErrorNoVenues         from './screens/ErrorNoVenues'
 import GenericError          from './screens/GenericError'
 import BookedCardDetails      from './screens/BookedCardDetails'
+import JoinGroup              from './screens/JoinGroup'
 import DesignSystem           from './screens/DesignSystem'
 
 // ── Screen map used by the nav overlay ──────────────────────────────────────
@@ -52,7 +53,9 @@ export const SCREENS = [
   { path: '/home',                   label: 'Home (your groups)',        group: 'Home & Groups'  },
   { path: '/group-detail',           label: 'Group detail',             group: 'Home & Groups'  },
   { path: '/group-settings',         label: 'Group settings',           group: 'Home & Groups'  },
-  { path: '/invite-landing',         label: 'Invite landing',           group: 'Home & Groups'  },
+  { path: '/invite-landing',         label: 'Invite landing (legacy)',   group: 'Home & Groups'  },
+  { path: '/join/grp-demo',          label: 'Join group (invite link)',  group: 'Home & Groups'  },
+  { path: '/join/grp-joined',        label: 'Join group (already in)',   group: 'Home & Groups'  },
   { path: '/profile',                label: 'Profile & settings',       group: 'Home & Groups'  },
   { path: '/booked-details',         label: 'Booked event details',       group: 'Home & Groups'  },
   // Response flow
@@ -242,6 +245,7 @@ export default function App() {
             <Route path="/group-detail"               element={<GroupDetail />} />
             <Route path="/group-settings"             element={<GroupSettings />} />
             <Route path="/invite-landing"             element={<InviteLanding />} />
+            <Route path="/join/:groupId"              element={<JoinGroup />} />
             <Route path="/profile"                    element={<Profile />} />
             <Route path="/respond"                    element={<RespondNow />} />
             <Route path="/calendar-picker"            element={<CalendarPicker />} />
