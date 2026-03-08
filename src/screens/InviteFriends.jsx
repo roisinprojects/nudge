@@ -36,16 +36,10 @@ export default function InviteFriends() {
 
   const remove = (e) => setInvited(prev => prev.filter(x => x !== e))
 
-  const handleCopyLink = async () => {
-    try {
-      await navigator.clipboard.writeText(INVITE_LINK)
-    } catch {
-      // clipboard API unavailable — prototype continues regardless
-    }
+  const handleCopyLink = () => {
+    navigator.clipboard?.writeText(INVITE_LINK).catch(() => {})
     setLinkCopied(true)
-    setTimeout(() => {
-      navigate('/home')
-    }, 1000)
+    setTimeout(() => navigate('/home'), 1000)
   }
 
   return (
@@ -188,9 +182,11 @@ export default function InviteFriends() {
         display: 'flex', flexDirection: 'column', gap: 12,
         marginTop: 24,
       }}>
-        <Button onClick={() => navigate('/home')}>
-          Create group
-        </Button>
+        {tab === 'email' && (
+          <Button onClick={() => navigate('/home')}>
+            Create group
+          </Button>
+        )}
         <Button variant="ghost" onClick={() => navigate('/home')}>
           Skip for now
         </Button>
