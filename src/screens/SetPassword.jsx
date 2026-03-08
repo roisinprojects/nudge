@@ -30,7 +30,7 @@ export default function SetPassword() {
 
       {/* ── Progress ── */}
       <div style={{ marginTop: 24 }}>
-        <SegmentedBar total={5} current={2} />
+        <SegmentedBar total={3} current={2} />
       </div>
 
       {/* ── Form ── */}

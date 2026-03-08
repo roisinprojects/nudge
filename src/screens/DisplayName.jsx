@@ -26,19 +26,19 @@ export default function DisplayName() {
 
       {/* ── Progress ── */}
       <div style={{ marginTop: 24 }}>
-        <SegmentedBar total={5} current={3} />
+        <SegmentedBar total={3} current={3} />
       </div>
 
       {/* ── Form ── */}
       <div style={{ marginTop: 32, display: 'flex', flexDirection: 'column', gap: 16 }}>
         <div>
           <h1>What should we call you?</h1>
-          <p className="text-muted mt-8">This is how you'll appear to your groups.</p>
+          <p className="text-muted mt-8">This is how your friends will see you.</p>
         </div>
 
         <Input
-          label="Display name"
-          placeholder="e.g. Sarah"
+          label="Your name"
+          placeholder="e.g. Sarah Murphy"
           value={name}
           onChange={e => setName(e.target.value)}
         />
@@ -53,7 +53,7 @@ export default function DisplayName() {
         borderTop: '1px solid var(--border-default)',
         marginTop: 16,
       }}>
-        <Button disabled={!name.trim()} onClick={() => navigate('/create-group')}>
+        <Button disabled={!name.trim()} onClick={() => navigate('/home')}>
           Continue
         </Button>
       </div>
